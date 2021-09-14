@@ -14,7 +14,7 @@ interface ClubTagProps {
   color?: keyof typeof colors;
   isSelected?: boolean;
   variant?: 'display' | 'select';
-  onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   className?: string;
 }
 

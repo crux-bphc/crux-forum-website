@@ -9,10 +9,10 @@ const EventItem: React.FC<EventItemProps> = () => {
   return (
     <>
       <div className='flex gap-3 mb-5 bg-gray-800 p-3 items-center rounded'>
-        <Avatar size='sm' />
+        <Avatar size='xs' />
         <div className='grid flex-1 items-center gap-y-3'>
           <div className='row-start-1 row-end-3 items-center'>
-            <h4>Event name</h4>
+            <h4 className='text-sm font-semibold'>Event name</h4>
             <a className='text-xs text-cyan hover:underline' href='#'>
               https://meet.google.com/new-meet-link
             </a>
