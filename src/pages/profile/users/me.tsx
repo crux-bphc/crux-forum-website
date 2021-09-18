@@ -7,6 +7,7 @@ import UserInfo from '../../../modules/profile/UserInfo';
 import Button from '../../../ui/Button';
 import ClubTag from '../../../ui/ClubTag';
 import Container from '../../../ui/Container';
+import ScrollContainer from '../../../ui/ScrollBar';
 
 interface MyProfileProps {}
 
@@ -50,23 +51,23 @@ const MyProfile: React.FC<MyProfileProps> = ({}) => {
           </div>
           <div className='mb-3'>
             <h3 className='mb-3'>Post made by me</h3>
-            <div className='md:h-[300px] pb-5 md:pr-3 md:overflow-y-scroll '>
+            <ScrollContainer className='md:h-[300px] md:pr-3'>
               {Array(6)
                 .fill(0)
                 .map((_, i) => {
-                  return <PostItem key={i} />;
+                  return <PostItem key={i} bottomMargin={i != 5} />;
                 })}
-            </div>
+            </ScrollContainer>
           </div>
           <div className='mb-3'>
             <h3 className='mb-3'>My Events</h3>
-            <div className='md:h-[200px] pb-5 md:pr-3 md:overflow-y-scroll'>
+            <ScrollContainer className='md:h-[200px] md:pr-3'>
               {Array(4)
                 .fill(0)
                 .map((_, i) => {
-                  return <EventItem key={i} />;
+                  return <EventItem key={i} bottomBorder={i != 3} />;
                 })}
-            </div>
+            </ScrollContainer>
           </div>
         </div>
       </Container>

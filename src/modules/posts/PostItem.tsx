@@ -2,15 +2,18 @@ import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import React from 'react';
 import ClubTag from '../../ui/ClubTag';
+import FeedClubTag from '../../ui/FeedClubTag';
 
-interface PostItemProps {}
+interface PostItemProps {
+  bottomMargin?: boolean;
+}
 
-const PostItem: React.FC<PostItemProps> = ({}) => {
+const PostItem: React.FC<PostItemProps> = ({bottomMargin = true}) => {
   const router = useRouter();
 
   return (
     <>
-      <div className='bg-gray-800 rounded p-4 mb-4'>
+      <div className={`bg-gray-800 rounded p-4 ${bottomMargin ? 'mb-4' : ''}`}>
         <div className='xl:hidden item-center flex justify-end mb-3'>
           <p className='text-xs opacity-60'>12th July, 6:43 PM</p>
         </div>
@@ -19,7 +22,7 @@ const PostItem: React.FC<PostItemProps> = ({}) => {
             {Array(3)
               .fill(0)
               .map((_, i) => (
-                <ClubTag
+                <FeedClubTag
                   key={i}
                   name='Crux'
                   color={i === 0 ? 'purple' : i === 1 ? 'blue' : 'green'}

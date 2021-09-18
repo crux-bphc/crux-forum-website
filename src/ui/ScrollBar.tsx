@@ -127,7 +127,7 @@ const ScrollBarContainer: React.FC<ScrollBarProps> = ({className, children, cont
                 {children}
                 <div 
                     className='scrollbar'
-                    style={{opacity: hovering ? 1 : 0}}
+                    style={{opacity: hovering || isDragging ? 1 : 0}}
                 >
                     <div
                         className='scroll-thumb'
