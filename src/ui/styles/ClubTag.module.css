@@ -1,0 +1,27 @@
+.cyan {
+  @apply bg-cyan text-black;
+}
+
+.purple {
+  @apply bg-purple;
+}
+
+.green {
+  @apply bg-green;
+}
+
+.red {
+  @apply bg-red;
+}
+
+.blue {
+  @apply bg-blue;
+}
+
+.disabled {
+  @apply bg-gray-disabled;
+}
+
+.clubTag {
+  @apply text-center inline-flex items-center rounded-md px-1 py-1 transition-colors;
+}

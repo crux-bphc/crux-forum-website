@@ -1,17 +1,37 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+    "env": {
+        "browser": true,
+        "es2021": true
     },
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": ["react", "@typescript-eslint"],
-  "rules": {}
+    "extends": [
+        "plugin:css-modules/recommended",
+        "plugin:react/recommended",
+        "google",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "css-modules",
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "react/prop-types": 0,
+        "css-modules/no-unused-class": [0, { "camelCase": "dashes" }],
+        "css-modules/no-undef-class": [0, { "camelCase": "dashes" }],
+        "no-unused-vars": 1,
+        "require-jsdoc": 0
+    },
+    "settings": {
+        "react": {
+            "version": "17.0.2"
+        }   
+    }
 }

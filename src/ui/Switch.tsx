@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch as HSwitch } from '@headlessui/react';
+import classes from './styles/Switch.module.css';
+import clsx from 'clsx';
 
 const variants = {
   cyan: 'bg-cyan',
@@ -45,23 +47,27 @@ const Switch: React.FC<SwitchProps> = ({
       <div className='flex gap-2 items-center'>
         {left ? left : null}
         <HSwitch
+          data-testid='switch'
           checked={active}
           onChange={() => {
             toggleActive();
             onChange();
           }}
-          className={`${active ? variants[variant] : 'bg-gray-accent'}
-          relative inline-flex flex-shrink-0 ${
-            sizes[size].bg
-          }  border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          className={clsx([
+            classes.switchBtn,
+            sizes[size].bg,
+            active ? variants[variant] : 'bg-gray-accent',
+          ])}
         >
           <span className='sr-only'>Use setting</span>
           <span
+            data-testid='switch-thumb'
             aria-hidden='true'
-            className={`${active ? sizes[size].active : 'translate-x-0'}
-            ${
-              sizes[size].thumb
-            } pointer-events-none inline-block  rounded-full bg-black shadow-lg transform ring-0 transition ease-in-out duration-200`}
+            className={clsx([
+              classes.switchThumb,
+              sizes[size].thumb,
+              active ? sizes[size].active : 'translate-x-0',
+            ])}
           />
         </HSwitch>
         {right ? right : null}

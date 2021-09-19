@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import React from 'react';
+import classes from './styles/FormInput.module.css';
 
 type FormInputProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -19,9 +21,10 @@ const FormInput: React.FC<FormInputProps> = ({ error, label, ...props }) => {
       <label className='block'>{label}</label>
       <input
         type='text'
-        className={`w-full rounded-md border border-gray-accent text-gray-accent bg-transparent px-2 py-2 mt-1 focus:outline-none ${
-          error ? styles.error : styles.active
-        }`}
+        className={clsx([
+          classes.formInput,
+          error ? styles.error : styles.active,
+        ])}
       />
     </div>
   );

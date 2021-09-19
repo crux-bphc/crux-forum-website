@@ -1,4 +1,6 @@
 import React from 'react';
+import clsx from 'clsx';
+import classes from './styles/Avatar.module.css';
 
 const sizes = {
   xs: 'h-[40px]',
@@ -24,9 +26,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <>
       <img
-        className={`bg-green rounded-full shadow ${sizes[size]} ${
-          className ? className : ''
-        }`}
+        className={clsx([classes.avatar, sizes[size], className])}
         src={src}
         alt={alt}
         {...props}

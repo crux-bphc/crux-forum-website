@@ -1,12 +1,15 @@
 import React from 'react';
-import Image from 'next/image';
 import AppLayout from '../../modules/layouts/AppLayout';
 import PostItem from '../../modules/posts/PostItem';
-import Avatar from '../../ui/Avatar';
 import Button from '../../ui/Button';
 import Container from '../../ui/Container';
 
-import { AnnotationIcon, ClockIcon, UserGroupIcon, CalendarIcon } from '@heroicons/react/outline';
+import {
+  AnnotationIcon,
+  ClockIcon,
+  UserGroupIcon,
+  CalendarIcon,
+} from '@heroicons/react/outline';
 
 interface TagProfilePageProps {}
 
@@ -19,15 +22,17 @@ const TagProfilePage: React.FC<TagProfilePageProps> = ({}) => {
             <div className='col-span-1 col-start-1 w-full px-5 lg:px-0'>
               <div className='bg-gray-800 rounded-md shadow-xl lg:fixed'>
                 <div className='w-full'>
-                <img
-                  src='https://picsum.photos/id/108/200/200'
-                  className='w-full'
-                ></img> 
+                  <img
+                    src='https://picsum.photos/id/108/200/200'
+                    className='w-full'
+                  ></img>
                 </div>
 
                 <div className='p-5 pt-8'>
                   <h4 className='mb-1 capitalize'>lorem ispum dolor</h4>
-                  <p className='text-xs opacity-50 mb-5 uppercase'>Technical Club</p>
+                  <p className='text-xs opacity-50 mb-5 uppercase'>
+                    Technical Club
+                  </p>
 
                   <p className='text-xs opacity-90 mb-2 flex items-center'>
                     <span className='mr-1'>

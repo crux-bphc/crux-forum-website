@@ -6,7 +6,7 @@ import { ThemeContext } from './ThemeContextProvider';
 interface ThemeTogglerProps {}
 
 const ThemeToggler: React.FC<ThemeTogglerProps> = ({}) => {
-  const { theme, toggleTheme } = React.useContext(ThemeContext);
+  const { theme } = React.useContext(ThemeContext);
   const [active, setActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -22,10 +22,11 @@ const ThemeToggler: React.FC<ThemeTogglerProps> = ({}) => {
           <SunIcon className='h-4 w-4' />
         )
       }
+      data-testid='toggler'
       active={active}
       toggleActive={() => setActive(!active)}
       variant='purple'
-      onChange={toggleTheme!}
+      onChange={() => {}}
     />
   );
 };

@@ -1,32 +1,44 @@
 import React from 'react';
-import { ThemeContext } from '../modules/theme/ThemeContextProvider';
+import clsx from 'clsx';
+import classes from './styles/Loader.module.css';
 
 const variants = {
-  default: 'h-12 w-12 border-4 border-t-4',
-  button: 'h-5 w-5 border-2 border-t-2',
+  fullScreen: classes.default,
+  default: classes.default,
+  button: classes.button,
 };
 
 interface LoaderProps {
   variant?: keyof typeof variants;
-  color?: 'cyan' | 'red' | 'green' | 'purple';
+  color?: 'cyan' | 'red' | 'green' | 'purple' | 'currentColor';
 }
 
 const Loader: React.FC<LoaderProps> = ({
   variant = 'default',
-  color = 'cyan',
+  color = 'currentColor',
+  ...props
 }) => {
-  const { theme } = React.useContext(ThemeContext);
-
-  return (
-    <>
-      <div
-        style={{ borderTopColor: color }}
-        className={`${variants[variant]} loader ease-linear rounded-full ${
-          theme === 'dark' ? 'border-gray-800' : 'border-gray-accent'
-        }`}
-      ></div>
-    </>
+  const loaderTemplate = (
+    <div
+      data-testid={'loader'}
+      style={{ borderTopColor: color }}
+      className={clsx([classes.loader, variants[variant]])}
+      {...props}
+    />
   );
+
+  if (variant === 'fullScreen') {
+    return (
+      <div
+        data-testid='loader-fullscreen'
+        className='h-screen w-screen flex justify-center items-center'
+      >
+        {loaderTemplate}
+      </div>
+    );
+  }
+
+  return loaderTemplate;
 };
 
 export default Loader;

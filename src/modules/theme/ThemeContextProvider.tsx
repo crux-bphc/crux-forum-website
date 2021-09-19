@@ -2,7 +2,6 @@ import React from 'react';
 
 interface ThemeProps {
   theme: 'light' | 'dark';
-  toggleTheme: () => void;
 }
 
 export const ThemeContext = React.createContext<Partial<ThemeProps>>({});
@@ -24,18 +23,8 @@ const ThemeContextProvider: React.FC<any> = ({ children }) => {
     localStorage.theme = theme;
   }, [theme]);
 
-  const toggleTheme = () => {
-    if (document.body.classList.contains('dark')) {
-      document.body.classList.remove('dark');
-      setTheme('light');
-    } else {
-      document.body.classList.add('dark');
-      setTheme('dark');
-    }
-  };
-
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme }}>
       <div className='bg-white dark:bg-gray-900 dark:text-white min-h-screen'>
         {children}
       </div>

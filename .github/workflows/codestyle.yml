@@ -1,0 +1,38 @@
+name: CI_CODESTYLE
+
+on:
+  pull_request_target:
+    branches:
+      - dev
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  run-linters:
+    name: Check formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install yarn
+        run: npm install yarn -g
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+
+      - name: Prettier
+        run: yarn check:format
+
+      - name: Eslint
+        run: yarn check:lint

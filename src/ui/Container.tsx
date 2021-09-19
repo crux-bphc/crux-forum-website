@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 const widths = {
@@ -21,7 +22,7 @@ const Container: React.FC<ContainerProps> = ({
   return (
     <>
       <div
-        className={`${widths[maxWidth]} mx-auto ${className ? className : ''}`}
+        className={clsx(['mx-auto', widths[maxWidth], className])}
         {...props}
       >
         {children}

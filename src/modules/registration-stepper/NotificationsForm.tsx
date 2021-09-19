@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ClubTag from '../../ui/ClubTag';
 import Button from '../../ui/Button';
 
 const NotificationsForm: React.FC = () => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
 
-  const [selectedNotifications, SetSelectedNotifications] = useState({
+  const [selectedNotifications, setSelectedNotifications] = React.useState({
     mySubscriptions: true,
     subscribedEvents: true,
     allEvents: false,
@@ -14,15 +14,15 @@ const NotificationsForm: React.FC = () => {
 
   const onSelect = (club: string): void => {
     if (selectedTags.includes(club)) {
-      setSelectedTags(tags => tags.filter(tag => tag !== club));
+      setSelectedTags((tags) => tags.filter((tag) => tag !== club));
     } else {
-      setSelectedTags(tags => [...tags, club]);
+      setSelectedTags((tags) => [...tags, club]);
     }
   };
 
   const toggleNotifications = (notification: string): void => {
     const keyTyped = notification as keyof typeof selectedNotifications;
-    SetSelectedNotifications(prev => {
+    setSelectedNotifications((prev) => {
       return {
         ...prev,
         [notification]: !selectedNotifications[keyTyped],

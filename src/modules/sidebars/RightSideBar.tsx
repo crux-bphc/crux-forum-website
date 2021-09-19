@@ -1,7 +1,6 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
 import Button from '../../ui/Button';
-import ClubTag from '../../ui/ClubTag';
 import FeedClubTag from '../../ui/FeedClubTag';
 
 const RightSideBar: React.FC = () => {
@@ -12,12 +11,7 @@ const RightSideBar: React.FC = () => {
     'club xyz',
   ];
 
-  const colors = [
-    'red',
-    'purple',
-    'cyan',
-    'blue'
-  ];
+  const colors = ['red', 'purple', 'cyan', 'blue'];
 
   return (
     <div className='px-8 py-8'>

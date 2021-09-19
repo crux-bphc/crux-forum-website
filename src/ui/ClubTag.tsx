@@ -1,12 +1,13 @@
+import clsx from 'clsx';
 import React from 'react';
-import ClubTagIcon from './icons/ClubTagIcon';
+import classes from './styles/ClubTag.module.css';
 
 const colors = {
-  cyan: 'bg-cyan text-black',
-  purple: 'bg-purple',
-  green: 'bg-green',
-  red: 'bg-red',
-  blue: 'bg-blue',
+  cyan: classes.cyan,
+  purple: classes.purple,
+  green: classes.green,
+  red: classes.red,
+  blue: classes.blue,
 } as { [key: string]: string };
 
 interface ClubTagProps {
@@ -14,7 +15,7 @@ interface ClubTagProps {
   color?: keyof typeof colors;
   isSelected?: boolean;
   variant?: 'display' | 'select';
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
   className?: string;
 }
 
@@ -26,19 +27,19 @@ const ClubTag: React.FC<ClubTagProps> = ({
   variant = 'display',
   onClick,
 }) => {
+  const variantClass =
+    variant === 'select'
+      ? isSelected
+        ? colors[color]
+        : classes.disabled
+      : colors[color];
+
   return (
     <button
-      onClick={e => onClick?.(e)}
-      className={`inline-flex items-center rounded-md px-1 py-1 transition-colors ${
-        variant === 'select'
-          ? isSelected
-            ? colors[color!]
-            : 'bg-gray-disabled'
-          : colors[color!]
-      } ${className ? className : ''}`}
+      onClick={(e) => onClick?.(e)}
+      className={clsx([classes.clubTag, variantClass, className])}
     >
-      <ClubTagIcon className='h-5 w-5 mr-2' />
-      <span className='text-sm mr-4'>{name}</span>
+      <span className='text-sm px-2'>{name}</span>
     </button>
   );
 };

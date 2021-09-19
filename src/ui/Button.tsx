@@ -1,19 +1,18 @@
 import React from 'react';
 import Loader from './Loader';
+import clsx from 'clsx';
+import classes from './styles/Button.module.css';
 
 const variants = {
-  cyan: 'bg-cyan text-gray-900 border-transparent hover:opacity-80',
-  green: 'bg-green text-gray-900 border-transparent hover:opacity-80',
-  purple: 'bg-purple text-gray-100 border-transparent hover:opacity-80',
-  red: 'bg-red text-gray-100 border-transparent hover:opacity-80',
-  'cyan-outline':
-    'border border-cyan dark:text-white hover:bg-cyan dark:hover:text-gray-900 rounded-lg',
-  'green-outline': 'border-green text-green hover:bg-green hover:text-gray-900',
-  'purple-outline':
-    'border-purple text-purple hover:bg-purple hover:text-gray-900',
-  'red-outline': 'border-red text-red hover:bg-red hover:text-gray-900',
-  disabled:
-    'dark:bg-gray-800 bg-gray-accent opacity-30 cursor-not-allowed border-transparent',
+  cyan: classes.cyan,
+  green: classes.green,
+  purple: classes.purple,
+  red: classes.red,
+  'cyan-outline': classes.cyan__outline,
+  'green-outline': classes.green__outline,
+  'purple-outline': classes.purple__outline,
+  'red-outline': classes.red__outline,
+  disabled: classes.disabled,
 };
 
 type ButtonProps = React.DetailedHTMLProps<
@@ -25,30 +24,46 @@ type ButtonProps = React.DetailedHTMLProps<
   variant?: keyof typeof variants;
 };
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  isLoading,
-  icon,
-  className,
-  disabled,
-  variant = 'cyan',
-  ...props
-}) => {
-  return (
-    <>
-      <button
-        disabled={disabled}
-        {...props}
-        className={`flex items-center gap-2 justify-center px-4 py-2 font-semibold rounded border-2 transition-all duration-300 ${
-          variants[disabled ? 'disabled' : variant]
-        } ${className ? className : ''}`}
-      >
-        {!isLoading && icon && <span>{icon}</span>}
-        {isLoading && <Loader variant='button' color='purple' />}
-        <span>{children}</span>
-      </button>
-    </>
-  );
-};
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (props, ref) => {
+    const {
+      children,
+      isLoading,
+      icon,
+      disabled,
+      className,
+      variant = 'cyan',
+      ...rest
+    } = props;
+
+    return (
+      <>
+        <button
+          ref={ref}
+          data-testid='btn'
+          disabled={disabled || isLoading}
+          {...rest}
+          className={clsx(
+            classes.btn,
+            variants[disabled || isLoading ? 'disabled' : variant],
+            className
+          )}
+        >
+          {!isLoading && icon && <span data-testid='btn-icon'>{icon}</span>}
+          {isLoading && (
+            <Loader
+              data-testid='btn-loading'
+              variant='button'
+              color='currentColor'
+            />
+          )}
+          <span>{children}</span>
+        </button>
+      </>
+    );
+  }
+);
+
+Button.displayName = 'Button';
 
 export default Button;

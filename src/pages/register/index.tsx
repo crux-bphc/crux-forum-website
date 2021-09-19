@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import React from 'react';
 import SignUpLayout from '../../modules/layouts/SignUpLayout';
 import StepperLayout from '../../modules/layouts/StepperLayout';
 import DetailsForm from '../../modules/registration-stepper/DetailsForm';
 import NotificationsForm from '../../modules/registration-stepper/NotificationsForm';
 
 const Registerr: React.FC = () => {
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = React.useState<number>(1);
 
   const changeStep = (step: number) => {
     setStep(step);

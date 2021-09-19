@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import FormExample from '../../../public/images/form-example.png';
 import FormInput from '../../ui/FormInput';
 import TextArea from '../../ui/TextArea';
 
@@ -33,9 +32,10 @@ const DetailsForm: React.FC<StepOneProps> = ({ changeStep }) => {
           <label className='block'>Profile Picture</label>
           <div className='mt-1'>
             <Image
+              height='200px'
+              width='200px'
               className='object-cover'
-              //random image. To be changed after adding form validation
-              src={FormExample}
+              src={'/images/form-example.png'}
             />
           </div>
         </div>

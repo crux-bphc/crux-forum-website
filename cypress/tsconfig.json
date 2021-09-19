@@ -1,16 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "target": "es6",
-    "module": "ESNext",
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "lib": ["ESNext", "DOM"],
-    "types": ["cypress"]
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "node"],
+    "esModuleInterop": true
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts"]
 }

@@ -1,14 +1,13 @@
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
-import ClubTag from '../../ui/ClubTag';
 import FeedClubTag from '../../ui/FeedClubTag';
 
 interface PostItemProps {
   bottomMargin?: boolean;
 }
 
-const PostItem: React.FC<PostItemProps> = ({bottomMargin = true}) => {
+const PostItem: React.FC<PostItemProps> = ({ bottomMargin = true }) => {
   const router = useRouter();
 
   return (

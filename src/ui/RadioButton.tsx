@@ -1,5 +1,9 @@
 import React from 'react';
 import { RadioGroup } from '@headlessui/react';
+import clsx from 'clsx';
+import classes from './styles/RadioButton.module.css';
+
+const { root, ring, fill } = classes;
 
 const colors = {
   cyan: 'bg-cyan',
@@ -22,20 +26,18 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   color = 'cyan',
 }) => {
   return (
-    <div className='flex gap-4 items-center mb-2'>
+    <div className={root}>
       {left && (
         <RadioGroup.Label htmlFor={value.toString()}>{left}</RadioGroup.Label>
       )}
       <RadioGroup.Option className='border-transparent' value={value}>
         {({ checked }) => (
-          <div
-            id={value.toString()}
-            className={`flex items-center justify-center cursor-pointer h-4 w-4 ring-offset-0 ring-2 border-transparent text-transparent ring-cyan rounded-full`}
-          >
+          <div id={value.toString()} className={ring}>
             <div
-              className={`h-3 w-3 rounded-full  ${
-                checked ? colors[color] : 'bg-transparent'
-              }`}
+              className={clsx([
+                fill,
+                checked ? colors[color] : 'bg-transparent',
+              ])}
             />
           </div>
         )}

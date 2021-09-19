@@ -1,6 +1,6 @@
+import React from 'react';
 import FeedLayout from '../../modules/layouts/FeedLayout';
 import FeedPost from '../../modules/posts/FeedPost';
-import PostItem from '../../modules/posts/PostItem';
 import SearchBar from '../../ui/SearchBar';
 
 const Home: React.FC = () => {

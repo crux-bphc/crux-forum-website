@@ -20,22 +20,22 @@ const LeftSideBar: React.FC = () => {
       <div>
         <div className='mb-3'>
           <h3 className='text-xl mb-5 font-semibold'>My Events</h3>
-            <ScrollBarContainer className='md:h-[250px] pr-2'>
-              {Array(4)
-                .fill(0)
-                .map((_, i) => {
-                  return <EventItem key={i} bottomBorder={i != 3} />;
-                })}
-            </ScrollBarContainer>
+          <ScrollBarContainer className='md:h-[250px] pr-2'>
+            {Array(4)
+              .fill(0)
+              .map((_, i) => {
+                return <EventItem key={i} bottomBorder={i != 3} />;
+              })}
+          </ScrollBarContainer>
         </div>
         <div className='mb-3'>
           <h3 className='text-xl mb-3 font-semibold'>Other Events</h3>
           <ScrollBarContainer className='md:h-[250px] pr-2'>
-              {Array(4)
-                .fill(0)
-                .map((_, i) => {
-                  return <EventItem key={i} bottomBorder={i != 3} />;
-                })}
+            {Array(4)
+              .fill(0)
+              .map((_, i) => {
+                return <EventItem key={i} bottomBorder={i != 3} />;
+              })}
           </ScrollBarContainer>
         </div>
       </div>

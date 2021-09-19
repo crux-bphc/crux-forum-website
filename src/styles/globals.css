@@ -75,7 +75,7 @@ header {
 }
 
 .stick-to-header {
-  position:sticky;
+  position: sticky;
   top: var(--header-height);
 }
 

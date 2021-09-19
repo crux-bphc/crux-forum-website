@@ -1,8 +1,18 @@
 {
-  "baseUrl": "http://localhost:3000",
-  "defaultCommandTimeout": 20000,
-  "env": {
-    "apiBaseUrl": "http://localhost:8080"
-  },
-  "nodeVersion": "system"
-}
+    "baseUrl": "http://localhost:3000",
+    "defaultCommandTimeout": 20000,
+    "testFiles": "**/*.spec.ts",
+    "component": {
+      "componentFolder": "src",
+      "testFiles": "**/*spec.{js,jsx,ts,tsx}",
+      "viewportHeight": 500,
+      "viewportWidth": 700
+    },
+    "nodeVersion": "bundled",
+    "env": {
+      "codeCoverage": {
+        "url": "/api/__coverage__"
+      }
+    }
+  }
+  

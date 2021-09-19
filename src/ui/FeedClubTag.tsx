@@ -24,7 +24,7 @@ const FeedClubTag: React.FC<FeedClubTagProps> = ({
 }) => {
   return (
     <button
-      onClick={e => onClick?.(e)}
+      onClick={(e) => onClick?.(e)}
       className={`inline-flex items-center rounded-md px-1 sm:px-3 py-0.5 transition-colors ${
         colors[color!]
       } ${className ? className : ''}`}
