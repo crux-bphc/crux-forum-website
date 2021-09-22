@@ -1,8 +1,10 @@
-describe('Test default theme', () => {
+describe('Test default theme (dark theme)', () => {
 	beforeEach(() => {
 		cy.visit('/');
 		document.body.classList.remove('dark');
 		document.body.classList.remove('light');
+
+		cy.reload();
 	});
 
 	it('test that the default theme is dark', () => {

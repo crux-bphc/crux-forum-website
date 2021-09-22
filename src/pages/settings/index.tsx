@@ -48,7 +48,6 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 							id="notifs"
 							active={active}
 							onChange={setActive}
-							toggleActive={() => {}}
 							variantChecked="cyan"
 							size="sm"
 							right={
@@ -73,7 +72,6 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 						id="emails"
 						active={true}
 						onChange={() => {}}
-						toggleActive={() => {}}
 						variantChecked="cyan"
 						right={
 							<p className="text-white font-bold text-lg">
@@ -91,7 +89,6 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 							id="privacy_1"
 							active={true}
 							onChange={() => {}}
-							toggleActive={() => {}}
 							variantChecked="cyan"
 							right={<p className="text-white">WhatsApp</p>}
 							size="sm"
@@ -101,7 +98,6 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 							id="privacy_2"
 							active={true}
 							onChange={() => {}}
-							toggleActive={() => {}}
 							variantChecked="cyan"
 							right={<p className="text-white">Discord</p>}
 							size="sm"
@@ -110,7 +106,6 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 							id="privacy_3"
 							active={true}
 							onChange={() => {}}
-							toggleActive={() => {}}
 							variantChecked="cyan"
 							right={<p className="text-white">Email</p>}
 							size="sm"

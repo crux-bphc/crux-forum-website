@@ -1,9 +1,15 @@
 overwrite: true
 schema: 'http://localhost:8080/api/v1/graphql'
-documents: 'src/graphql/**/*.graphql'
+documents: 'graphql/**/*.gql'
 generates:
-  src/graphql/index.tsx:
+  graphql/index.tsx:
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+  graphql/schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+      commentDescriptions: true

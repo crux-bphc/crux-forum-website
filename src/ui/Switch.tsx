@@ -40,10 +40,10 @@ const sizes = {
 interface SwitchProps {
 	active: boolean;
 	id: string;
-	toggleActive: () => void;
 	onChange: (val: boolean) => void;
 	left?: React.ReactNode;
 	right?: React.ReactNode;
+	checkboxStyle?: React.CSSProperties;
 	variantChecked?: keyof typeof variants;
 	variantUnchecked?: keyof typeof variants;
 	size?: keyof typeof sizes;
@@ -54,7 +54,6 @@ const Switch: React.FC<SwitchProps> = ({
 	active,
 	left,
 	right,
-	toggleActive,
 	onChange,
 	variantChecked = 'cyan',
 	variantUnchecked = 'gray',
@@ -65,12 +64,14 @@ const Switch: React.FC<SwitchProps> = ({
 			<div className="flex items-center select-none">
 				{left ? left : null}
 				<input
+					data-testid="switch-input"
 					type="checkbox"
 					id={'switch' + id}
 					className={clsx([classes.switchInput])}
 					onChange={() => onChange(!active)}
 				></input>
 				<label
+					data-testid="switch"
 					htmlFor={'switch' + id}
 					className={clsx(
 						classes.switchLabel,
@@ -82,6 +83,7 @@ const Switch: React.FC<SwitchProps> = ({
 					)}
 				>
 					<span
+						data-testid="switch-thumb"
 						className={clsx(
 							classes.switchThumb,
 							sizes[size].thumb,

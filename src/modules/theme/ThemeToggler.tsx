@@ -25,9 +25,8 @@ const ThemeToggler: React.FC<ThemeTogglerProps> = ({}) => {
 			id="theme"
 			data-testid="toggler"
 			active={active}
-			toggleActive={() => setActive(!active)}
+			onChange={() => setActive(!active)}
 			variantChecked="purple"
-			onChange={() => {}}
 		/>
 	);
 };

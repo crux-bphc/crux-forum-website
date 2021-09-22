@@ -9,7 +9,8 @@
     "codegen": "graphql-codegen --config codegen.yml",
     "cy:run": "npx cypress run",
     "cy:open": "npx cypress open",
-    "e2e": "next build && start-server-and-test start 3000 cy:run",
+    "e2e:dev": "cross-env NEXT_PUBLIC_SERVER_URL=http://localhost:3000/api/graphql start-server-and-test dev 3000 cy:open",
+    "e2e": "cross-env NEXT_PUBLIC_SERVER_URL=http://localhost:3000/api/graphql yarn build && start-server-and-test start 3000 cy:run",
     "cy:run-ct": "npx cypress run-ct",
     "cy:open-ct": "npx cypress open-ct",
     "coverage": "npx nyc report",
@@ -34,9 +35,11 @@
     "@cypress/react": "^5.10.0",
     "@cypress/webpack-dev-server": "^1.6.0",
     "@graphql-codegen/cli": "1.21.6",
+    "@graphql-codegen/schema-ast": "^2.2.0",
     "@graphql-codegen/typescript": "1.22.4",
     "@graphql-codegen/typescript-operations": "1.18.3",
     "@graphql-codegen/typescript-react-apollo": "2.3.0",
+    "@graphql-tools/webpack-loader": "^6.6.0",
     "@next/eslint-plugin-next": "^11.1.2",
     "@testing-library/cypress": "^8.0.1",
     "@types/node": "^16.9.2",
@@ -45,8 +48,11 @@
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "autoprefixer": "^10.3.4",
+    "apollo-server-micro": "^3.3.0",
     "babel-plugin-istanbul": "^6.0.0",
+    "cross-env": "^7.0.3",
     "cypress": "^8.4.1",
+    "micro": "^9.3.4",
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
@@ -62,9 +68,16 @@
     "webpack-dev-server": "^3.11.2"
   },
   "nyc": {
-    "exclude": [
-      "src/lib/*"
+    "include": [
+      "src/*"
     ],
-    "check-coverage": true
+    "exclude": [
+      "src/pages/api/*"
+    ],
+    "check-coverage": true,
+    "branches": 75,
+    "lines": 75,
+    "functions": 75,
+    "statements": 75
   }
 }
