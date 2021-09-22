@@ -16,11 +16,11 @@ describe('Test light mode', () => {
 	beforeEach(() => {
 		cy.visit('/');
 		localStorage.setItem('theme', 'light');
+
+		cy.reload();
 	});
 
 	it('test that theme is light if theme saved in localStorage is light', () => {
-		cy.reload();
-
 		expect(localStorage.getItem('theme')).to.be.eq('light');
 	});
 });

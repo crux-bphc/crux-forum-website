@@ -11,6 +11,7 @@ const EventItem: React.FC<EventItemProps> = ({ bottomBorder = true }) => {
 	return (
 		<>
 			<div
+				data-testid="event-item"
 				className={`flex gap-3 ${
 					bottomBorder ? 'mb-5' : ''
 				} bg-gray-800 p-3 items-center rounded`}

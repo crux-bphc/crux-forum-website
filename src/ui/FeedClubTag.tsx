@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import React from 'react';
+import classes from './styles/FeedClubTag.module.css';
 
 const colors = {
 	cyan: 'bg-cyan text-black',
@@ -24,10 +26,9 @@ const FeedClubTag: React.FC<FeedClubTagProps> = ({
 }) => {
 	return (
 		<button
+			data-testid="feed-club-tag"
 			onClick={(e) => onClick?.(e)}
-			className={`inline-flex items-center rounded-md px-1 sm:px-3 py-0.5 transition-colors ${
-				colors[color!]
-			} ${className ? className : ''}`}
+			className={clsx([classes.feedClubTag, colors[color], className])}
 		>
 			<span className="text-xs">{name}</span>
 		</button>

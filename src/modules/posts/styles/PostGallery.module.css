@@ -1,0 +1,11 @@
+.oneImage {
+	@apply relative;
+}
+
+.twoImages {
+	@apply grid grid-cols-1 grid-rows-2 gap-y-2;
+}
+
+.threeImages {
+	@apply grid grid-cols-2 gap-2;
+}

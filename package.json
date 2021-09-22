@@ -73,7 +73,8 @@
       "src/*"
     ],
     "exclude": [
-      "src/pages/api/*"
+      "src/pages/api/*",
+      "src/**/*__tests__"
     ],
     "check-coverage": true,
     "branches": 75,

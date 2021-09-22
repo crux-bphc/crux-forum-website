@@ -4,7 +4,7 @@
   "testFiles": "**/*.spec.ts",
   "component": {
     "componentFolder": "src",
-    "testFiles": "**/*spec.{js,jsx,ts,tsx}",
+    "testFiles": "**/*__tests__/**/*.spec.{js,jsx,ts,tsx}",
     "viewportHeight": 500,
     "viewportWidth": 700
   },

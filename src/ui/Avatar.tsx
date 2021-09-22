@@ -26,6 +26,8 @@ const Avatar: React.FC<AvatarProps> = ({
 	return (
 		<>
 			<img
+				data-testid="avatar"
+				id={`avatar-${size}`}
 				className={clsx([classes.avatar, sizes[size], className])}
 				src={src}
 				alt={alt}
