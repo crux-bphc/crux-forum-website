@@ -1,0 +1,3 @@
+mutation GoogleLogin($input: SocialAuthInput!) {
+	GoogleLogin(input: $input)
+}

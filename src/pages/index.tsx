@@ -2,8 +2,50 @@ import React from 'react';
 import SignUpLayout from '../modules/layouts/SignUpLayout';
 import Button from '../ui/Button';
 import GoogleIcon from '../ui/icons/GoogleIcon';
+import Link from 'next/link';
+
+import GoogleLogin from 'react-oauth-popup';
+import {
+	useGetUserQuery,
+	useGoogleAuthUrlQuery,
+	useGoogleLoginMutation,
+} from '../../graphql';
+import Loader from '../ui/Loader';
+import { useRouter } from 'next/router';
 
 const Home: React.FC = () => {
+	const router = useRouter();
+
+	const [login, { loading: googleLogin }] = useGoogleLoginMutation();
+
+	const { loading: googleUrlLoading, data: googleUrl } =
+		useGoogleAuthUrlQuery();
+
+	const { loading: userLoading, data: userData, refetch } = useGetUserQuery();
+
+	React.useEffect(() => {
+		if (userData?.getUser) {
+			router.replace('/feed');
+		}
+	}, [userData?.getUser]);
+
+	if (googleUrlLoading || googleLogin || userLoading) {
+		return <Loader variant="fullScreen" />;
+	}
+
+	const onCode = (code: string) => {
+		return login({
+			variables: {
+				input: {
+					code,
+				},
+			},
+			update: () => {
+				refetch();
+			},
+		});
+	};
+
 	return (
 		<>
 			<SignUpLayout>
@@ -16,18 +58,30 @@ const Home: React.FC = () => {
 							Login to post, view post and do other random bs Lorem Ipsum dolor
 							sit amet consectetur adipiscing elit, sed do eiusmod{' '}
 						</h2>
-						{/* <button className='my-5 flex mx-auto py-2 px-2 items-center border border-cyan rounded-md'>
-              <GoogleIcon className='w-5' />
 
-              <span className='font-extralight ml-2'>Login With Google</span>
-            </button> */}
-						<Button
-							className="mx-auto my-5"
-							icon={<GoogleIcon className="w-5" />}
-							variant="cyan-outline"
-						>
-							Login With Google
-						</Button>
+						<div className="flex justify-center">
+							<GoogleLogin
+								title="Login"
+								height={700}
+								width={500}
+								onCode={onCode}
+								onClose={() => {}}
+								url={googleUrl!.GoogleAuthUrl}
+							>
+								<Link href={'/'} passHref={true}>
+									<Button
+										isLoading={googleUrlLoading}
+										data-testid="google-login-btn"
+										className="my-5"
+										icon={<GoogleIcon className="w-5" />}
+										variant="cyan-outline"
+									>
+										Login With Google
+									</Button>
+								</Link>
+							</GoogleLogin>
+						</div>
+
 						<div className="flex items-center w-full justify-center">
 							<input className="mr-1 bg-black" type="checkbox" />
 							<span className="text-sm">Keep me Signed In</span>
