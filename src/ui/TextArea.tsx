@@ -1,4 +1,7 @@
+import clsx from 'clsx';
+import { useField } from 'formik';
 import React from 'react';
+import classes from './styles/TextArea.module.css';
 
 type TextAreaProps = React.DetailedHTMLProps<
 	React.TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -6,25 +9,32 @@ type TextAreaProps = React.DetailedHTMLProps<
 > & {
 	textAreaClassName?: string;
 	label: string;
-	error?: boolean;
+	name: string;
 };
 
 const TextArea: React.FC<TextAreaProps> = ({
 	label,
-	error,
 	className,
 	textAreaClassName,
+	name,
+	required = true,
 	...props
 }) => {
+	const [field, { touched, error }] = useField(name);
+
 	return (
-		<div className={`flex flex-col ${className}`}>
-			<label className="block">{label}</label>
-			<textarea
-				className={`w-full resize-none rounded-md border border-gray-accent text-gray-accent bg-transparent px-2 py-2 mt-1 flex-grow focus:outline-none ${
-					error ? 'focus:border-red' : `focus:border-cyan`
-				} ${textAreaClassName ? textAreaClassName : ''}`}
-				{...props}
-			/>
+		<div
+			className={clsx([
+				classes.TextArea,
+				touched && error && classes.isInvalid,
+			])}
+		>
+			<label className="block">
+				{label}
+				{required && <span className={classes.isRequired}> *</span>}
+			</label>
+			<textarea {...field} {...props} />
+			{touched && error && <small>{error}</small>}
 		</div>
 	);
 };

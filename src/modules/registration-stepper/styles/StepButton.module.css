@@ -1,0 +1,11 @@
+.StepButton {
+	@apply border rounded-md my-2 mr-3 lg:mr-0 h-12 w-12 flex items-center justify-center;
+}
+
+.StepButtonActive {
+	@apply bg-cyan text-black border-transparent;
+}
+
+.StepButtonDisabled {
+	@apply cursor-not-allowed opacity-60 text-gray-accent border-gray-accent;
+}

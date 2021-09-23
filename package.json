@@ -24,12 +24,14 @@
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "clsx": "^1.1.1",
+    "formik": "^2.2.9",
     "graphql": "^15.5.3",
     "next": "10.2.4-canary.19",
     "next-apollo": "^5.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-oauth-popup": "^1.0.5"
+    "react-oauth-popup": "^1.0.5",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.11",
@@ -53,6 +55,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "cross-env": "^7.0.3",
     "cypress": "^8.4.1",
+    "cypress-react-selector": "^2.3.11",
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",

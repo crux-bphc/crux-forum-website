@@ -6,6 +6,7 @@ import NotificationsForm from '../../modules/registration-stepper/NotificationsF
 
 const Registerr: React.FC = () => {
 	const [step, setStep] = React.useState<number>(1);
+	const [allowStepChange, setAllowStepChange] = React.useState(false);
 
 	const changeStep = (step: number) => {
 		setStep(step);
@@ -13,9 +14,16 @@ const Registerr: React.FC = () => {
 
 	return (
 		<SignUpLayout>
-			<StepperLayout changeStep={changeStep} step={step}>
+			<StepperLayout
+				changeStep={changeStep}
+				allowStepChange={allowStepChange}
+				step={step}
+			>
 				{step == 1 ? (
-					<DetailsForm changeStep={changeStep} />
+					<DetailsForm
+						changeStep={changeStep}
+						setAllowStepChange={setAllowStepChange}
+					/>
 				) : (
 					<NotificationsForm />
 				)}

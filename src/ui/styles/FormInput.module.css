@@ -1,3 +1,23 @@
-.formInput {
-	@apply w-full rounded-md border border-gray-accent text-gray-accent bg-transparent px-2 py-2 mt-1 focus:outline-none;
+.formInput input {
+	@apply w-full rounded-md border-2 focus:border-cyan border-gray-accent text-gray-accent bg-transparent px-2 py-2 mt-1 focus:outline-none;
+}
+
+.isRequired {
+	@apply text-cyan;
+}
+
+.isInvalid input {
+	@apply border-red focus:border-red;
+}
+
+.isInvalid label {
+	@apply text-red;
+}
+
+.isInvalid small {
+	@apply text-red;
+}
+
+.isInvalid .isRequired {
+	@apply text-red;
 }

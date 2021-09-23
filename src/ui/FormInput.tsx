@@ -1,31 +1,39 @@
 import clsx from 'clsx';
+import { useField } from 'formik';
 import React from 'react';
 import classes from './styles/FormInput.module.css';
 
 type FormInputProps = React.DetailedHTMLProps<
-	React.HTMLAttributes<HTMLDivElement>,
-	HTMLDivElement
+	React.InputHTMLAttributes<HTMLInputElement>,
+	HTMLInputElement
 > & {
+	name: string;
 	label: string;
 	error?: boolean;
 };
 
-const styles = {
-	active: 'focus:border-cyan',
-	error: 'focus:border-red',
-};
+const FormInput: React.FC<FormInputProps> = ({
+	label,
+	name,
+	type = 'text',
+	required = true,
+	...props
+}) => {
+	const [field, { error, touched }] = useField(name);
 
-const FormInput: React.FC<FormInputProps> = ({ error, label, ...props }) => {
 	return (
-		<div {...props}>
-			<label className="block">{label}</label>
-			<input
-				type="text"
-				className={clsx([
-					classes.formInput,
-					error ? styles.error : styles.active,
-				])}
-			/>
+		<div
+			data-testid="form-input"
+			className={clsx([
+				classes.formInput,
+				touched && error && classes.isInvalid,
+			])}
+		>
+			<label className="block">
+				{label} {required && <span className={classes.isRequired}>*</span>}
+			</label>
+			<input type={type} {...field} {...props} />
+			{touched && error && <small>{error}</small>}
 		</div>
 	);
 };
