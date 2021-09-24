@@ -1,0 +1,9 @@
+query GetBaseTopicInfo {
+	getAllTopics {
+		data {
+			...BaseTopicInfo
+		}
+		count
+		hasNext
+	}
+}

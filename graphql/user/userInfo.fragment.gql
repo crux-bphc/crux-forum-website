@@ -1,0 +1,5 @@
+fragment BasicUserInfo on UserType {
+	_id
+	name
+	email
+}

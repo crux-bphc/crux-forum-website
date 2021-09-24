@@ -17,6 +17,7 @@ const FormInput: React.FC<FormInputProps> = ({
 	name,
 	type = 'text',
 	required = true,
+	disabled,
 	...props
 }) => {
 	const [field, { error, touched }] = useField(name);
@@ -27,12 +28,13 @@ const FormInput: React.FC<FormInputProps> = ({
 			className={clsx([
 				classes.formInput,
 				touched && error && classes.isInvalid,
+				disabled && classes.isDisabled,
 			])}
 		>
 			<label className="block">
 				{label} {required && <span className={classes.isRequired}>*</span>}
 			</label>
-			<input type={type} {...field} {...props} />
+			<input disabled={disabled} type={type} {...field} {...props} />
 			{touched && error && <small>{error}</small>}
 		</div>
 	);

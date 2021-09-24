@@ -421,6 +421,26 @@ export type GoogleLoginMutation = (
   & Pick<Mutation, 'GoogleLogin'>
 );
 
+export type GetBaseTopicInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBaseTopicInfoQuery = (
+  { __typename?: 'Query' }
+  & { getAllTopics: (
+    { __typename?: 'PaginatedResponseOfTopicType' }
+    & Pick<PaginatedResponseOfTopicType, 'count' | 'hasNext'>
+    & { data: Array<(
+      { __typename?: 'TopicType' }
+      & BaseTopicInfoFragment
+    )> }
+  ) }
+);
+
+export type BaseTopicInfoFragment = (
+  { __typename?: 'TopicType' }
+  & Pick<TopicType, '_id' | 'name' | 'color'>
+);
+
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -428,11 +448,29 @@ export type GetUserQuery = (
   { __typename?: 'Query' }
   & { getUser?: Maybe<(
     { __typename?: 'UserType' }
-    & Pick<UserType, '_id' | 'email' | 'name'>
+    & BasicUserInfoFragment
   )> }
 );
 
+export type BasicUserInfoFragment = (
+  { __typename?: 'UserType' }
+  & Pick<UserType, '_id' | 'name' | 'email'>
+);
 
+export const BaseTopicInfoFragmentDoc = gql`
+    fragment BaseTopicInfo on TopicType {
+  _id
+  name
+  color
+}
+    `;
+export const BasicUserInfoFragmentDoc = gql`
+    fragment BasicUserInfo on UserType {
+  _id
+  name
+  email
+}
+    `;
 export const GoogleAuthUrlDocument = gql`
     query GoogleAuthUrl {
   GoogleAuthUrl
@@ -496,15 +534,51 @@ export function useGoogleLoginMutation(baseOptions?: Apollo.MutationHookOptions<
 export type GoogleLoginMutationHookResult = ReturnType<typeof useGoogleLoginMutation>;
 export type GoogleLoginMutationResult = Apollo.MutationResult<GoogleLoginMutation>;
 export type GoogleLoginMutationOptions = Apollo.BaseMutationOptions<GoogleLoginMutation, GoogleLoginMutationVariables>;
+export const GetBaseTopicInfoDocument = gql`
+    query GetBaseTopicInfo {
+  getAllTopics {
+    data {
+      ...BaseTopicInfo
+    }
+    count
+    hasNext
+  }
+}
+    ${BaseTopicInfoFragmentDoc}`;
+
+/**
+ * __useGetBaseTopicInfoQuery__
+ *
+ * To run a query within a React component, call `useGetBaseTopicInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBaseTopicInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBaseTopicInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBaseTopicInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>(GetBaseTopicInfoDocument, options);
+      }
+export function useGetBaseTopicInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>(GetBaseTopicInfoDocument, options);
+        }
+export type GetBaseTopicInfoQueryHookResult = ReturnType<typeof useGetBaseTopicInfoQuery>;
+export type GetBaseTopicInfoLazyQueryHookResult = ReturnType<typeof useGetBaseTopicInfoLazyQuery>;
+export type GetBaseTopicInfoQueryResult = Apollo.QueryResult<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser {
   getUser {
-    _id
-    email
-    name
+    ...BasicUserInfo
   }
 }
-    `;
+    ${BasicUserInfoFragmentDoc}`;
 
 /**
  * __useGetUserQuery__

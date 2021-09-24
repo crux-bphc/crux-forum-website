@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import SignUpLayout from '../../modules/layouts/SignUpLayout';
 import StepperLayout from '../../modules/layouts/StepperLayout';
@@ -19,14 +20,15 @@ const Registerr: React.FC = () => {
 				allowStepChange={allowStepChange}
 				step={step}
 			>
-				{step == 1 ? (
+				<div className={clsx([step === 2 && 'hidden'])}>
 					<DetailsForm
 						changeStep={changeStep}
 						setAllowStepChange={setAllowStepChange}
 					/>
-				) : (
+				</div>
+				<div className={clsx([step === 1 && 'hidden'])}>
 					<NotificationsForm />
-				)}
+				</div>
 			</StepperLayout>
 		</SignUpLayout>
 	);

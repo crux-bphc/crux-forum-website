@@ -1,10 +1,18 @@
 import React from 'react';
 import ClubTag from '../../ui/ClubTag';
 import Button from '../../ui/Button';
+import TopicsModal from '../topics/TopicsModal';
+import useDisclosure from '../hooks/useDisclosure';
+import { SearchIcon } from '@heroicons/react/outline';
+import { TopicType } from '../../../graphql';
 
 const NotificationsForm: React.FC = () => {
-	const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+	const { isOpen, onClose, onOpen } = useDisclosure();
 
+	const [isValid, setIsValid] = React.useState<boolean>(false);
+	const [selectedTags, setSelectedTags] = React.useState<TopicType[]>([]);
+	const [isTermsofServiceChecked, setIsTermsOfServiceChecked] =
+		React.useState<boolean>(false);
 	const [selectedNotifications, setSelectedNotifications] = React.useState({
 		mySubscriptions: true,
 		subscribedEvents: true,
@@ -12,13 +20,13 @@ const NotificationsForm: React.FC = () => {
 		allPosts: false,
 	});
 
-	const onSelect = (club: string): void => {
-		if (selectedTags.includes(club)) {
-			setSelectedTags((tags) => tags.filter((tag) => tag !== club));
+	React.useEffect(() => {
+		if (selectedTags.length > 0 && !!isTermsofServiceChecked) {
+			setIsValid(true);
 		} else {
-			setSelectedTags((tags) => [...tags, club]);
+			setIsValid(false);
 		}
-	};
+	}, [selectedTags, isTermsofServiceChecked]);
 
 	const toggleNotifications = (notification: string): void => {
 		const keyTyped = notification as keyof typeof selectedNotifications;
@@ -30,48 +38,57 @@ const NotificationsForm: React.FC = () => {
 		});
 	};
 
+	const onListItemClick = (topic: TopicType) => {
+		if (!!selectedTags.find((el) => el._id === topic._id)) {
+			const updatedTags = selectedTags.filter((el) => el._id !== topic._id);
+			setSelectedTags(updatedTags);
+		} else {
+			setSelectedTags([...selectedTags, topic]);
+		}
+	};
+
 	return (
 		<div>
+			<TopicsModal {...{ isOpen, onClose, onListItemClick, selectedTags }} />
+
 			<h1 className="text-2xl sm:text-4xl md:text-5xl">
 				Tell us more about you
 			</h1>
+
 			<h3 className="text-sm sm:text-base font-normal sm:font-semibold text-gray-accent mt-3 mb-10">
 				Looks like this is your first time here, asd qwe sdf trert dfg You can
 				always change this shit in the settings
 			</h3>
-			<h2 className="text-2xl sm:text-4xl md:text-5xl">
-				What are you intrested in?
-			</h2>
-			<div className="my-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-				<ClubTag
-					variant="select"
-					name="crux"
-					color="red"
-					isSelected={selectedTags.includes('crux')}
-					onClick={() => onSelect('crux')}
-				/>
-				<ClubTag
-					variant="select"
-					name="cultural"
-					color="purple"
-					isSelected={selectedTags.includes('cultural')}
-					onClick={() => onSelect('cultural')}
-				/>
-				<ClubTag
-					variant="select"
-					name="sangam"
-					color="green"
-					isSelected={selectedTags.includes('sangam')}
-					onClick={() => onSelect('sangam')}
-				/>
-				<ClubTag
-					variant="select"
-					name="New Club"
-					color="green"
-					isSelected={selectedTags.includes('New Club')}
-					onClick={() => onSelect('New Club')}
-				/>
+
+			<div className="flex items-center justify-between mb-8">
+				<h2 className="text-2xl sm:text-4xl md:text-5xl">
+					What are you interested in?
+				</h2>
+				<Button
+					icon={<SearchIcon className="h-5" />}
+					size="sm"
+					variant="cyan"
+					onClick={onOpen}
+				>
+					Search...
+				</Button>
 			</div>
+
+			{!!selectedTags.length && (
+				<div className="my-2 items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+					{selectedTags.map((tag) => {
+						return (
+							<ClubTag
+								key={tag._id}
+								variant="display"
+								name={tag.name}
+								color={'purple'}
+								onClick={() => {}}
+							/>
+						);
+					})}
+				</div>
+			)}
 
 			<h2 className="text-2xl sm:text-4xl md:text-5xl">Notifications</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-5">
@@ -106,7 +123,12 @@ const NotificationsForm: React.FC = () => {
 			</div>
 
 			<div className="flex items-center w-full my-10">
-				<input className="mr-2" type="checkbox" />
+				<input
+					onChange={() => setIsTermsOfServiceChecked(!isTermsofServiceChecked)}
+					checked={isTermsofServiceChecked}
+					className="mr-2"
+					type="checkbox"
+				/>
 				<span className="text-xs">
 					I have read and agree to the{' '}
 					<a href="/" className="text-blue underline">
@@ -122,9 +144,11 @@ const NotificationsForm: React.FC = () => {
 					</a>
 				</span>
 			</div>
-			<Button className="px-12 py-3 w-full lg:w-3/5 xl:w-2/5">
-				Finish Registration!
-			</Button>
+			{isValid && (
+				<Button className="px-12 py-3 w-full lg:w-3/5 xl:w-2/5">
+					Finish Registration!
+				</Button>
+			)}
 		</div>
 	);
 };

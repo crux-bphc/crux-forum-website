@@ -21,3 +21,8 @@
 .isInvalid .isRequired {
 	@apply text-red;
 }
+
+.isDisabled input,
+.isDisabled label {
+	@apply active:focus:text-gray-accent opacity-50 cursor-not-allowed;
+}

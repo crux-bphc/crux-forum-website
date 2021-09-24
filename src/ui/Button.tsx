@@ -15,18 +15,25 @@ const variants = {
 	disabled: classes.disabled,
 };
 
+const sizes = {
+	md: '',
+	sm: 'p-2 text-sm',
+};
+
 type ButtonProps = React.DetailedHTMLProps<
 	React.ButtonHTMLAttributes<HTMLButtonElement>,
 	HTMLButtonElement
 > & {
 	isLoading?: boolean;
 	icon?: React.ReactNode;
+	size?: 'md' | 'sm';
 	variant?: keyof typeof variants;
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(props, ref) => {
 		const {
+			size = 'md',
 			children,
 			isLoading,
 			icon,
@@ -45,6 +52,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					{...rest}
 					className={clsx(
 						classes.btn,
+						sizes[size],
 						variants[disabled || isLoading ? 'disabled' : variant],
 						className
 					)}

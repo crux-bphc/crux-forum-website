@@ -4,13 +4,16 @@ import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../../lib/withApollo';
 import '../styles/globals.css';
 import ThemeContextProvider from '../modules/theme/ThemeContextProvider';
+import Layout from '../modules/layouts/Layout';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	return (
 		<ApolloProvider client={apolloClient}>
-			<ThemeContextProvider>
-				<Component {...pageProps} />
-			</ThemeContextProvider>
+			<Layout>
+				<ThemeContextProvider>
+					<Component {...pageProps} />
+				</ThemeContextProvider>
+			</Layout>
 		</ApolloProvider>
 	);
 };

@@ -12,7 +12,6 @@ class MyDocument extends Document {
 			<Html lang="en">
 				<Head />
 				<body className="bg-gray-800">
-					<div id="modal"></div>
 					<Main />
 					<NextScript />
 				</body>

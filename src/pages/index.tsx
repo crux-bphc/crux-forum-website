@@ -23,6 +23,8 @@ const Home: React.FC = () => {
 
 	const { loading: userLoading, data: userData, refetch } = useGetUserQuery();
 
+	console.log(userData);
+
 	React.useEffect(() => {
 		if (userData?.getUser) {
 			router.replace('/feed');
