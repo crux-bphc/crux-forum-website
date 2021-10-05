@@ -23,15 +23,15 @@
 }
 
 .green__outline {
-	@apply border-green text-green hover:bg-green hover:text-gray-900;
+	@apply border-green text-green hover:bg-green hover:text-gray-900 rounded-lg;
 }
 
 .purple__outline {
-	@apply border-purple text-purple hover:bg-purple hover:text-gray-900;
+	@apply border-purple text-purple hover:bg-purple hover:text-gray-900 rounded-lg;
 }
 
 .red__outline {
-	@apply border-red text-red hover:bg-red hover:text-gray-900;
+	@apply border-red text-red hover:bg-red hover:text-gray-900 rounded-lg;
 }
 
 .disabled {

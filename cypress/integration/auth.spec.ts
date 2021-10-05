@@ -1,29 +1,15 @@
-describe('google auth url', () => {
-	beforeEach(() => {
-		cy.intercept('POST', 'http://localhost:3000/api/graphql', (req) => {
-			const { body } = req;
-			console.log(body);
-
-			if (
-				body.hasOwnProperty('operationName') &&
-				body.operationName === 'GoogleAuthUrl'
-			) {
-				req.alias = body.operationName;
-
-				req.reply({ fixture: 'auth/authUrl.json' });
-			}
-		});
-		cy.visit('/');
-	});
-
+describe('test google auth url', () => {
 	it('get google auth url', () => {
+		cy.gqlRequest('GoogleAuthUrl', 'auth/authUrl.json');
+		cy.visit('/');
+
 		cy.wait('@GoogleAuthUrl')
 			.its('response.body.data.GoogleAuthUrl')
 			.should('equal', 'google-auth-url');
 	});
 });
 
-describe('user info', () => {
+describe('test user info', () => {
 	it('user should be undefined', () => {
 		cy.gqlRequest('GetUser', 'user/user-null.json');
 		cy.visit('/');
