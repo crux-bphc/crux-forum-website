@@ -40,7 +40,7 @@ const sizes = {
 interface SwitchProps {
 	active: boolean;
 	id: string;
-	onChange: (val: boolean) => void;
+	onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
 	left?: React.ReactNode;
 	right?: React.ReactNode;
 	checkboxStyle?: React.CSSProperties;
@@ -68,7 +68,7 @@ const Switch: React.FC<SwitchProps> = ({
 					type="checkbox"
 					id={'switch' + id}
 					className={clsx([classes.switchInput])}
-					onChange={() => onChange(!active)}
+					onChange={onChange}
 				></input>
 				<label
 					data-testid="switch"

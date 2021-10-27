@@ -5,7 +5,9 @@ Cypress.Commands.add('getByTestId', (testId: string, ...args) => {
 });
 
 Cypress.Commands.add('gqlRequest', (operationName: string, fixture: string) => {
-	cy.intercept('POST', 'http://localhost:3000/api/graphql', (req) => {
+	const URL = 'http://localhost:3000/api/graphql';
+
+	cy.intercept('POST', URL, (req) => {
 		const { body } = req;
 		console.log(body);
 

@@ -3,8 +3,6 @@ import SignUpLayout from '../modules/layouts/SignUpLayout';
 import Button from '../ui/Button';
 import GoogleIcon from '../ui/icons/GoogleIcon';
 import Link from 'next/link';
-
-import GoogleLogin from 'react-oauth-popup';
 import {
 	useGetUserQuery,
 	useGoogleAuthUrlQuery,
@@ -17,13 +15,27 @@ const Home: React.FC = () => {
 	const router = useRouter();
 
 	const [login, { loading: googleLogin }] = useGoogleLoginMutation();
-
 	const { loading: googleUrlLoading, data: googleUrl } =
 		useGoogleAuthUrlQuery();
 
 	const { loading: userLoading, data: userData, refetch } = useGetUserQuery();
 
-	console.log(userData);
+	React.useEffect(() => {
+		(async () => {
+			if (router.query.code) {
+				await login({
+					variables: {
+						input: {
+							code: router.query.code as string,
+						},
+					},
+					update: () => {
+						refetch();
+					},
+				});
+			}
+		})();
+	}, [router.query.code, login]);
 
 	React.useEffect(() => {
 		if (userData?.getUser) {
@@ -34,19 +46,6 @@ const Home: React.FC = () => {
 	if (googleUrlLoading || googleLogin || userLoading) {
 		return <Loader variant="fullScreen" />;
 	}
-
-	const onCode = (code: string) => {
-		return login({
-			variables: {
-				input: {
-					code,
-				},
-			},
-			update: () => {
-				refetch();
-			},
-		});
-	};
 
 	return (
 		<>
@@ -62,26 +61,17 @@ const Home: React.FC = () => {
 						</h2>
 
 						<div className="flex justify-center">
-							<GoogleLogin
-								title="Login"
-								height={700}
-								width={500}
-								onCode={onCode}
-								onClose={() => {}}
-								url={googleUrl!.GoogleAuthUrl}
-							>
-								<Link href={'/'} passHref={true}>
-									<Button
-										isLoading={googleUrlLoading}
-										data-testid="google-login-btn"
-										className="my-5"
-										icon={<GoogleIcon className="w-5" />}
-										variant="cyan-outline"
-									>
-										Login With Google
-									</Button>
-								</Link>
-							</GoogleLogin>
+							<Link href={googleUrl!.GoogleAuthUrl} passHref>
+								<Button
+									isLoading={googleUrlLoading}
+									data-testid="google-login-btn"
+									className="my-5"
+									icon={<GoogleIcon className="w-5" />}
+									variant="cyan-outline"
+								>
+									Login With Google
+								</Button>
+							</Link>
 						</div>
 
 						<div className="flex items-center w-full justify-center">

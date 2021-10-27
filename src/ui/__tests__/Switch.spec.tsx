@@ -18,18 +18,55 @@ describe('UI / Switch', () => {
 	});
 
 	it('switch ui rendered correctly when active', () => {
-		mount(
+		mount(<Switch id="notifs" active={true} onChange={() => {}} size="sm" />);
+		cy.getByTestId('switch').should('not.have.class', 'bg-gray-900');
+		cy.getByTestId('switch-thumb').should('not.have.class', 'left-[2px]');
+	});
+
+	it('left label is rendered correctly', () => {
+		const component = mount(
 			<Switch
 				id="notifs"
 				active={true}
 				onChange={() => {}}
-				variantChecked="cyan"
 				size="sm"
-				right={<p className="text-white font-bold text-lg">Notifications</p>}
+				left={<p data-testid="left">Left Side</p>}
 			/>
 		);
-		cy.getByTestId('switch').should('not.have.class', 'bg-gray-900');
-		cy.getByTestId('switch-thumb').should('not.have.class', 'left-[2px]');
+
+		component.getByTestId('left').should('exist');
+		component.getByTestId('switch').should('have.class', 'ml-3');
+	});
+
+	it('right label is rendered correctly', () => {
+		const component = mount(
+			<Switch
+				id="notifs"
+				active={true}
+				onChange={() => {}}
+				size="sm"
+				right={<p data-testid="right">right Side</p>}
+			/>
+		);
+
+		component.getByTestId('right').should('exist');
+		component.getByTestId('switch').should('have.class', 'mr-3');
+	});
+
+	it('toggle functionality works correctly', () => {
+		const onChange = cy.stub().as('switchToggle');
+		const component = mount(
+			<Switch
+				id="notifs"
+				active={true}
+				onChange={() => onChange}
+				variantChecked="cyan"
+				size="sm"
+			/>
+		);
+
+		const switchInput = component.getByTestId('switch-input');
+		switchInput.trigger('change', { force: true });
 	});
 
 	afterEach(() => {

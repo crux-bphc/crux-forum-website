@@ -45,6 +45,7 @@ const ScrollBarContainer: React.FC<ScrollBarProps> = ({
 
 	const handleDocumentMouseMove = React.useCallback(
 		(e: MouseEvent) => {
+			// istanbul ignore else
 			if (isDragging) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -83,22 +84,20 @@ const ScrollBarContainer: React.FC<ScrollBarProps> = ({
 	);
 
 	const handleScroll = React.useCallback(() => {
-		if (!scrollHostRef) {
-			return;
-		}
-		const scrollHostElement = scrollHostRef.current!;
-		const { scrollTop, scrollHeight, offsetHeight } = scrollHostElement;
+		// istanbul ignore else
+		if (scrollHostRef) {
+			const scrollHostElement = scrollHostRef.current!;
+			const { scrollTop, scrollHeight, offsetHeight } = scrollHostElement;
 
-		let newTop = (scrollTop / scrollHeight) * offsetHeight;
-		newTop = Math.min(newTop, offsetHeight - scrollBoxHeight);
-		setScrollBoxTop(newTop);
+			let newTop = (scrollTop / scrollHeight) * offsetHeight;
+			newTop = Math.min(newTop, offsetHeight - scrollBoxHeight);
+			setScrollBoxTop(newTop);
+		}
 	}, []);
 
 	React.useEffect(() => {
 		const scrollHostElement = scrollHostRef.current!;
 		const { clientHeight, scrollHeight } = scrollHostElement;
-
-		console.log(clientHeight, scrollHeight, scrollHostElement.offsetHeight);
 
 		const scrollThumbPercentage = clientHeight / scrollHeight;
 		const scrollThumbHeight = Math.max(
@@ -133,16 +132,19 @@ const ScrollBarContainer: React.FC<ScrollBarProps> = ({
 			onMouseOut={handleMouseOut}
 		>
 			<div
+				data-testid="scrollhost"
 				ref={scrollHostRef}
 				className={`scrollhost overflow-y-scroll ${className}`}
 				{...props}
 			>
 				{children}
 				<div
+					data-testid="scrollbar"
 					className="scrollbar"
 					style={{ opacity: hovering || isDragging ? 1 : 0 }}
 				>
 					<div
+						data-testid="scrollbar-thumb"
 						className="scroll-thumb"
 						style={{ height: scrollBoxHeight, top: scrollBoxTop }}
 						onMouseDown={handleScrollThumbMouseDown}

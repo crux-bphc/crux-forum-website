@@ -47,7 +47,7 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 						<Switch
 							id="notifs"
 							active={active}
-							onChange={setActive}
+							onChange={() => setActive(!active)}
 							variantChecked="cyan"
 							size="sm"
 							right={
