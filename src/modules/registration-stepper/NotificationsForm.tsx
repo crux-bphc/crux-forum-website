@@ -6,6 +6,129 @@ import useDisclosure from '../hooks/useDisclosure';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TopicType } from '../../../graphql';
 
+const DUMMY_DATA: any = [
+	{
+		_id: '614c8f08fe60d017770f5ebd',
+		name: 'Quire',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ebe',
+		name: 'Brainbox',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ebf',
+		name: 'Yata',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec0',
+		name: 'Izio',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec1',
+		name: 'Browsedrive',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec2',
+		name: 'Skyba',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec3',
+		name: 'Roodel',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec4',
+		name: 'Feedmix',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec5',
+		name: 'Midel',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec6',
+		name: 'Teklist',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec7',
+		name: 'Linkbuzz',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec8',
+		name: 'Eabox',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ec9',
+		name: 'Skyba',
+	},
+	{
+		_id: '614c8f08fe60d017770f5eca',
+		name: 'Livepath',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ecb',
+		name: 'Kwimbee',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ecc',
+		name: 'Voonder',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ecd',
+		name: 'Flipbug',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ece',
+		name: 'Vimbo',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ecf',
+		name: 'Ainyx',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed0',
+		name: 'Omba',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed1',
+		name: 'Aimbo',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed2',
+		name: 'Oozz',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed3',
+		name: 'Pixoboo',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed4',
+		name: 'Livefish',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed5',
+		name: 'Twimm',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed6',
+		name: 'Tazz',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed7',
+		name: 'Zoozzy',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed8',
+		name: 'Skinix',
+	},
+	{
+		_id: '614c8f08fe60d017770f5ed9',
+		name: 'Avamm',
+	},
+	{
+		_id: '614c8f08fe60d017770f5eda',
+		name: 'Blogtags',
+	},
+];
+
 const NotificationsForm: React.FC = () => {
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -49,7 +172,10 @@ const NotificationsForm: React.FC = () => {
 
 	return (
 		<div>
-			<TopicsModal {...{ isOpen, onClose, onListItemClick, selectedTags }} />
+			<TopicsModal
+				tags={DUMMY_DATA}
+				{...{ isOpen, onClose, onListItemClick, selectedTags }}
+			/>
 
 			<h1 className="text-2xl sm:text-4xl md:text-5xl">
 				Tell us more about you

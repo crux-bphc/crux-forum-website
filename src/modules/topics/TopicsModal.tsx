@@ -11,136 +11,15 @@ interface TopicsModalProps {
 	onClose: () => void;
 	onListItemClick: (topic: TopicType) => void;
 	selectedTags: TopicType[];
+	tags: TopicType[];
 }
-
-const DUMMY_DATA = [
-	{
-		_id: '614c8f08fe60d017770f5ebd',
-		name: 'Quire',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebe',
-		name: 'Brainbox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebf',
-		name: 'Yata',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec0',
-		name: 'Izio',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec1',
-		name: 'Browsedrive',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec2',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec3',
-		name: 'Roodel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec4',
-		name: 'Feedmix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec5',
-		name: 'Midel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec6',
-		name: 'Teklist',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec7',
-		name: 'Linkbuzz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec8',
-		name: 'Eabox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec9',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eca',
-		name: 'Livepath',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecb',
-		name: 'Kwimbee',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecc',
-		name: 'Voonder',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecd',
-		name: 'Flipbug',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ece',
-		name: 'Vimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecf',
-		name: 'Ainyx',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed0',
-		name: 'Omba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed1',
-		name: 'Aimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed2',
-		name: 'Oozz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed3',
-		name: 'Pixoboo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed4',
-		name: 'Livefish',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed5',
-		name: 'Twimm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed6',
-		name: 'Tazz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed7',
-		name: 'Zoozzy',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed8',
-		name: 'Skinix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed9',
-		name: 'Avamm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eda',
-		name: 'Blogtags',
-	},
-];
 
 const TopicsModal: React.FC<TopicsModalProps> = ({
 	isOpen,
 	onClose,
 	onListItemClick,
 	selectedTags,
+	tags,
 }) => {
 	return (
 		<>
@@ -191,21 +70,28 @@ const TopicsModal: React.FC<TopicsModalProps> = ({
 
 								<div>
 									<ScrollBarContainer className="overflow-y-scroll h-[400px] px-5">
-										{DUMMY_DATA.map((topic) => {
+										{tags.map((topic, i) => {
 											return (
 												<li className="mb-2" key={topic._id}>
 													<div className="flex justify-between items-center">
 														<span>{topic.name}</span>
 														<IconButton
+															data-testid={`modal-icon-btn-${i}`}
 															onClick={() => onListItemClick(topic as any)}
 															className="hover:text-cyan"
 														>
 															{!!selectedTags.find(
 																(el) => el._id === topic._id
 															) ? (
-																<XCircleIcon className="h-6 text-red" />
+																<XCircleIcon
+																	data-testid={`xcircle-icon-btn-${i}`}
+																	className="h-6 text-red"
+																/>
 															) : (
-																<PlusCircleIcon className="h-6 text-cyan" />
+																<PlusCircleIcon
+																	data-testid={`pluscircle-icon-btn-${i}`}
+																	className="h-6 text-cyan"
+																/>
 															)}
 														</IconButton>
 													</div>

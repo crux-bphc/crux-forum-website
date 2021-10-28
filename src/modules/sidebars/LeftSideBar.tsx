@@ -9,7 +9,7 @@ const LeftSideBar: React.FC = () => {
 	return (
 		<div className="px-5 py-8 border-r-2 border-gray-800">
 			<div>
-				<h2 className="text-4xl font-semibold">Upcoming Events</h2>
+				<h2 className="text-2xl lg:text-4xl font-semibold">Upcoming Events</h2>
 				<div className="my-4 flex justify-between">
 					<SearchBar className="w-3/5" />
 					<button className="text-cyan">
