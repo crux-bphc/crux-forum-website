@@ -1,0 +1,22 @@
+fragment UserProfileInfo on UserType {
+	_id
+	email
+	name
+	batch
+	discord
+	bio
+	profilePicture
+	posted {
+		topics {
+			name
+			color
+		}
+		time
+		title
+		body
+	}
+	subscriptions {
+		name
+		color
+	}
+}

@@ -1,0 +1,16 @@
+{
+    "data": {
+      "getUser": {
+        "subscriptions": [
+          {
+            "name": "Hand and Sons",
+            "color": "cyan"
+          },
+          {
+            "name": "Orn LLC",
+            "color": "purple"
+          }
+        ]
+      }
+    }
+  }

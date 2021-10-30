@@ -83,6 +83,7 @@ export type Mutation = {
   report: Scalars['Boolean'];
   createNotice: Scalars['Boolean'];
   GoogleLogin: Scalars['Boolean'];
+  GoogleLoginApp: Scalars['Boolean'];
   logout: Scalars['Boolean'];
 };
 
@@ -180,6 +181,11 @@ export type MutationCreateNoticeArgs = {
 
 export type MutationGoogleLoginArgs = {
   input: SocialAuthInput;
+};
+
+
+export type MutationGoogleLoginAppArgs = {
+  idToken: Scalars['String'];
 };
 
 export type NoticeType = {
@@ -441,6 +447,19 @@ export type BaseTopicInfoFragment = (
   & Pick<TopicType, '_id' | 'name' | 'color'>
 );
 
+export type GetSingleUserQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetSingleUserQuery = (
+  { __typename?: 'Query' }
+  & { getSingleUser: (
+    { __typename?: 'UserType' }
+    & UserProfileInfoFragment
+  ) }
+);
+
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -452,9 +471,69 @@ export type GetUserQuery = (
   )> }
 );
 
+export type GetUserProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserProfileQuery = (
+  { __typename?: 'Query' }
+  & { getUser?: Maybe<(
+    { __typename?: 'UserType' }
+    & SessionUserProfileInfoFragment
+  )> }
+);
+
+export type GetUserSubscribedTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserSubscribedTopicsQuery = (
+  { __typename?: 'Query' }
+  & { getUser?: Maybe<(
+    { __typename?: 'UserType' }
+    & { subscriptions?: Maybe<Array<(
+      { __typename?: 'TopicType' }
+      & Pick<TopicType, 'name' | 'color'>
+    )>> }
+  )> }
+);
+
+export type SessionUserProfileInfoFragment = (
+  { __typename?: 'UserType' }
+  & Pick<UserType, '_id' | 'email' | 'name' | 'discord' | 'bio' | 'batch' | 'profilePicture'>
+  & { subscribedEvents?: Maybe<Array<(
+    { __typename?: 'EventType' }
+    & Pick<EventType, 'name' | 'meetLink'>
+  )>>, posted?: Maybe<Array<(
+    { __typename?: 'NoticeType' }
+    & Pick<NoticeType, 'time' | 'title' | 'body'>
+    & { topics?: Maybe<Array<(
+      { __typename?: 'TopicType' }
+      & Pick<TopicType, 'name' | 'color'>
+    )>> }
+  )>>, subscriptions?: Maybe<Array<(
+    { __typename?: 'TopicType' }
+    & Pick<TopicType, 'name' | 'color'>
+  )>> }
+);
+
 export type BasicUserInfoFragment = (
   { __typename?: 'UserType' }
   & Pick<UserType, '_id' | 'name' | 'email'>
+);
+
+export type UserProfileInfoFragment = (
+  { __typename?: 'UserType' }
+  & Pick<UserType, '_id' | 'email' | 'name' | 'batch' | 'discord' | 'bio' | 'profilePicture'>
+  & { posted?: Maybe<Array<(
+    { __typename?: 'NoticeType' }
+    & Pick<NoticeType, 'time' | 'title' | 'body'>
+    & { topics?: Maybe<Array<(
+      { __typename?: 'TopicType' }
+      & Pick<TopicType, 'name' | 'color'>
+    )>> }
+  )>>, subscriptions?: Maybe<Array<(
+    { __typename?: 'TopicType' }
+    & Pick<TopicType, 'name' | 'color'>
+  )>> }
 );
 
 export const BaseTopicInfoFragmentDoc = gql`
@@ -464,11 +543,63 @@ export const BaseTopicInfoFragmentDoc = gql`
   color
 }
     `;
+export const SessionUserProfileInfoFragmentDoc = gql`
+    fragment SessionUserProfileInfo on UserType {
+  _id
+  email
+  name
+  discord
+  bio
+  batch
+  profilePicture
+  subscribedEvents {
+    name
+    meetLink
+  }
+  posted {
+    topics {
+      name
+      color
+    }
+    time
+    title
+    body
+  }
+  subscriptions {
+    name
+    color
+  }
+}
+    `;
 export const BasicUserInfoFragmentDoc = gql`
     fragment BasicUserInfo on UserType {
   _id
   name
   email
+}
+    `;
+export const UserProfileInfoFragmentDoc = gql`
+    fragment UserProfileInfo on UserType {
+  _id
+  email
+  name
+  batch
+  discord
+  bio
+  profilePicture
+  posted {
+    topics {
+      name
+      color
+    }
+    time
+    title
+    body
+  }
+  subscriptions {
+    name
+    color
+  }
 }
     `;
 export const GoogleAuthUrlDocument = gql`
@@ -572,6 +703,41 @@ export function useGetBaseTopicInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetBaseTopicInfoQueryHookResult = ReturnType<typeof useGetBaseTopicInfoQuery>;
 export type GetBaseTopicInfoLazyQueryHookResult = ReturnType<typeof useGetBaseTopicInfoLazyQuery>;
 export type GetBaseTopicInfoQueryResult = Apollo.QueryResult<GetBaseTopicInfoQuery, GetBaseTopicInfoQueryVariables>;
+export const GetSingleUserDocument = gql`
+    query GetSingleUser($id: String!) {
+  getSingleUser(id: $id) {
+    ...UserProfileInfo
+  }
+}
+    ${UserProfileInfoFragmentDoc}`;
+
+/**
+ * __useGetSingleUserQuery__
+ *
+ * To run a query within a React component, call `useGetSingleUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSingleUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSingleUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSingleUserQuery(baseOptions: Apollo.QueryHookOptions<GetSingleUserQuery, GetSingleUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSingleUserQuery, GetSingleUserQueryVariables>(GetSingleUserDocument, options);
+      }
+export function useGetSingleUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSingleUserQuery, GetSingleUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSingleUserQuery, GetSingleUserQueryVariables>(GetSingleUserDocument, options);
+        }
+export type GetSingleUserQueryHookResult = ReturnType<typeof useGetSingleUserQuery>;
+export type GetSingleUserLazyQueryHookResult = ReturnType<typeof useGetSingleUserLazyQuery>;
+export type GetSingleUserQueryResult = Apollo.QueryResult<GetSingleUserQuery, GetSingleUserQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser {
   getUser {
@@ -606,3 +772,74 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserProfileDocument = gql`
+    query GetUserProfile {
+  getUser {
+    ...SessionUserProfileInfo
+  }
+}
+    ${SessionUserProfileInfoFragmentDoc}`;
+
+/**
+ * __useGetUserProfileQuery__
+ *
+ * To run a query within a React component, call `useGetUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetUserProfileQuery, GetUserProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserProfileQuery, GetUserProfileQueryVariables>(GetUserProfileDocument, options);
+      }
+export function useGetUserProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserProfileQuery, GetUserProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserProfileQuery, GetUserProfileQueryVariables>(GetUserProfileDocument, options);
+        }
+export type GetUserProfileQueryHookResult = ReturnType<typeof useGetUserProfileQuery>;
+export type GetUserProfileLazyQueryHookResult = ReturnType<typeof useGetUserProfileLazyQuery>;
+export type GetUserProfileQueryResult = Apollo.QueryResult<GetUserProfileQuery, GetUserProfileQueryVariables>;
+export const GetUserSubscribedTopicsDocument = gql`
+    query GetUserSubscribedTopics {
+  getUser {
+    subscriptions {
+      name
+      color
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserSubscribedTopicsQuery__
+ *
+ * To run a query within a React component, call `useGetUserSubscribedTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserSubscribedTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserSubscribedTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserSubscribedTopicsQuery(baseOptions?: Apollo.QueryHookOptions<GetUserSubscribedTopicsQuery, GetUserSubscribedTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserSubscribedTopicsQuery, GetUserSubscribedTopicsQueryVariables>(GetUserSubscribedTopicsDocument, options);
+      }
+export function useGetUserSubscribedTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserSubscribedTopicsQuery, GetUserSubscribedTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserSubscribedTopicsQuery, GetUserSubscribedTopicsQueryVariables>(GetUserSubscribedTopicsDocument, options);
+        }
+export type GetUserSubscribedTopicsQueryHookResult = ReturnType<typeof useGetUserSubscribedTopicsQuery>;
+export type GetUserSubscribedTopicsLazyQueryHookResult = ReturnType<typeof useGetUserSubscribedTopicsLazyQuery>;
+export type GetUserSubscribedTopicsQueryResult = Apollo.QueryResult<GetUserSubscribedTopicsQuery, GetUserSubscribedTopicsQueryVariables>;

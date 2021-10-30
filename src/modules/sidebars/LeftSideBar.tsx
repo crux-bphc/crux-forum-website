@@ -6,6 +6,12 @@ import EventItem from '../events/EventItem';
 import ScrollBarContainer from '../../ui/ScrollBar';
 
 const LeftSideBar: React.FC = () => {
+	const testEvent = {
+		meetLink: 'https://katelin.name',
+		name: 'cross-platform',
+		__typename: 'EventType',
+	};
+
 	return (
 		<div className="px-5 py-8 border-r-2 border-gray-800">
 			<div>
@@ -24,7 +30,9 @@ const LeftSideBar: React.FC = () => {
 						{Array(4)
 							.fill(0)
 							.map((_, i) => {
-								return <EventItem key={i} bottomBorder={i != 3} />;
+								return (
+									<EventItem event={testEvent} key={i} bottomBorder={i != 3} />
+								);
 							})}
 					</ScrollBarContainer>
 				</div>
@@ -34,7 +42,9 @@ const LeftSideBar: React.FC = () => {
 						{Array(4)
 							.fill(0)
 							.map((_, i) => {
-								return <EventItem key={i} bottomBorder={i != 3} />;
+								return (
+									<EventItem event={testEvent} key={i} bottomBorder={i != 3} />
+								);
 							})}
 					</ScrollBarContainer>
 				</div>

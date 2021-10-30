@@ -2,12 +2,20 @@ import React from 'react';
 import IconButton from '../../ui/IconButton';
 import { BellIcon } from '@heroicons/react/outline';
 import Avatar from '../../ui/Avatar';
+import { EventType } from '../../../graphql';
 
 interface EventItemProps {
 	bottomBorder?: boolean;
+	event: {
+		name: string;
+		meetLink: string;
+	};
 }
 
-const EventItem: React.FC<EventItemProps> = ({ bottomBorder = true }) => {
+const EventItem: React.FC<EventItemProps> = ({
+	bottomBorder = true,
+	event: { name, meetLink },
+}) => {
 	return (
 		<>
 			<div
@@ -19,9 +27,9 @@ const EventItem: React.FC<EventItemProps> = ({ bottomBorder = true }) => {
 				<Avatar size="xs" />
 				<div className="grid flex-1 items-center gap-y-3">
 					<div className="row-start-1 row-end-3 items-center">
-						<h4 className="text-sm font-semibold">Event name</h4>
+						<h4 className="text-sm font-semibold">{name}</h4>
 						<a className="text-xs text-cyan hover:underline" href="#">
-							new-meet-link
+							{meetLink}
 						</a>
 					</div>
 

@@ -1,0 +1,32 @@
+{
+    "data": {
+      "getUser": {
+        "_id": "614df6327bf3662d018c3d6e",
+        "email": "Gerhard_Halvorson64@hotmail.com",
+        "name": "Marta Olson",
+        "discord": "Kaya64",
+        "bio": "Ut aut eos repellat reiciendis eius est.",
+        "batch": 65360,
+        "profilePicture": "https://cdn.fakercloud.com/avatars/wake_gs_128.jpg",
+        "subscribedEvents": [],
+        "posted": [
+          {
+            "topics": [],
+            "time": "1622757818787",
+            "title": "Exclusive non-volatile moratorium",
+            "body": "discrete"
+          }
+        ],
+        "subscriptions": [
+          {
+            "name": "Hand and Sons",
+            "color": "cyan"
+          },
+          {
+            "name": "Orn LLC",
+            "color": "purple"
+          }
+        ]
+      }
+    }
+  }

@@ -2,9 +2,7 @@ describe('test google auth', () => {
 	beforeEach(() => {
 		cy.gqlRequest('GoogleAuthUrl', 'auth/authUrl.json');
 		cy.visit('/');
-	});
 
-	it('get google auth url', () => {
 		cy.wait('@GoogleAuthUrl')
 			.its('response.body.data.GoogleAuthUrl')
 			.should('exist');

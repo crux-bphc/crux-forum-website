@@ -36,6 +36,7 @@ const ClubTag: React.FC<ClubTagProps> = ({
 
 	return (
 		<button
+			data-testid="club-tag"
 			onClick={(e) => onClick?.(e)}
 			className={clsx([classes.clubTag, variantClass, className])}
 		>

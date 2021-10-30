@@ -70,6 +70,7 @@ type Mutation {
   report(noticeId: String!): Boolean!
   createNotice(events: [CreateEventInputType!]!, notice: CreateNoticeInputType!): Boolean!
   GoogleLogin(input: SocialAuthInput!): Boolean!
+  GoogleLoginApp(idToken: String!): Boolean!
   logout: Boolean!
 }
 

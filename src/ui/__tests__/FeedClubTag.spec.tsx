@@ -10,6 +10,14 @@ describe('UI/FeedClubTag', () => {
 		cy.getByTestId('feed-club-tag').click();
 	});
 
+	it('checks if onClick function works', () => {
+		mount(<FeedClubTag name="Crux" onClick={() => alert('test content')} />);
+		cy.getByTestId('feed-club-tag').click();
+		cy.on('window:alert', (str) => {
+			expect(str).to.equal('test content');
+		});
+	});
+
 	afterEach(() => {
 		unmount();
 	});

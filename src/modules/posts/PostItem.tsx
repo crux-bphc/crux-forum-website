@@ -2,19 +2,34 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React from 'react';
 import FeedClubTag from '../../ui/FeedClubTag';
+import { Maybe, NoticeType, TopicType } from '../../../graphql';
 
 interface PostItemProps {
 	bottomMargin?: boolean;
+	post: {
+		__typename?: 'NoticeType' | undefined;
+	} & Pick<NoticeType, 'body' | 'time' | 'title'> & {
+			topics?:
+				| Maybe<
+						({
+							__typename?: 'TopicType' | undefined;
+						} & Pick<TopicType, 'name' | 'color'>)[]
+				  >
+				| undefined;
+		};
 }
 
-const PostItem: React.FC<PostItemProps> = ({ bottomMargin = true }) => {
+const PostItem: React.FC<PostItemProps> = ({
+	bottomMargin = true,
+	post: { body, topics, time, title },
+}) => {
 	const router = useRouter();
 
 	return (
 		<>
 			<div className={`bg-gray-800 rounded p-4 ${bottomMargin ? 'mb-4' : ''}`}>
 				<div className="xl:hidden item-center flex justify-end mb-3">
-					<p className="text-xs opacity-60">12th July, 6:43 PM</p>
+					<p className="text-xs opacity-60">{time}</p>
 				</div>
 				<div className="flex items-center justify-between mb-5">
 					<div className="flex gap-2">
@@ -36,14 +51,7 @@ const PostItem: React.FC<PostItemProps> = ({ bottomMargin = true }) => {
 					</p>
 				</div>
 				<div className="mb-3">
-					<p className="text-sm">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-						sunt ratione, non modi earum suscipit nemo veniam nulla ad esse,
-						adipisci magnam at repudiandae assumenda consectetur sequi, quos
-						perspiciatis? Atque rem, quae pariatur ipsam dolorem nulla culpa,
-						esse corporis voluptas porro mollitia aut at voluptatum aliquam
-						officia omnis sapiente saepe.
-					</p>
+					<p className="text-sm">{body}</p>
 				</div>
 				<div className="flex justify-end">
 					<Link href="/">

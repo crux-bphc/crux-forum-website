@@ -1,0 +1,26 @@
+fragment SessionUserProfileInfo on UserType {
+	_id
+	email
+	name
+	discord
+	bio
+	batch
+	profilePicture
+	subscribedEvents {
+		name
+		meetLink
+	}
+	posted {
+		topics {
+			name
+			color
+		}
+		time
+		title
+		body
+	}
+	subscriptions {
+		name
+		color
+	}
+}

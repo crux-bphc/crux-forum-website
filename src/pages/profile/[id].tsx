@@ -33,11 +33,11 @@ const TagProfilePage: React.FC<TagProfilePageProps> = ({}) => {
 				<h4>Posts</h4>
 			</div>
 			<div className="pt-3">
-				{Array(5)
+				{/* {Array(5)
 					.fill(0)
 					.map((_, i) => {
 						return <PostItem key={i} />;
-					})}
+					})} */}
 			</div>
 		</div>
 	);
