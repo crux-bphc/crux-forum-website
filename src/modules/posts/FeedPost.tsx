@@ -7,14 +7,15 @@ import IconButton from '../../ui/IconButton';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 
 import PostReminder from './PostReminder';
+import { TopicType } from '../../../graphql';
 
-const FeedPost: React.FC = () => {
-	const images = [
-		'https://picsum.photos/200/300',
-		'https://picsum.photos/200/300',
-		'https://picsum.photos/200/300',
-	];
+interface FeedPostProps {
+	content?: string;
+	images?: string[];
+	tags?: TopicType[];
+}
 
+const FeedPost: React.FC<FeedPostProps> = ({ content, images, tags }) => {
 	return (
 		<div className="bg-gray-800 sm:rounded-lg relative">
 			<div className="relative">
@@ -34,9 +35,10 @@ const FeedPost: React.FC = () => {
 								<DotsHorizontalIcon className="w-4 h-4 text-cyan" />
 							</IconButton>
 							<div className="gap-2 hidden lg:flex">
-								<FeedClubTag name="cRuX" color="red" />
-								<FeedClubTag name="IEEE" color="blue" />
-								<FeedClubTag name="Automation and Robotics" color="purple" />
+								{tags?.length &&
+									tags.map((tag, idx) => (
+										<FeedClubTag key={idx} name={tag.name} color={tag.color} />
+									))}
 							</div>
 						</div>
 					</div>
@@ -48,20 +50,13 @@ const FeedPost: React.FC = () => {
 
 					{/* text */}
 					<div className="my-4">
-						<p className="text-sm font-light">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec
-							tempor arcu. Nulla facilisi. Phasellus sapien risus, auctor
-							feugiat lorem vitae, vulputate euismod nulla. Proin laoreet odio
-							condimentum turpis bibendum, vitae luctus sapien pulvinar. Mauris
-							vitae suscipit odio. Etiam rhoncus luctus quam eget condimentum.
-							Fusce quis elit sed turpis porttitor euismod.
-						</p>
+						<p className="text-sm font-light">{content}</p>
 					</div>
 				</div>
 
 				{/* pictures */}
 				<div className="p-0 sm:px-4">
-					<PostGallery images={images} />
+					{images?.length && <PostGallery images={images} />}
 				</div>
 
 				{/* post actions */}

@@ -8,13 +8,14 @@ interface EventItemProps {
 	bottomBorder?: boolean;
 	event: {
 		name: string;
+		description: string;
 		meetLink: string;
 	};
 }
 
 const EventItem: React.FC<EventItemProps> = ({
 	bottomBorder = true,
-	event: { name, meetLink },
+	event: { name, description, meetLink },
 }) => {
 	return (
 		<>
@@ -28,6 +29,7 @@ const EventItem: React.FC<EventItemProps> = ({
 				<div className="grid flex-1 items-center gap-y-3">
 					<div className="row-start-1 row-end-3 items-center">
 						<h4 className="text-sm font-semibold">{name}</h4>
+						<p className="text-xs">{description}</p>
 						<a className="text-xs text-cyan hover:underline" href="#">
 							{meetLink}
 						</a>
