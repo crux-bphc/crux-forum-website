@@ -2,7 +2,6 @@ import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import { useGetUserProfileQuery } from '../../../../graphql';
 
-import withApollo from '../../../../lib/withApollo';
 import EventItem from '../../../modules/events/EventItem';
 import AppLayout from '../../../modules/layouts/AppLayout';
 import PostItem from '../../../modules/posts/PostItem';
@@ -21,7 +20,6 @@ const MyProfile: React.FC<MyProfileProps> = ({}) => {
 	const {
 		loading: userLoading,
 		data: userData,
-		error,
 	} = useGetUserProfileQuery();
 
 	if (userLoading) {

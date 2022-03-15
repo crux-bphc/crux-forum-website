@@ -8,7 +8,11 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 
 import PostReminder from './PostReminder';
 
-const FeedPost: React.FC = () => {
+interface FeedPostProps {
+	showActions?: boolean;
+}
+
+const FeedPost: React.FC<FeedPostProps> = ({ showActions = true }) => {
 	const images = [
 		'https://picsum.photos/200/300',
 		'https://picsum.photos/200/300',
@@ -65,41 +69,45 @@ const FeedPost: React.FC = () => {
 				</div>
 
 				{/* post actions */}
-				<div className="mt-2 px-4 pb-2 pt-4 lg:pt-1">
-					{/* reactions count */}
-					<div className="flex items-center justify-between py-1 px-2">
-						<p className="font-light text-sm">12 likes</p>
-						<p className="font-light text-sm">15 comments</p>
+				{showActions && (
+					<div className="mt-2 px-4 pb-2 pt-4 lg:pt-1">
+						{/* reactions count */}
+						<div className="flex items-center justify-between py-1 px-2">
+							<p className="font-light text-sm">12 likes</p>
+							<p className="font-light text-sm">15 comments</p>
+						</div>
+
+						{/* reminder */}
+
+						<PostReminder />
+
+						{/* <hr className='border border-gray-disabled mb-2 mt-0.5' /> */}
+
+						{/* reaction buttons */}
+						<div className="grid grid-cols-3">
+							<button className="flex items-center justify-center py-1">
+								<span className="mr-1">
+									<ThumbUpIcon className="inline h-5 w-5 text-cyan" />
+								</span>
+								<span className="text-sm">Like</span>
+							</button>
+							<button className="flex items-center justify-center py-1">
+								<span className="mr-1">
+									<ChatAltIcon className="inline h-5 w-5 text-cyan" />
+								</span>
+								<span className="text-sm">Comment</span>
+							</button>
+							<button className="flex items-center justify-center py-1">
+								<span className="mr-1">
+									<ShareIcon className="inline h-5 w-5 text-cyan" />
+								</span>
+								<span className="text-sm">Share</span>
+							</button>
+						</div>
 					</div>
+				)}
 
-					{/* reminder */}
-
-					<PostReminder />
-
-					{/* <hr className='border border-gray-disabled mb-2 mt-0.5' /> */}
-
-					{/* reaction buttons */}
-					<div className="grid grid-cols-3">
-						<button className="flex items-center justify-center py-1">
-							<span className="mr-1">
-								<ThumbUpIcon className="inline h-5 w-5 text-cyan" />
-							</span>
-							<span className="text-sm">Like</span>
-						</button>
-						<button className="flex items-center justify-center py-1">
-							<span className="mr-1">
-								<ChatAltIcon className="inline h-5 w-5 text-cyan" />
-							</span>
-							<span className="text-sm">Comment</span>
-						</button>
-						<button className="flex items-center justify-center py-1">
-							<span className="mr-1">
-								<ShareIcon className="inline h-5 w-5 text-cyan" />
-							</span>
-							<span className="text-sm">Share</span>
-						</button>
-					</div>
-				</div>
+				{!showActions && <div className="mt-2 px-4 pb-2 pt-4 lg:pt-1"></div>}
 			</div>
 		</div>
 	);

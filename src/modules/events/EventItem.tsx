@@ -2,7 +2,6 @@ import React from 'react';
 import IconButton from '../../ui/IconButton';
 import { BellIcon } from '@heroicons/react/outline';
 import Avatar from '../../ui/Avatar';
-import { EventType } from '../../../graphql';
 
 interface EventItemProps {
 	bottomBorder?: boolean;
