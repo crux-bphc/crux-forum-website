@@ -1,1 +1,7 @@
+.storybook
+graphql
 *.d.ts
+*.stories.tsx
+**/node_modules/*
+**/out/*
+**/.next/*

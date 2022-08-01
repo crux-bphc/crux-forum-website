@@ -1,11 +1,6 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
 	reactStrictMode: true,
-	images: {
-		domains: ['picsum.photos'],
-	},
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
 	webpack: (config, { isServer }) => {
 		if (isServer) {
 			config.module.rules.push({
@@ -16,4 +11,9 @@ module.exports = {
 
 		return config;
 	},
+	images: {
+		domains: ['d23hwxa527zkay.cloudfront.net', 'localhost', 'picsum.photos'],
+	},
 };
+
+module.exports = nextConfig;

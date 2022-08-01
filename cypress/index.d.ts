@@ -11,5 +11,7 @@ declare namespace Cypress {
 		getByTestId(dataTestIdAttribute: string, args?: any): Chainable<Element>;
 
 		gqlRequest(operationName: string, fixture: string): Chainable<Element>;
+
+		login(userType: 'null' | 'temp' | 'registered'): Chainable<Element>;
 	}
 }

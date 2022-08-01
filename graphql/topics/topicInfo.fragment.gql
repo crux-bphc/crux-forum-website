@@ -1,5 +1,0 @@
-fragment BaseTopicInfo on TopicType {
-	_id
-	name
-	color
-}

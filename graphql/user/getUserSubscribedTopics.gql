@@ -1,8 +1,0 @@
-query GetUserSubscribedTopics {
-	getUser {
-		subscriptions {
-			name
-			color
-		}
-	}
-}
