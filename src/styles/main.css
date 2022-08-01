@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+	--color-white: #fff;
+	--color-black: #000;
+	--color-transparent: transparent;
+
+	--color-gray-50: #f9fafb;
+	--color-gray-100: #f3f4f6;
+	--color-gray-200: #e5e7eb;
+
+	--color-gray-800: #293443;
+	--color-gray-900: #1f2833;
+
+	--color-gray-accent: #c5c6c7;
+	--color-gray-disabled: #646464;
+
+	--color-teal-400: #66fcf1;
+	--color-teal-500: #43fbef;
+	--color-teal-600: #2ee4d8;
+
+	--color-green-400: #54b6b1;
+	--color-green-500: #45a29e;
+	--color-green-600: #439d99;
+
+	--color-red-400: #ff6773;
+	--color-red-500: #ff5c69;
+	--color-red-600: #ff4757;
+
+	--color-purple-400: #b6549a;
+	--color-purple-500: #a5468b;
+	--color-purple-600: #9d4384;
+
+	--color-blue-400: #66b1fc;
+	--color-blue-500: #49a2fb;
+	--color-blue-600: #3b82f6;
+
+	--font-family: 'Inter', sans-serif;
+}
+
+body {
+	background-color: var(--color-gray-900);
+	color: var(--color-white);
+}
+
+.stick-to-header {
+	position: sticky;
+	top: 54px;
+}

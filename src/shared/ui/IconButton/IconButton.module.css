@@ -1,0 +1,94 @@
+.root {
+	@apply flex h-12 w-12 items-center justify-center rounded p-0 outline-none;
+	@apply transition-all duration-200 ease-out;
+}
+
+.blue {
+	@apply bg-blue-400 text-gray-800;
+	@apply hover:bg-blue-500 focus-visible:bg-blue-500 active:bg-blue-600;
+}
+
+.green {
+	@apply bg-green-400 text-gray-800;
+	@apply hover:bg-green-500 focus-visible:bg-green-500 active:bg-green-600;
+}
+
+.teal {
+	@apply bg-teal-400 text-gray-800;
+	@apply hover:bg-teal-500 focus-visible:bg-teal-500 active:bg-teal-600;
+}
+
+.purple {
+	@apply bg-purple-400;
+	@apply hover:bg-purple-500 focus-visible:bg-purple-500 active:bg-purple-600;
+}
+
+.red {
+	@apply bg-red-400;
+	@apply hover:bg-red-500 focus-visible:bg-red-500 active:bg-red-600;
+}
+
+.blue__text {
+	@apply bg-transparent text-blue-500;
+}
+
+.blue__text:hover,
+.blue__text:focus-visible {
+	background-color: rgba(73, 162, 251, 0.05);
+}
+
+.blue__text:active {
+	background-color: rgba(73, 162, 251, 0.15);
+}
+
+.green__text {
+	@apply bg-transparent text-green-500;
+}
+
+.green__text:hover,
+.green__text:focus-visible {
+	background-color: rgba(84, 182, 177, 0.05);
+}
+
+.green__text:active {
+	background-color: rgba(84, 182, 177, 0.15);
+}
+
+.red__text {
+	@apply bg-transparent text-red-500;
+}
+
+.red__text:hover,
+.red__text:focus-visible {
+	background-color: rgba(255, 92, 105, 0.05);
+}
+
+.red__text:active {
+	background-color: rgba(255, 92, 105, 0.15);
+}
+
+.teal__text {
+	@apply bg-transparent text-teal-500;
+}
+
+.teal__text:hover,
+.teal__text:focus-visible {
+	background-color: rgba(67, 251, 239, 0.05);
+}
+
+.teal__text:active {
+	background-color: rgba(67, 251, 239, 0.15);
+}
+
+.purple__text {
+	@apply bg-transparent text-purple-500;
+}
+
+.purple__text:hover,
+.purple__text:focus-visible {
+	background-color: rgba(182, 84, 154, 0.05);
+}
+
+.purple__text:active {
+	background-color: rgba(182, 84, 154, 0.15);
+}

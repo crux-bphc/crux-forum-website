@@ -1,0 +1,10 @@
+fragment MinPost on NoticeType {
+	_id
+	topics {
+		name
+		color
+	}
+	time
+	title
+	body
+}

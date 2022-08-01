@@ -1,0 +1,13 @@
+{
+    "data": {
+      "user": {
+        "_id": "5b9f9f8f8f8f8f8f8f8f8f8f",
+        "name": "John Doe",
+        "email": "profile@email.com",
+        "batch": 2019,
+        "profilePicture": "/profile.svg",
+        "bio": "Hey I am John Doe",
+        "__typename":"UserType"
+      }
+    }
+}

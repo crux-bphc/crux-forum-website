@@ -1,0 +1,8 @@
+fragment MinUser on UserType {
+	_id
+	name
+	batch
+	email
+	profilePicture
+	bio
+}

@@ -1,0 +1,8 @@
+fragment UserPreferences on UserType {
+	preferences {
+		darkmode
+		notifications
+		roundup
+		__typename
+	}
+}

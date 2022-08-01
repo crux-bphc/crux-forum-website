@@ -1,0 +1,3 @@
+query CreateFileUploadURL($filenames: [String!]!) {
+	url: getFileURL(filenames: $filenames)
+}

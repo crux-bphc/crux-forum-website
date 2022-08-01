@@ -1,0 +1,3 @@
+mutation FinishRegistration($userData: UserRegisterType!) {
+	finishRegistration(userData: $userData)
+}

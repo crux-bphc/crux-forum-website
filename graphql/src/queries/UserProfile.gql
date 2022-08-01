@@ -1,0 +1,12 @@
+query UserProfile {
+	user: getUser {
+		...MinUser
+		...UserPreferences
+		...UserSubscriptions
+		posted {
+			...MinPost
+		}
+		discord
+		phone
+	}
+}

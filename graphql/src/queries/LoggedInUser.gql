@@ -1,0 +1,5 @@
+query LoggedInUser {
+	user: getUser {
+		...MinUser
+	}
+}

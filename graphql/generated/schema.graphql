@@ -1,0 +1,230 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input CreateEventInputType {
+  date: String!
+  meetLink: String!
+  name: String!
+  venue: String!
+}
+
+input CreateNoticeInputType {
+  attachedFiles: [String!] = []
+  attachedImages: [String!] = []
+  body: String!
+  isEvent: Boolean!
+  time: String!
+  title: String!
+  topics: [String!] = []
+}
+
+input CreateTestType {
+  name: String!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+input EditProfileInputType {
+  bio: String
+  phone: String
+  preferences: EditProfilePreferencesType
+  profilePicture: String
+}
+
+input EditProfilePreferencesType {
+  darkmode: Boolean!
+  notifications: Boolean!
+  roundup: Boolean!
+}
+
+type EventType {
+  _id: ID!
+  date: String!
+  linkedNotice: NoticeType!
+  meetLink: String!
+  name: String!
+  reportedBy: [UserType!]
+  venue: String!
+}
+
+type Mutation {
+  createNotice(events: [CreateEventInputType!]!, notice: CreateNoticeInputType!): Boolean!
+  createTest(input: CreateTestType!): Boolean!
+  deleteSingleEvent(id: String!): Boolean!
+  deleteSingleNotice(noticeId: String!): Boolean!
+  deleteSingleReply(id: String!): Boolean!
+  deleteSingleTest(id: String!): Boolean!
+  deleteSingleTopic(id: String!): Boolean!
+  deleteSingleUser(id: String!): Boolean!
+  dislike(noticeId: String!): Boolean!
+  finishRegistration(userData: UserRegisterType!): Boolean!
+  like(noticeId: String!): Boolean!
+  logout: Boolean!
+  report(noticeId: String!): Boolean!
+  reportEvent(eventId: String!): Boolean!
+  share(noticeId: String!): Boolean!
+  subscribeEvent(eventId: String!): Boolean!
+  subscribeTopic(topicID: String!): Boolean!
+  unsubscribeEvent(eventId: String!): Boolean!
+  unsubscribeTopic(topicID: String!): Boolean!
+  updateUser(input: EditProfileInputType!): Boolean!
+}
+
+type NoticeType {
+  _id: ID!
+  attachedFiles: [String!]
+  attachedImages: [String!]
+  body: String!
+  dislikeCount: Float!
+  dislikedBy: [UserType!]
+  isEvent: Boolean!
+  likeCount: Float!
+  likedBy: [UserType!]
+  linkedEvents: [EventType!]!
+  postedBy: UserType!
+  replies: [ReplyType!]
+  reportCount: Float!
+  reportedBy: [UserType!]
+  shareCount: Float!
+  sharedBy: [UserType!]
+  time: String!
+  title: String!
+  topics: [TopicType!]
+  userReaction: Float!
+}
+
+type PaginatedResponseOfEventType {
+  count: Int!
+  data: [EventType!]!
+  hasNext: Boolean!
+}
+
+type PaginatedResponseOfNoticeType {
+  count: Int!
+  data: [NoticeType!]!
+  hasNext: Boolean!
+}
+
+type PaginatedResponseOfReplyType {
+  count: Int!
+  data: [ReplyType!]!
+  hasNext: Boolean!
+}
+
+type PaginatedResponseOfTestType {
+  count: Int!
+  data: [TestType!]!
+  hasNext: Boolean!
+}
+
+type PaginatedResponseOfTopicType {
+  count: Int!
+  data: [TopicType!]!
+  hasNext: Boolean!
+}
+
+type PaginatedResponseOfUserType {
+  count: Int!
+  data: [UserType!]!
+  hasNext: Boolean!
+}
+
+type PreferencesType {
+  darkmode: Boolean
+  notifications: Boolean
+  roundup: Boolean
+}
+
+type Query {
+  GoogleAuthUrl: String!
+  GoogleLogin(input: SocialAuthInput!): UserType!
+  GoogleLoginApp(idToken: String!): UserType!
+  getAllEvents(limit: Int = 0, skip: Int = 0): PaginatedResponseOfEventType!
+  getAllNotices(limit: Int = 0, skip: Int = 0): PaginatedResponseOfNoticeType!
+  getAllReplies(limit: Int = 0, skip: Int = 0): PaginatedResponseOfReplyType!
+  getAllTests(limit: Int = 0, skip: Int = 0): PaginatedResponseOfTestType!
+  getAllTopics(limit: Int = 0, skip: Int = 0): PaginatedResponseOfTopicType!
+  getAllUsers(limit: Int = 0, skip: Int = 0): PaginatedResponseOfUserType!
+  getFileURL(filenames: [String!]!): [String!]!
+  getNotSubscribedTopics: [TopicType!]!
+  getNoticesByTopic(topicId: String!): [NoticeType]!
+  getSingleEvent(id: String!): EventType!
+  getSingleNotice(id: String!): NoticeType!
+  getSingleReply(id: String!): ReplyType!
+  getSingleTest(id: String!): TestType!
+  getSingleTopic(id: String!): TopicType!
+  getSingleUser(id: String!): UserType!
+  getSubscribedTopics: [TopicType!]!
+  getUser: UserType
+  textSearch(limit: Int = 0, query: String!): SearchResultType!
+}
+
+type ReplyType {
+  _id: ID!
+  commentedBy: UserType!
+  repliedTo: UserType!
+  replies: [ReplyType!]
+  time: DateTime!
+}
+
+type SearchResultType {
+  events: [EventType!]!
+  notices: [NoticeType!]!
+  topics: [TopicType!]!
+  users: [UserType!]!
+}
+
+input SocialAuthInput {
+  code: String!
+  email: String = ""
+  name: String = ""
+}
+
+type TestType {
+  _id: ID!
+  name: String!
+  topics: [TopicType!]
+}
+
+type TopicType {
+  _id: ID!
+  about: String!
+  color: String!
+  image: String!
+  name: String!
+  subscribedToTopic: Boolean!
+}
+
+input UserRegisterType {
+  batch: Int!
+  bio: String!
+  discord: String!
+  email: String!
+  name: String!
+  phone: String!
+  preferences: EditProfilePreferencesType!
+  profilePicture: String!
+  subscriptions: [String!] = []
+}
+
+type UserType {
+  _id: ID!
+  banned: Boolean
+  batch: Int
+  bio: String
+  discord: String!
+  email: String!
+  name: String!
+  phone: String!
+  posted: [NoticeType!]
+  preferences: PreferencesType!
+  profilePicture: String
+  role: String!
+  subscribedEvents: [EventType!]
+  subscriptions: [TopicType!]
+}

@@ -1,0 +1,5 @@
+query GoogleLogin($input: SocialAuthInput!) {
+	user: GoogleLogin(input: $input) {
+		...MinUser
+	}
+}

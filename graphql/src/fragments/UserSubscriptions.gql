@@ -1,0 +1,14 @@
+fragment UserSubscriptions on UserType {
+	subscriptions {
+		_id
+		name
+		color
+	}
+	subscribedEvents {
+		_id
+		name
+		date
+		venue
+		meetLink
+	}
+}

@@ -1,0 +1,10 @@
+.root {
+	@apply w-full border-none bg-gray-900 p-2;
+	@apply rounded ring-2 ring-gray-accent;
+	@apply focus:ring-teal-500 focus-visible:outline-none focus-visible:ring-2;
+	@apply disabled:opacity-40 disabled:ring-gray-800;
+}
+
+.error {
+	@apply ring-red-400 focus-visible:ring-red-400;
+}
