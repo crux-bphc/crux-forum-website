@@ -11,7 +11,7 @@ import RegisterPageLayout from '@/auth-registration/layouts/RegisterPageLayout';
 
 const RegisterIndexPage: NextPage = () => {
 	const { loading, data } = useLoggedInUserQuery();
-	const { activeStep, onChangeStep } = useStepper(2);
+	const { activeStep, onChangeStep } = useStepper(1);
 
 	const [registerFormDetails, setRegisterFormDetails] = React.useState({
 		name: '',
