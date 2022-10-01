@@ -114,7 +114,7 @@ const MyProfilePage: NextPage = () => {
 						{user?.posted?.length ? (
 							<div className="md:h-[300px] md:pr-3">
 								{user.posted.map((post: any, i) => {
-									return <PostItem post={post} key={i} bottomMargin={i != 5} />;
+									return <PostItem key={i} bottomMargin={i != 5} />;
 								})}
 							</div>
 						) : (

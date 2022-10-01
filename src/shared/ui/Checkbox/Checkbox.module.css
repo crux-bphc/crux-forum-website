@@ -1,0 +1,6 @@
+.root {
+    @apply w-auto border-none bg-gray-900 p-2 accent-black;
+	@apply rounded ring-2 ring-gray-accent;
+    @apply text-gray-900 focus:ring-teal-400;
+	@apply disabled:opacity-40 disabled:ring-gray-800;
+}
