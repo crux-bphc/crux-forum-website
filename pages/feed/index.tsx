@@ -4,6 +4,8 @@ import withApollo from '@/lib/withApollo';
 import Button from '@/shared/ui/Button';
 import Input from '@/shared/ui/Input';
 import type { NextPage } from 'next';
+import Link from 'next/link';
+import React from 'react';
 
 const FeedIndexRoute: NextPage = () => {
 	return (
@@ -15,7 +17,11 @@ const FeedIndexRoute: NextPage = () => {
 							<h1 className="text-4xl font-semibold">Feed</h1>
 
 							<div className="block xl:hidden">
-								<Button size="small">Post Now</Button>
+								<Link href="/feed/new" passHref>
+									<Button size="small" isLoading={false} disabled={false}>
+										Post Now
+									</Button>
+								</Link>
 							</div>
 						</div>
 						<Input placeholder={'Search....'} />

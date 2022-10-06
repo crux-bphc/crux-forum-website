@@ -6,6 +6,7 @@ import { Topic } from '@/shared/types/topic';
 import Button from '@/shared/ui/Button';
 import { HiOutlineSearch } from 'react-icons/hi';
 import IconButton from '@/shared/ui/IconButton';
+import Link from 'next/link';
 
 const DUMMY_DATA: Topic[] = [
 	{
@@ -154,9 +155,16 @@ const RightSideBar: React.FC = () => {
 			/>
 			<div className="px-8 py-8">
 				{/* post button */}
-				<div className="mt-2 hidden lg:block">
-					<Button className="w-full">Post Now</Button>
-				</div>
+				<Link href="/feed/new" passHref>
+					<Button
+						className="w-full"
+						size="small"
+						isLoading={false}
+						disabled={false}
+					>
+						Post Now
+					</Button>
+				</Link>
 
 				{/* following tags */}
 				<div className="mt-8">
