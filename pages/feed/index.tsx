@@ -2,6 +2,7 @@ import FeedPost from '@/feed/components/FeedPost';
 import FeedLayout from '@/feed/layouts';
 import withApollo from '@/lib/withApollo';
 import Button from '@/shared/ui/Button';
+import FormDropdown from '@/shared/ui/Form/FormDropdown';
 import Input from '@/shared/ui/Input';
 import type { NextPage } from 'next';
 
@@ -18,11 +19,29 @@ const FeedIndexRoute: NextPage = () => {
 								<Button size="small">Post Now</Button>
 							</div>
 						</div>
-						<Input placeholder={'Search....'} />
-						<div className="col-span-full sm:col-span-1 sm:text-right">
-							<p>
-								Sort by <span className="font-bold">Popular</span>
-							</p>
+						<Input placeholder={'Search....'} className="mb-4" />
+						<div className="col-span-full flex items-center justify-end sm:col-span-1 sm:text-right">
+							<span className="mb-4 px-2">{'Sort by '}</span>
+							<FormDropdown
+								required={true}
+								id="sortby"
+								options={[
+									{
+										label: 'Popular',
+										value: 'popular',
+									},
+									{
+										label: 'Time Posted (Asc.)',
+										value: 'time_asc',
+									},
+									{
+										label: 'Time Posted (Desc.)',
+										value: 'time_desc',
+									},
+								]}
+								value="popular"
+								disabled={false}
+							></FormDropdown>
 						</div>
 					</div>
 					<div className="mt-8 flex flex-col gap-8 py-3 sm:px-8 lg:px-10">
