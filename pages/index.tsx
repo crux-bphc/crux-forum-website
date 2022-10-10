@@ -7,6 +7,7 @@ import Button from '@/shared/ui/Button';
 import OAuthPopup from 'react-oauth-popup';
 import HomePageLayout from '@/auth-registration/layouts/HomePageLayout';
 import Link from '@/shared/ui/Link';
+import Checkbox from '@/shared/ui/Checkbox';
 
 const IndexPage: NextPage = () => {
 	const { onCode, url, loading, authURLLoading } = useGoogleAuth('/feed');
@@ -42,6 +43,8 @@ const IndexPage: NextPage = () => {
 							Login With Google
 						</Button>
 					</OAuthPopup>
+
+					<p className="text-sm mt-2 "><Checkbox className="mr-1"/> Keep me Signed in</p>
 
 					<p className="mt-8 text-gray-50">
 						By Signing in to crux forum you agree to the{' '}

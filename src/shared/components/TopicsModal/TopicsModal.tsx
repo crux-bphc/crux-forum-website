@@ -33,12 +33,12 @@ const TopicsModal: React.FC<TopicsModalProps> = ({
 							as={React.Fragment}
 							enter="ease-out duration-300"
 							enterFrom="opacity-0"
-							enterTo="opacity-100"
+							enterTo="opacity-50"
 							leave="ease-in duration-200"
-							leaveFrom="opacity-100"
+							leaveFrom="opacity-50"
 							leaveTo="opacity-0"
 						>
-							<Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
+							<Dialog.Overlay className="fixed inset-0 bg-black transition-opacity" />
 						</Transition.Child>
 
 						<span

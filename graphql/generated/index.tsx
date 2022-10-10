@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
 };
 
@@ -450,6 +449,14 @@ export type UserPreferencesFragment = { __typename?: 'UserType', preferences: { 
 
 export type UserSubscriptionsFragment = { __typename?: 'UserType', subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null };
 
+export type CreateNoticeMutationVariables = Exact<{
+  notice: CreateNoticeInputType;
+  events: Array<CreateEventInputType> | CreateEventInputType;
+}>;
+
+
+export type CreateNoticeMutation = { __typename?: 'Mutation', createNotice: boolean };
+
 export type FinishRegistrationMutationVariables = Exact<{
   userData: UserRegisterType;
 }>;
@@ -539,6 +546,38 @@ export const UserSubscriptionsFragmentDoc = gql`
   }
 }
     `;
+export const CreateNoticeDocument = gql`
+    mutation CreateNotice($notice: CreateNoticeInputType!, $events: [CreateEventInputType!]!) {
+  createNotice(notice: $notice, events: $events)
+}
+    `;
+export type CreateNoticeMutationFn = Apollo.MutationFunction<CreateNoticeMutation, CreateNoticeMutationVariables>;
+
+/**
+ * __useCreateNoticeMutation__
+ *
+ * To run a mutation, you first call `useCreateNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNoticeMutation, { data, loading, error }] = useCreateNoticeMutation({
+ *   variables: {
+ *      notice: // value for 'notice'
+ *      events: // value for 'events'
+ *   },
+ * });
+ */
+export function useCreateNoticeMutation(baseOptions?: Apollo.MutationHookOptions<CreateNoticeMutation, CreateNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNoticeMutation, CreateNoticeMutationVariables>(CreateNoticeDocument, options);
+      }
+export type CreateNoticeMutationHookResult = ReturnType<typeof useCreateNoticeMutation>;
+export type CreateNoticeMutationResult = Apollo.MutationResult<CreateNoticeMutation>;
+export type CreateNoticeMutationOptions = Apollo.BaseMutationOptions<CreateNoticeMutation, CreateNoticeMutationVariables>;
 export const FinishRegistrationDocument = gql`
     mutation FinishRegistration($userData: UserRegisterType!) {
   finishRegistration(userData: $userData)
