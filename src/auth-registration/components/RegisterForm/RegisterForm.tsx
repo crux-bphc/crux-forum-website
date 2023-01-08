@@ -118,7 +118,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 								placeholder="Example: 9871234560"
 							/>
 							<div className="mb-4 md:mb-0">
-								<FormLabel label="Profile Photo" />
+								<FormLabel label="Profile Photo" required />
 								<Dropzone
 									accept={{
 										'image/jpeg': [],
