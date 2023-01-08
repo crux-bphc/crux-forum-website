@@ -8,9 +8,10 @@ import {
 import Button from '@/shared/ui/Button';
 import Link from '@/shared/ui/Link';
 import Switch from '@/shared/ui/Switch';
+import TopicSwitch from '@/shared/ui/TopicSwitch';
 import { useApolloClient } from '@apollo/client';
 import { Form, Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import slugify from 'slugify';
 
 interface NotificationsFormProps {
@@ -32,6 +33,94 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 }) => {
 	const { data: loggedInUser } = useLoggedInUserQuery();
 	const [finishRegistration] = useFinishRegistrationMutation();
+	const colors = ['red', 'green', 'purple', 'teal', 'blue'] as const;
+	const [topics, setTopics] = useState([
+		{
+			topic: 'topic1',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic2',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic3',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic4',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic5',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic6',
+			enabled: true,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic7',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic8',
+			enabled: true,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic9',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic10',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic11',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic12',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic13',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic14',
+			enabled: true,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic15',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic16',
+			enabled: true,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+		{
+			topic: 'topic17',
+			enabled: false,
+			color: colors[Math.floor(Math.random() * colors.length)],
+		},
+	]);
 	const [getUrl] = useCreateFileUploadUrlLazyQuery();
 	const apolloClient = useApolloClient();
 
@@ -41,7 +130,7 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 
 	return (
 		<>
-			<div className="mb-14">
+			<div className="mb-8">
 				<h1 className="mb-3 text-5xl font-bold">Tell us more about you</h1>
 				<p className="text-gray-accent">
 					You can always change these later in your settings.
@@ -57,12 +146,37 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 						notifications: true,
 						termsAndConditions: false,
 						roundup: true,
+						topics: [],
 					}}
 				>
 					{({ values, setValues }) => {
 						return (
 							<Form data-testid="notifications-form">
 								<div>
+									<h1 className="mb-2 text-4xl font-bold">
+										What are you interested in?
+									</h1>
+								</div>
+								<div className="ml-[-1rem] flex flex-wrap space-x-4 space-y-4 pb-8">
+									<div></div>
+									{topics.map((topic, index) => {
+										return (
+											<TopicSwitch
+												checked={topic.enabled}
+												key={topic.topic}
+												onClick={() => {
+													topics[index].enabled = !topic.enabled;
+													setTopics(topics);
+												}}
+												color={topic.color}
+											>
+												{topic.topic}
+											</TopicSwitch>
+										);
+									})}
+								</div>
+								<div>
+									<h1 className="mb-4 text-4xl font-bold">Preferences</h1>
 									<div className="mb-3">
 										<Switch
 											checked={values.darkMode}
