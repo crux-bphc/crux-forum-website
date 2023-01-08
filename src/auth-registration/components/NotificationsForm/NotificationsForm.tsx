@@ -235,18 +235,17 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 											className="mr-2"
 										/>
 										<span className="text-xs">
-											I have read and agree to the{' '}
+											{'I have read and agree to the '}
 											<Link href="/register" color="blue">
-												Terms of Service
+												{'Terms of Service'}
 											</Link>
-											, the
+											{', the '}
 											<Link href="/register" color="blue">
-												{' '}
-												Privacy Policy{' '}
+												{'Privacy Policy'}
 											</Link>
-											and the{' '}
+											{' and the '}
 											<Link href="/register" color="blue">
-												Cookie Policy
+												{'Cookie Policy'}
 											</Link>
 										</span>
 									</div>
