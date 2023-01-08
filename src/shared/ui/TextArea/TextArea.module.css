@@ -1,0 +1,4 @@
+.root {
+    @apply block mt-3 mb-2 py-4 px-6 w-full resize-none border-2 border-gray-100 bg-gray-900 ;
+    @apply focus:outline-none focus:border-green-400 sm:rounded-lg focus:ring-teal-500 focus-visible:outline-none focus-visible:ring-2;
+}

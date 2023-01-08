@@ -1,0 +1,3 @@
+mutation CreateNotice($notice: CreateNoticeInputType!, $events: [CreateEventInputType!]!) {
+    createNotice(notice: $notice, events: $events)
+}
