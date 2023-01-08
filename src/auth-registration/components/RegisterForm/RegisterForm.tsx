@@ -23,6 +23,10 @@ const validationSchema = Yup.object().shape({
 	email: Yup.string()
 		.required('User must provide their email')
 		.email('Please provide a valid email')
+		.matches(
+			/^f\d{8}@hyderabad\.bits-pilani\.ac\.in$/,
+			'Please use your BITS Mail'
+		)
 		.trim(),
 	discord: Yup.string()
 		.required('Discord username is a required field')
