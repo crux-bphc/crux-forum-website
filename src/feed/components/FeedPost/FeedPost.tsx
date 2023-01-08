@@ -13,19 +13,13 @@ import {
 } from 'react-icons/hi';
 import clsx from 'clsx';
 import Image from 'next/image';
-import EventItem from '@/shared/components/EventItem';
 
 interface PostGalleryProps {
 	images: string[];
 }
 
 const PostGallery: React.FC<PostGalleryProps> = ({ images }) => {
-	if(images.length == 0) {
-		return (
-			<></>
-		)
-	}
-	else if (images.length == 1) {
+	if (images.length == 1) {
 		return (
 			<div data-testid="post-gallery" className={'relative'}>
 				<img src={images[0]} className="w-full" />
@@ -97,34 +91,16 @@ const PostReminder: React.FC = () => {
 	);
 };
 
-interface NoticeDetails {
-	_id?: string;
-	postedBy: {
-		_id: string,
-		name: string,
-		profilePicture: string
-	};
-	title: string;
-	body: string;
-	time: string;
-	attachedImages?: string[] | null | undefined;
-	topics?: {
-		_id: string,
-		name: string,
-		color: string
-	}[] | null | undefined;
-	isEvent: boolean;
-	linkedEvents: any[];
-	likeCount: number;
-}
-
 interface FeedPostProps {
 	showActions?: boolean;
-	notice: NoticeDetails
 }
 
-const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
-	const {_id, postedBy, body, time, attachedImages, topics, linkedEvents, likeCount} = notice;
+const FeedPost: React.FC<FeedPostProps> = ({ showActions = true }) => {
+	const images = [
+		'https://picsum.photos/200/300',
+		'https://picsum.photos/200/300',
+		'https://picsum.photos/200/300',
+	];
 
 	return (
 		<div className="relative bg-gray-800 sm:rounded-lg">
@@ -133,52 +109,59 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 				<div className="px-4 pb-2 pt-4 lg:pt-1">
 					<div className="flex items-center justify-between pt-4 lg:items-end">
 						<div className="flex gap-2">
-							<Avatar src={postedBy.profilePicture} size="x-small" />
+							<Avatar size="x-small" />
 							<div>
-								<h4 className="text-sm font-semibold">{postedBy.name}</h4>
-								<p className="text-xs font-light">{time}</p>
+								<h4 className="text-sm font-semibold">John Smith</h4>
+								<p className="text-xs font-light">10 mins ago</p>
 							</div>
 						</div>
 
 						<div className="text-right">
 							<div className="hidden gap-2 lg:flex">
-								{/* @ts-ignore */}
-								{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+								<Tag color="red">cRuX</Tag>
+								<Tag color="blue">IEEE</Tag>
+								<Tag color="purple">Automation and Robotics</Tag>
 							</div>
 						</div>
 					</div>
 					<div className="mt-3 flex gap-2 lg:hidden">
-						{/* @ts-ignore */}
-						{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+						<Tag color="red">cRuX</Tag>
+						<Tag color="blue">IEEE</Tag>
+						<Tag color="purple">Automation and Robotics</Tag>
 					</div>
 
 					{/* text */}
 					<div className="my-4">
 						<p className="text-sm font-light">
-							{body}
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec
+							tempor arcu. Nulla facilisi. Phasellus sapien risus, auctor
+							feugiat lorem vitae, vulputate euismod nulla. Proin laoreet odio
+							condimentum turpis bibendum, vitae luctus sapien pulvinar. Mauris
+							vitae suscipit odio. Etiam rhoncus luctus quam eget condimentum.
+							Fusce quis elit sed turpis porttitor euismod.
 						</p>
 					</div>
 				</div>
 
 				{/* pictures */}
 				<div className="p-0 sm:px-4">
-					<PostGallery images={attachedImages ?? []} />
+					<PostGallery images={images} />
 				</div>
 
 				{/* post actions */}
 				{showActions && (
 					<div className="mt-2 px-4 pb-2 pt-4 lg:pt-1">
-						{/* Linked Events */}
-						<div>
-							<h4 className="font-semibold">Events</h4>
-							{linkedEvents.map(event => <EventItem key={event._id} event={event} shadow={true} />)}
-						</div>
-
 						{/* reactions count */}
 						<div className="flex items-center justify-between py-1 px-2">
-							<p className="text-sm font-light">{likeCount} likes</p>
-							{/* <p className="text-sm font-light">15 comments</p> */}
+							<p className="text-sm font-light">12 likes</p>
+							<p className="text-sm font-light">15 comments</p>
 						</div>
+
+						{/* reminder */}
+
+						<PostReminder />
+
+						{/* <hr className='border border-gray-disabled mb-2 mt-0.5' /> */}
 
 						{/* reaction buttons */}
 						<div className="grid grid-cols-3">

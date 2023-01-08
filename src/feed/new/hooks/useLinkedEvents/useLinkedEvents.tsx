@@ -4,8 +4,7 @@ interface LinkedEvent {
 	title: string,
 	date: string,
 	venue: string,
-	description: string,
-    meetLink: string
+	description: string
 }
 
 const useLinkedEvents = () => {
@@ -16,8 +15,7 @@ const useLinkedEvents = () => {
             title: "",
             date: "",
             venue: "",
-            description: "",
-            meetLink: "",
+            description: ""
         }
         setLinkedEvents([...linkedEvents, newEvent]);
     }

@@ -265,7 +265,6 @@ export type Query = {
   getAllTests: PaginatedResponseOfTestType;
   getAllTopics: PaginatedResponseOfTopicType;
   getAllUsers: PaginatedResponseOfUserType;
-  getFeed: PaginatedResponseOfNoticeType;
   getFileURL: Array<Scalars['String']>;
   getNotSubscribedTopics: Array<TopicType>;
   getNoticesByTopic: Array<Maybe<NoticeType>>;
@@ -324,12 +323,6 @@ export type QueryGetAllTopicsArgs = {
 export type QueryGetAllUsersArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryGetFeedArgs = {
-  limit?: InputMaybe<Scalars['Float']>;
-  skip?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -434,15 +427,15 @@ export type UserType = {
   __typename?: 'UserType';
   _id: Scalars['ID'];
   banned?: Maybe<Scalars['Boolean']>;
-  batch: Scalars['Int'];
-  bio: Scalars['String'];
+  batch?: Maybe<Scalars['Int']>;
+  bio?: Maybe<Scalars['String']>;
   discord: Scalars['String'];
   email: Scalars['String'];
   name: Scalars['String'];
   phone: Scalars['String'];
   posted?: Maybe<Array<NoticeType>>;
   preferences: PreferencesType;
-  profilePicture: Scalars['String'];
+  profilePicture?: Maybe<Scalars['String']>;
   role: Scalars['String'];
   subscribedEvents?: Maybe<Array<EventType>>;
   subscriptions?: Maybe<Array<TopicType>>;
@@ -450,7 +443,7 @@ export type UserType = {
 
 export type MinPostFragment = { __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null };
 
-export type MinUserFragment = { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string };
+export type MinUserFragment = { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null };
 
 export type UserPreferencesFragment = { __typename?: 'UserType', preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null } };
 
@@ -483,14 +476,6 @@ export type CreateFileUploadUrlQueryVariables = Exact<{
 
 export type CreateFileUploadUrlQuery = { __typename?: 'Query', url: Array<string> };
 
-export type GetFeedQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Float']>;
-  skip?: InputMaybe<Scalars['Float']>;
-}>;
-
-
-export type GetFeedQuery = { __typename?: 'Query', getFeed: { __typename?: 'PaginatedResponseOfNoticeType', data: Array<{ __typename?: 'NoticeType', _id: string, title: string, body: string, time: string, attachedImages?: Array<string> | null, isEvent: boolean, likeCount: number, postedBy: { __typename?: 'UserType', _id: string, name: string, profilePicture: string }, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, linkedEvents: Array<{ __typename?: 'EventType', _id: string, name: string, venue: string, date: string, meetLink: string }> }> } };
-
 export type GoogleAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -501,17 +486,17 @@ export type GoogleLoginQueryVariables = Exact<{
 }>;
 
 
-export type GoogleLoginQuery = { __typename?: 'Query', user: { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string } };
+export type GoogleLoginQuery = { __typename?: 'Query', user: { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null } };
 
 export type LoggedInUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoggedInUserQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string } | null };
+export type LoggedInUserQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null } | null };
 
 export type UserProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
+export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
 
 export const MinPostFragmentDoc = gql`
     fragment MinPost on NoticeType {
@@ -687,67 +672,6 @@ export function useCreateFileUploadUrlLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type CreateFileUploadUrlQueryHookResult = ReturnType<typeof useCreateFileUploadUrlQuery>;
 export type CreateFileUploadUrlLazyQueryHookResult = ReturnType<typeof useCreateFileUploadUrlLazyQuery>;
 export type CreateFileUploadUrlQueryResult = Apollo.QueryResult<CreateFileUploadUrlQuery, CreateFileUploadUrlQueryVariables>;
-export const GetFeedDocument = gql`
-    query GetFeed($limit: Float, $skip: Float) {
-  getFeed(limit: $limit, skip: $skip) {
-    data {
-      _id
-      title
-      body
-      time
-      postedBy {
-        _id
-        name
-        profilePicture
-      }
-      attachedImages
-      topics {
-        _id
-        name
-        color
-      }
-      isEvent
-      linkedEvents {
-        _id
-        name
-        venue
-        date
-        meetLink
-      }
-      likeCount
-    }
-  }
-}
-    `;
-
-/**
- * __useGetFeedQuery__
- *
- * To run a query within a React component, call `useGetFeedQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetFeedQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *      skip: // value for 'skip'
- *   },
- * });
- */
-export function useGetFeedQuery(baseOptions?: Apollo.QueryHookOptions<GetFeedQuery, GetFeedQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFeedQuery, GetFeedQueryVariables>(GetFeedDocument, options);
-      }
-export function useGetFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFeedQuery, GetFeedQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFeedQuery, GetFeedQueryVariables>(GetFeedDocument, options);
-        }
-export type GetFeedQueryHookResult = ReturnType<typeof useGetFeedQuery>;
-export type GetFeedLazyQueryHookResult = ReturnType<typeof useGetFeedLazyQuery>;
-export type GetFeedQueryResult = Apollo.QueryResult<GetFeedQuery, GetFeedQueryVariables>;
 export const GoogleAuthUrlDocument = gql`
     query GoogleAuthURL {
   url: GoogleAuthUrl
