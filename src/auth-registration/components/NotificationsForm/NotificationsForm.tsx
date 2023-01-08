@@ -54,7 +54,6 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 					}}
 					initialValues={{
 						darkMode: true,
-						subscribedEvents: true,
 						notifications: true,
 						termsAndConditions: false,
 						roundup: true,
@@ -100,7 +99,7 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 											onChange={() => {
 												setValues({
 													...values,
-													subscribedEvents: !values.notifications,
+													notifications: !values.notifications,
 												});
 											}}
 											label="Notifications"
