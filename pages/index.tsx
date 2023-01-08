@@ -11,6 +11,7 @@ import Checkbox from '@/shared/ui/Checkbox';
 
 const IndexPage: NextPage = () => {
 	const { onCode, url, loading, authURLLoading } = useGoogleAuth('/feed');
+	const keepMeSignedIn = React.useRef(false);
 
 	return (
 		<>
@@ -30,7 +31,7 @@ const IndexPage: NextPage = () => {
 						height={750}
 						width={500}
 						url={url}
-						onCode={(code) => onCode(code)}
+						onCode={(code) => onCode(code, keepMeSignedIn.current)}
 						onClose={() => {
 							// do nothing
 						}}
@@ -44,7 +45,7 @@ const IndexPage: NextPage = () => {
 						</Button>
 					</OAuthPopup>
 
-					<p className="text-sm mt-2 "><Checkbox className="mr-1"/> Keep me Signed in</p>
+					<p className="text-sm mt-2 "><Checkbox className="mr-1" onChange={(e) => keepMeSignedIn.current = e.target.checked}/> Keep me Signed in</p>
 
 					<p className="mt-8 text-gray-50">
 						By Signing in to crux forum you agree to the{' '}

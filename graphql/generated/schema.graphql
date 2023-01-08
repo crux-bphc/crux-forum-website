@@ -5,6 +5,7 @@ schema {
 
 input CreateEventInputType {
   date: String!
+  description: String
   meetLink: String!
   name: String!
   venue: String!
@@ -45,6 +46,7 @@ input EditProfilePreferencesType {
 type EventType {
   _id: ID!
   date: String!
+  description: String
   linkedNotice: NoticeType!
   meetLink: String!
   name: String!
@@ -183,6 +185,7 @@ type SearchResultType {
 input SocialAuthInput {
   code: String!
   email: String = ""
+  keepMeSignedIn: Boolean = false
   name: String = ""
 }
 

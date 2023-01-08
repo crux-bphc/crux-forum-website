@@ -18,6 +18,7 @@ export type Scalars = {
 
 export type CreateEventInputType = {
   date: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
   meetLink: Scalars['String'];
   name: Scalars['String'];
   venue: Scalars['String'];
@@ -54,6 +55,7 @@ export type EventType = {
   __typename?: 'EventType';
   _id: Scalars['ID'];
   date: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   linkedNotice: NoticeType;
   meetLink: Scalars['String'];
   name: Scalars['String'];
@@ -398,6 +400,7 @@ export type SearchResultType = {
 export type SocialAuthInput = {
   code: Scalars['String'];
   email?: InputMaybe<Scalars['String']>;
+  keepMeSignedIn?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
 };
 
