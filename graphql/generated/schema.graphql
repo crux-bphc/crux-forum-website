@@ -5,6 +5,7 @@ schema {
 
 input CreateEventInputType {
   date: String!
+  description: String
   meetLink: String!
   name: String!
   venue: String!
@@ -45,6 +46,7 @@ input EditProfilePreferencesType {
 type EventType {
   _id: ID!
   date: String!
+  description: String
   linkedNotice: NoticeType!
   meetLink: String!
   name: String!
@@ -150,6 +152,7 @@ type Query {
   getAllTests(limit: Int = 0, skip: Int = 0): PaginatedResponseOfTestType!
   getAllTopics(limit: Int = 0, skip: Int = 0): PaginatedResponseOfTopicType!
   getAllUsers(limit: Int = 0, skip: Int = 0): PaginatedResponseOfUserType!
+  getFeed(limit: Float = 5, skip: Float = 0): PaginatedResponseOfNoticeType!
   getFileURL(filenames: [String!]!): [String!]!
   getNotSubscribedTopics: [TopicType!]!
   getNoticesByTopic(topicId: String!): [NoticeType]!
@@ -182,6 +185,7 @@ type SearchResultType {
 input SocialAuthInput {
   code: String!
   email: String = ""
+  keepMeSignedIn: Boolean = false
   name: String = ""
 }
 
@@ -215,15 +219,15 @@ input UserRegisterType {
 type UserType {
   _id: ID!
   banned: Boolean
-  batch: Int
-  bio: String
+  batch: Int!
+  bio: String!
   discord: String!
   email: String!
   name: String!
   phone: String!
   posted: [NoticeType!]
   preferences: PreferencesType!
-  profilePicture: String
+  profilePicture: String!
   role: String!
   subscribedEvents: [EventType!]
   subscriptions: [TopicType!]

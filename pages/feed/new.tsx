@@ -3,12 +3,13 @@ import BoundingBox from '@/feed/new/components/BoundingBox';
 import EventInput from '@/feed/new/components/EventInput';
 import useLinkedEvents from '@/feed/new/hooks/useLinkedEvents';
 import AppLayout from '@/global/layouts/AppLayout';
-import { TopicType, useCreateNoticeMutation } from '@/graphql/generated';
+import { TopicType, useCreateNoticeMutation, useLoggedInUserQuery } from '@/graphql/generated';
 import withApollo from '@/lib/withApollo';
 import EventItem from '@/shared/components/EventItem';
 import TopicsModal from '@/shared/components/TopicsModal';
 import useDisclosure from '@/shared/hooks/useDisclosure';
 import Button from '@/shared/ui/Button';
+import Spinner from '@/shared/ui/Spinner';
 import Tag from '@/shared/ui/Tag';
 import TextArea from '@/shared/ui/TextArea';
 import React from 'react';
@@ -146,6 +147,8 @@ interface NoticeDetails {
 }
 
 const EditPostLayout: React.FC<any> = ({ children }) => {
+	const {loading: userLoading, data:userData} = useLoggedInUserQuery();
+
 	const { isOpen, onClose, onOpen } = useDisclosure();
 	const [selectedTags, setSelectedTags] = React.useState<any[]>([
 		{
@@ -230,6 +233,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 	}
 
 	return (
+		userLoading? <Spinner></Spinner> :
 		<>
 			{/* @ts-ignore */}
 			<TopicsModal
@@ -263,7 +267,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 														key={tag._id}
 														color={'purple'}
 														onClick={() => {
-															const a = 1+2
+															const a = 1+2;
 														}}
 													>
 														{tag.name}
@@ -319,7 +323,21 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 						{/* Preview Notice */}
 						<BoundingBox>
 							<h4 className="mt-1 font-semibold">Notice Preview</h4>
-							<FeedPost showActions={false}></FeedPost>
+							<FeedPost notice={{
+								title: noticeDetails.title,
+								body: noticeDetails.body,
+								linkedEvents: linkedEvents,
+								isEvent: true,
+								attachedImages: noticeDetails.attachedImages,
+								likeCount: 0,
+								postedBy: {
+									_id: userData!.user!._id,
+									name: userData!.user!.name,
+									profilePicture: userData!.user!.profilePicture
+								},
+								time: new Date().toISOString(),
+								topics: selectedTags,
+							}} showActions={false}></FeedPost>
 						</BoundingBox>
 
 						{/* Preview Events */}
@@ -333,7 +351,10 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 									key={index}
 									event={{
 										name: linkedEvents[index].title,
-										meetLink: linkedEvents[index].venue,
+										meetLink: linkedEvents[index].meetLink,
+										date: linkedEvents[index].date,
+										venue: linkedEvents[index].venue,
+										description: linkedEvents[index].description
 									}}
 								/>
 							);

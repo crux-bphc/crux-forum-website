@@ -6,8 +6,11 @@ import React from 'react';
 const LeftSideBar: React.FC = () => {
 	const testEvent = {
 		meetLink: 'https://katelin.name',
-		name: 'cross-platform',
+		name: 'ACC Fair',
 		__typename: 'EventType',
+		date: "16/10/2022 4:00 PM",
+		description: "Clubs Introduction Event For the 2022 batch",
+		venue: "LTC Lobby"
 	};
 
 	return (

@@ -1,0 +1,30 @@
+query GetFeed($limit: Float, $skip: Float) {
+    getFeed(limit: $limit, skip: $skip) {
+        data {
+            _id
+            title
+            body
+            time
+            postedBy {
+                _id
+                name
+                profilePicture
+            }
+            attachedImages
+            topics {
+                _id
+                name
+                color
+            }
+            isEvent
+            linkedEvents {
+                _id
+                name
+                venue
+                date
+                meetLink
+            }
+            likeCount
+        }
+    }
+}
