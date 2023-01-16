@@ -1,1 +1,1 @@
-export { default } from "./BoundingBox";
+export { default } from './BoundingBox';

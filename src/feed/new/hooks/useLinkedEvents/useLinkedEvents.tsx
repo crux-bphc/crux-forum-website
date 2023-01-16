@@ -1,84 +1,88 @@
-import React from "react"
+import React from 'react';
 
 interface LinkedEvent {
-	title: string,
-	date: string,
-	venue: string,
-	description: string,
-    meetLink: string
+	title: string;
+	date: string;
+	venue: string;
+	description: string;
+	meetLink: string;
 }
 
 const useLinkedEvents = () => {
-    const [linkedEvents, setLinkedEvents] = React.useState<LinkedEvent[]>([]);
+	const [linkedEvents, setLinkedEvents] = React.useState<LinkedEvent[]>([]);
 
-    const addEvent = () => {
-        let newEvent: LinkedEvent = {
-            title: "",
-            date: "",
-            venue: "",
-            description: "",
-            meetLink: "",
-        }
-        setLinkedEvents([...linkedEvents, newEvent]);
-    }
+	const addEvent = () => {
+		const newEvent: LinkedEvent = {
+			title: '',
+			date: '',
+			venue: '',
+			description: '',
+			meetLink: '',
+		};
+		setLinkedEvents([...linkedEvents, newEvent]);
+	};
 
-    const updateTitle = (index: number, newTitle: string) => {
-        setLinkedEvents(linkedEvents.map((e, i) => {
-            if(index == i)
-            {
-                e.title = newTitle;
-            }
+	const updateTitle = (index: number, newTitle: string) => {
+		setLinkedEvents(
+			linkedEvents.map((e, i) => {
+				if (index == i) {
+					e.title = newTitle;
+				}
 
-            return e;
-        }));
-    }
+				return e;
+			})
+		);
+	};
 
-    const updateDescription = (index: number, newDescription: string) => {
-        setLinkedEvents(linkedEvents.map((e, i) => {
-            if(index == i)
-            {
-                e.description = newDescription;
-            }
+	const updateDescription = (index: number, newDescription: string) => {
+		setLinkedEvents(
+			linkedEvents.map((e, i) => {
+				if (index == i) {
+					e.description = newDescription;
+				}
 
-            return e;
-        }));
-    }
+				return e;
+			})
+		);
+	};
 
-    const updateDate = (index: number, newDate: string) => {
-        setLinkedEvents(linkedEvents.map((e, i) => {
-            if(index == i)
-            {
-                e.date = newDate;
-            }
+	const updateDate = (index: number, newDate: string) => {
+		setLinkedEvents(
+			linkedEvents.map((e, i) => {
+				if (index == i) {
+					e.date = newDate;
+				}
 
-            return e;
-        }));
-    }
+				return e;
+			})
+		);
+	};
 
-    const updateVenue = (index: number, newVenue: string) => {
-        setLinkedEvents(linkedEvents.map((e, i) => {
-            if(index == i)
-            {
-                e.venue = newVenue;
-            }
+	const updateVenue = (index: number, newVenue: string) => {
+		setLinkedEvents(
+			linkedEvents.map((e, i) => {
+				if (index == i) {
+					e.venue = newVenue;
+				}
 
-            return e;
-        }));
-    }
+				return e;
+			})
+		);
+	};
 
-    const deleteEvent = (index: number) => {
-        setLinkedEvents(linkedEvents.filter((e, i) => index != i));
-    }
+	const deleteEvent = (index: number) => {
+		setLinkedEvents(linkedEvents.filter((e, i) => index != i));
+	};
 
-    return {
-        linkedEvents,
-        addEvent,
-        updateTitle,
-        updateDate,
-        updateDescription,
-        updateVenue,
-        deleteEvent
-    }
-}
+	return {
+		linkedEvents,
+		addEvent,
+		updateTitle,
+		updateDate,
+		updateDescription,
+		updateVenue,
+		deleteEvent,
+	};
+};
 
 export default useLinkedEvents;

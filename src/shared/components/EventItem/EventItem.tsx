@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '../../ui/IconButton';
 import Avatar from '../../ui/Avatar';
 import { HiOutlineBell, HiOutlineLink, HiOutlineMap } from 'react-icons/hi';
-import {BiMap} from 'react-icons/bi'
+import { BiMap } from 'react-icons/bi';
 import Link from '@/shared/ui/Link';
 
 interface EventItemProps {
@@ -20,15 +20,15 @@ interface EventItemProps {
 const EventItem: React.FC<EventItemProps> = ({
 	bottomBorder = true,
 	shadow = false,
-	event: { name, meetLink, date, venue, description},
+	event: { name, meetLink, date, venue, description },
 }) => {
 	return (
 		<>
 			<div
 				data-testid="event-item"
-				className={`flex gap-3 ${
-					bottomBorder ? 'mb-5' : ''
-				} ${shadow? 'shadow-2xl' : ''} items-center rounded bg-gray-800 p-3`}
+				className={`flex gap-3 ${bottomBorder ? 'mb-5' : ''} ${
+					shadow ? 'shadow-2xl' : ''
+				} items-center rounded bg-gray-800 p-3`}
 			>
 				<Avatar size="x-small" />
 				<div className="grid flex-1 items-center gap-y-3">
@@ -37,15 +37,16 @@ const EventItem: React.FC<EventItemProps> = ({
 						<p className="mb-3">{description}</p>
 						{/* Venue and Meet Link */}
 						<div className="grid grid-cols-2">
-							<div className="flex flex-start">
-								<BiMap className="text-teal-500 h-5 w-5 mr-2"/>
+							<div className="flex-start flex">
+								<BiMap className="mr-2 h-5 w-5 text-teal-500" />
 								<p>{venue}</p>
 							</div>
-							{meetLink &&
-							<div className="flex flex-start">
-								<HiOutlineLink className="text-teal-500 h-5 w-5 mr-2"/>
-								<Link href={meetLink}>Meet Link</Link>
-							</div>}
+							{meetLink && (
+								<div className="flex-start flex">
+									<HiOutlineLink className="mr-2 h-5 w-5 text-teal-500" />
+									<Link href={meetLink}>Meet Link</Link>
+								</div>
+							)}
 						</div>
 					</div>
 

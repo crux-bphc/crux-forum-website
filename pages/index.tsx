@@ -45,7 +45,13 @@ const IndexPage: NextPage = () => {
 						</Button>
 					</OAuthPopup>
 
-					<p className="text-sm mt-2 "><Checkbox className="mr-1" onChange={(e) => keepMeSignedIn.current = e.target.checked}/> Keep me Signed in</p>
+					<p className="mt-2 text-sm ">
+						<Checkbox
+							className="mr-1"
+							onChange={(e) => (keepMeSignedIn.current = e.target.checked)}
+						/>{' '}
+						Keep me Signed in
+					</p>
 
 					<p className="mt-8 text-gray-50">
 						By Signing in to crux forum you agree to the{' '}

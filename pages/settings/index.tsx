@@ -1,4 +1,7 @@
-import { useUserProfileQuery } from '@/graphql/generated';
+import {
+	useUpdateUserMutation,
+	useUserProfileQuery,
+} from '@/graphql/generated';
 import withApollo from '@/lib/withApollo';
 import SettingsPageLayout from '@/settings/layout/SettingsPageLayout';
 import Avatar from '@/shared/ui/Avatar';
@@ -81,6 +84,7 @@ const SettingsPage: NextPage = () => {
 	const [state, dispatch] = React.useReducer(reducer, {
 		...initialState,
 	});
+	const [updateUser] = useUpdateUserMutation();
 
 	React.useEffect(() => {
 		if (data?.user?.preferences) {
@@ -94,6 +98,20 @@ const SettingsPage: NextPage = () => {
 			});
 		}
 	}, [data?.user?.preferences]);
+
+	React.useEffect(() => {
+		updateUser({
+			variables: {
+				input: {
+					preferences: {
+						notifications: state.notifications,
+						roundup: state.roundupEmails,
+						darkmode: true,
+					},
+				},
+			},
+		});
+	}, [state]);
 
 	if (loading || !data?.user) {
 		return <Spinner variant="full-screen" />;

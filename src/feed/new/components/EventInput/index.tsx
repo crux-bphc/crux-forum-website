@@ -1,1 +1,1 @@
-export { default } from "./EventInput"
+export { default } from './EventInput';

@@ -13,7 +13,7 @@ const NotFoundPage: NextPage = () => {
 					width={650}
 				/>
 			</div>
-			<div className="text-center md:text-left col-start-2 col-end-9 md:col-start-6 md:col-end-10">
+			<div className="col-start-2 col-end-9 text-center md:col-start-6 md:col-end-10 md:text-left">
 				<div className="mb-14">
 					<h1>Oops!</h1>
 					<h3 className="font-medium">We could not find this page</h3>

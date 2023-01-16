@@ -1,1 +1,1 @@
-export { default } from "./useLinkedEvents"
+export { default } from './useLinkedEvents';

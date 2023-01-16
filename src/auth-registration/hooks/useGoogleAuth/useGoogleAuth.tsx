@@ -31,7 +31,7 @@ const useGoogleAuth = (redirectURL = '/feed') => {
 
 	const onCode = async (code: string, keepMeSignedIn: boolean) => {
 		await loginWithGoogle({
-			variables: { input: { code , keepMeSignedIn} },
+			variables: { input: { code, keepMeSignedIn } },
 		});
 	};
 

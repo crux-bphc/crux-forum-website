@@ -20,12 +20,9 @@ interface PostGalleryProps {
 }
 
 const PostGallery: React.FC<PostGalleryProps> = ({ images }) => {
-	if(images.length == 0) {
-		return (
-			<></>
-		)
-	}
-	else if (images.length == 1) {
+	if (images.length == 0) {
+		return <></>;
+	} else if (images.length == 1) {
 		return (
 			<div data-testid="post-gallery" className={'relative'}>
 				<img src={images[0]} className="w-full" />
@@ -100,19 +97,22 @@ const PostReminder: React.FC = () => {
 interface NoticeDetails {
 	_id?: string;
 	postedBy: {
-		_id: string,
-		name: string,
-		profilePicture: string
+		_id: string;
+		name: string;
+		profilePicture: string;
 	};
 	title: string;
 	body: string;
 	time: string;
 	attachedImages?: string[] | null | undefined;
-	topics?: {
-		_id: string,
-		name: string,
-		color: string
-	}[] | null | undefined;
+	topics?:
+		{
+			_id: string;
+			name: string;
+			color: string;
+		}[]
+		| null
+		| undefined;
 	isEvent: boolean;
 	linkedEvents: any[];
 	likeCount: number;
@@ -120,11 +120,20 @@ interface NoticeDetails {
 
 interface FeedPostProps {
 	showActions?: boolean;
-	notice: NoticeDetails
+	notice: NoticeDetails;
 }
 
 const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
-	const {_id, postedBy, body, time, attachedImages, topics, linkedEvents, likeCount} = notice;
+	const {
+		_id,
+		postedBy,
+		body,
+		time,
+		attachedImages,
+		topics,
+		linkedEvents,
+		likeCount,
+	} = notice;
 
 	return (
 		<div className="relative bg-gray-800 sm:rounded-lg">
@@ -154,9 +163,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 
 					{/* text */}
 					<div className="my-4">
-						<p className="text-sm font-light">
-							{body}
-						</p>
+						<p className="text-sm font-light">{body}</p>
 					</div>
 				</div>
 
@@ -171,7 +178,9 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 						{/* Linked Events */}
 						<div>
 							<h4 className="font-semibold">Events</h4>
-							{linkedEvents.map(event => <EventItem key={event._id} event={event} shadow={true} />)}
+							{linkedEvents.map((event) => (
+								<EventItem key={event._id} event={event} shadow={true} />
+							))}
 						</div>
 
 						{/* reactions count */}

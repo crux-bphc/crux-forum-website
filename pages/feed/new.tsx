@@ -3,7 +3,11 @@ import BoundingBox from '@/feed/new/components/BoundingBox';
 import EventInput from '@/feed/new/components/EventInput';
 import useLinkedEvents from '@/feed/new/hooks/useLinkedEvents';
 import AppLayout from '@/global/layouts/AppLayout';
-import { TopicType, useCreateNoticeMutation, useLoggedInUserQuery } from '@/graphql/generated';
+import {
+	TopicType,
+	useCreateNoticeMutation,
+	useLoggedInUserQuery,
+} from '@/graphql/generated';
 import withApollo from '@/lib/withApollo';
 import EventItem from '@/shared/components/EventItem';
 import TopicsModal from '@/shared/components/TopicsModal';
@@ -139,15 +143,15 @@ const DUMMY_DATA: any = [
 ];
 
 interface NoticeDetails {
-	title: 'Random Title',
-	body: string,
-	attachedImages: string[],
-	attachedFiles: string[],
-	isEvent: boolean
+	title: 'Random Title';
+	body: string;
+	attachedImages: string[];
+	attachedFiles: string[];
+	isEvent: boolean;
 }
 
 const EditPostLayout: React.FC<any> = ({ children }) => {
-	const {loading: userLoading, data:userData} = useLoggedInUserQuery();
+	const { loading: userLoading, data: userData } = useLoggedInUserQuery();
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
 	const [selectedTags, setSelectedTags] = React.useState<any[]>([
@@ -161,27 +165,28 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		},
 	]);
 
-	const {linkedEvents, 
+	const {
+		linkedEvents,
 		addEvent,
 		deleteEvent,
 		updateDate,
 		updateDescription,
 		updateTitle,
-		updateVenue
-	} = useLinkedEvents()
+		updateVenue,
+	} = useLinkedEvents();
 
 	const [noticeDetails, setNoticeDetails] = React.useState<NoticeDetails>({
 		title: 'Random Title',
 		body: '',
 		attachedImages: [] as string[],
 		attachedFiles: [] as string[],
-		isEvent : false
+		isEvent: false,
 	});
 
 	const setNoticeBody = (val: string) => {
 		setNoticeDetails({
 			...noticeDetails,
-			body: val
+			body: val,
 		});
 	};
 
@@ -205,8 +210,8 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 			topics: selectedTags.map((topic) => topic._id),
 			attachedImages: noticeDetails.attachedImages,
 			attachedFiles: noticeDetails.attachedFiles,
-			isEvent: linkedEvents.length > 0 ? true : false
-		}
+			isEvent: linkedEvents.length > 0 ? true : false,
+		};
 
 		const data = await createNotice({
 			variables: {
@@ -216,24 +221,23 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 						name: e.title,
 						date: e.date,
 						venue: e.venue,
-						meetLink: e.description
-					}
-				})
-			}
+						meetLink: e.description,
+					};
+				}),
+			},
 		});
 
 		if (data.errors) {
-			alert(
-				'Something went wrong. Please try again.'
-			);
+			alert('Something went wrong. Please try again.');
 			return;
 		}
 
-		console.log("Posted!");
-	}
+		console.log('Posted!');
+	};
 
-	return (
-		userLoading? <Spinner></Spinner> :
+	return userLoading ? (
+		<Spinner></Spinner>
+	) : (
 		<>
 			{/* @ts-ignore */}
 			<TopicsModal
@@ -242,15 +246,15 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 			/>
 			<AppLayout>
 				<div className="grid grid-cols-12">
-					<div className="block md:col-span-8 w-full">
+					<div className="block w-full md:col-span-8">
 						{/* Notice text area */}
 						<BoundingBox>
 							<h4 className="mt-1 font-semibold">Notice Content</h4>
 							<TextArea
-								charLimit={500} 
-								height={400} 
-								setText={setNoticeBody} 
-								value={noticeDetails.body} 
+								charLimit={500}
+								height={400}
+								setText={setNoticeBody}
+								value={noticeDetails.body}
 							/>
 						</BoundingBox>
 
@@ -260,25 +264,27 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 							<div className="flex items-center">
 								<div className="my-3 w-full">
 									{selectedTags.length ? (
-										<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+										<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 											{selectedTags.map((tag) => {
 												return (
 													<Tag
 														key={tag._id}
 														color={'purple'}
 														onClick={() => {
-															const a = 1+2;
+															const a = 1 + 2;
 														}}
 													>
 														{tag.name}
 													</Tag>
-												)
+												);
 											})}
 										</div>
-									): <></>}
+									) : (
+										<></>
+									)}
 								</div>
-								<HiOutlinePlusCircle 
-									className="text-green-400 h-6 w-6 cursor-pointer"
+								<HiOutlinePlusCircle
+									className="h-6 w-6 cursor-pointer text-green-400"
 									onClick={onOpen}
 								/>
 							</div>
@@ -288,11 +294,13 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 						{new Array(linkedEvents.length).fill(0).map((_, index) => {
 							return (
 								<>
-									<EventInput 
+									<EventInput
 										onDelete={() => deleteEvent(index)}
 										currentEvent={linkedEvents[index]}
 										updateDate={(value: string) => updateDate(index, value)}
-										updateDescription={(value: string) => updateDescription(index, value)}
+										updateDescription={(value: string) =>
+											updateDescription(index, value)
+										}
 										updateTitle={(value: string) => updateTitle(index, value)}
 										updateVenue={(value: string) => updateVenue(index, value)}
 									/>
@@ -302,67 +310,73 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 
 						{/* Add New Event */}
 						<BoundingBox>
-						<div className="flex items-center">
-									<h4 className="w-full font-semibold">Add a linked event</h4>
+							<div className="flex items-center">
+								<h4 className="w-full font-semibold">Add a linked event</h4>
 
-									<HiOutlinePlusCircle
-										className="text-green-400 h-6 w-6 cursor-pointer"
-										onClick={addEvent}
-									/>
-								</div>
+								<HiOutlinePlusCircle
+									className="h-6 w-6 cursor-pointer text-green-400"
+									onClick={addEvent}
+								/>
+							</div>
 						</BoundingBox>
 
 						{/* Post Notice Button */}
 						<div className="mx-6 mt-20">
-							<Button onClick={onPost} size="small">Post Notice</Button>
+							<Button onClick={onPost} size="small">
+								Post Notice
+							</Button>
 						</div>
-
 					</div>
 
 					<div className="col-span-12 col-start-1 flex h-full w-full flex-col md:col-span-4 md:col-start-9 lg:block">
 						{/* Preview Notice */}
 						<BoundingBox>
 							<h4 className="mt-1 font-semibold">Notice Preview</h4>
-							<FeedPost notice={{
-								title: noticeDetails.title,
-								body: noticeDetails.body,
-								linkedEvents: linkedEvents,
-								isEvent: true,
-								attachedImages: noticeDetails.attachedImages,
-								likeCount: 0,
-								postedBy: {
-									_id: userData!.user!._id,
-									name: userData!.user!.name,
-									profilePicture: userData!.user!.profilePicture
-								},
-								time: new Date().toISOString(),
-								topics: selectedTags,
-							}} showActions={false}></FeedPost>
+							<FeedPost
+								notice={{
+									title: noticeDetails.title,
+									body: noticeDetails.body,
+									linkedEvents: linkedEvents,
+									isEvent: true,
+									attachedImages: noticeDetails.attachedImages,
+									likeCount: 0,
+									postedBy: {
+										_id: userData!.user!._id,
+										name: userData!.user!.name,
+										profilePicture: userData!.user!.profilePicture,
+									},
+									time: new Date().toISOString(),
+									topics: selectedTags,
+								}}
+								showActions={false}
+							></FeedPost>
 						</BoundingBox>
 
 						{/* Preview Events */}
 						<div className="mx-6 my-6">
-							{linkedEvents.length ? 
-								<h4 className="mt-1 mb-4 font-semibold">Events Preview</h4> : <></>
-							}
-						{new Array(linkedEvents.length).fill(0).map((_, index) => {
-							return (
-								<EventItem
-									key={index}
-									event={{
-										name: linkedEvents[index].title,
-										meetLink: linkedEvents[index].meetLink,
-										date: linkedEvents[index].date,
-										venue: linkedEvents[index].venue,
-										description: linkedEvents[index].description
-									}}
-								/>
-							);
-						})}
+							{linkedEvents.length ? (
+								<h4 className="mt-1 mb-4 font-semibold">Events Preview</h4>
+							) : (
+								<></>
+							)}
+							{new Array(linkedEvents.length).fill(0).map((_, index) => {
+								return (
+									<EventItem
+										key={index}
+										event={{
+											name: linkedEvents[index].title,
+											meetLink: linkedEvents[index].meetLink,
+											date: linkedEvents[index].date,
+											venue: linkedEvents[index].venue,
+											description: linkedEvents[index].description,
+										}}
+									/>
+								);
+							})}
 						</div>
 					</div>
 				</div>
-        </AppLayout>
+			</AppLayout>
 		</>
 	);
 };
