@@ -52,11 +52,12 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		updateDescription,
 		updateTitle,
 		updateVenue,
+		updateLink,
 	} = useLinkedEvents();
 
 	const [noticeDetails, setNoticeDetails] = React.useState<NoticeDetails>({
 		title: 'Random Title',
-		body: '',
+		body: JSON.stringify(noticeBody),
 		attachedImages: [] as string[],
 		attachedFiles: [] as string[],
 		isEvent: false,
@@ -119,9 +120,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 	) : (
 		<>
 			{/* @ts-ignore */}
-			<TopicsModal
-				{...{ isOpen, onClose, onListItemClick, selectedTags }}
-			/>
+			<TopicsModal {...{ isOpen, onClose, onListItemClick, selectedTags }} />
 			<AppLayout>
 				<div className="grid grid-cols-12">
 					<div className="block w-full md:col-span-8">
@@ -186,6 +185,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 										}
 										updateTitle={(value: string) => updateTitle(index, value)}
 										updateVenue={(value: string) => updateVenue(index, value)}
+										updateLink={(value: string) => updateLink(index, value)}
 									/>
 								</>
 							);

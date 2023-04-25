@@ -46,6 +46,18 @@ const useLinkedEvents = () => {
 		);
 	};
 
+	const updateLink = (index: number, newLink: string) => {
+		setLinkedEvents(
+			linkedEvents.map((e, i) => {
+				if (index == i) {
+					e.meetLink = newLink;
+				}
+
+				return e;
+			})
+		);
+	};
+
 	const updateDate = (index: number, newDate: string) => {
 		setLinkedEvents(
 			linkedEvents.map((e, i) => {
@@ -81,6 +93,7 @@ const useLinkedEvents = () => {
 		updateDate,
 		updateDescription,
 		updateVenue,
+		updateLink,
 		deleteEvent,
 	};
 };

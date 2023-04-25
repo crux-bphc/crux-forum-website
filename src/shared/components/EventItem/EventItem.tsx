@@ -41,8 +41,8 @@ const EventItem: React.FC<EventItemProps> = ({
 						<h4 className="font-semibold lg:text-sm">{name}</h4>
 						<p className="mb-3">{description}</p>
 						{/* Venue and Meet Link */}
-						<div className="grid grid-cols-2">
-							<div className="flex-start flex">
+						<div className="grid grid-cols-2 items-center">
+							<div className="flex-start flex items-center">
 								<BiMap className="mr-2 h-5 w-5 text-teal-500" />
 								<p>{venue}</p>
 							</div>
