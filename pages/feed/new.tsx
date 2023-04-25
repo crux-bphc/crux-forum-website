@@ -15,135 +15,12 @@ import useDisclosure from '@/shared/hooks/useDisclosure';
 import Button from '@/shared/ui/Button';
 import Spinner from '@/shared/ui/Spinner';
 import Tag from '@/shared/ui/Tag';
-import TextArea from '@/shared/ui/TextArea';
 import RTE from '@/feed/new/components/RTE';
+import { Topic } from '@/shared/types/topic';
 import React from 'react';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { Descendant } from 'slate';
 import { useRouter } from 'next/router';
-
-const DUMMY_DATA: any = [
-	{
-		_id: '614c8f08fe60d017770f5ebd',
-		name: 'Quire',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebe',
-		name: 'Brainbox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebf',
-		name: 'Yata',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec0',
-		name: 'Izio',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec1',
-		name: 'Browsedrive',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec2',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec3',
-		name: 'Roodel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec4',
-		name: 'Feedmix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec5',
-		name: 'Midel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec6',
-		name: 'Teklist',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec7',
-		name: 'Linkbuzz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec8',
-		name: 'Eabox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec9',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eca',
-		name: 'Livepath',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecb',
-		name: 'Kwimbee',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecc',
-		name: 'Voonder',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecd',
-		name: 'Flipbug',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ece',
-		name: 'Vimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecf',
-		name: 'Ainyx',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed0',
-		name: 'Omba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed1',
-		name: 'Aimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed2',
-		name: 'Oozz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed3',
-		name: 'Pixoboo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed4',
-		name: 'Livefish',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed5',
-		name: 'Twimm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed6',
-		name: 'Tazz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed7',
-		name: 'Zoozzy',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed8',
-		name: 'Skinix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed9',
-		name: 'Avamm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eda',
-		name: 'Blogtags',
-	},
-];
 
 interface NoticeDetails {
 	title: 'Random Title';
@@ -158,16 +35,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 	const { loading: userLoading, data: userData } = useLoggedInUserQuery();
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
-	const [selectedTags, setSelectedTags] = React.useState<any[]>([
-		{
-			_id: '614c8f08fe60d017770f5ebd',
-			name: 'Quire',
-		},
-		{
-			_id: '614c8f08fe60d017770f5ebe',
-			name: 'Brainbox',
-		},
-	]);
+	const [selectedTags, setSelectedTags] = React.useState<Topic[]>([]);
 
 	const [noticeBody, setNoticeBody] = React.useState<Descendant[]>([
 		{
@@ -252,7 +120,6 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		<>
 			{/* @ts-ignore */}
 			<TopicsModal
-				tags={DUMMY_DATA}
 				{...{ isOpen, onClose, onListItemClick, selectedTags }}
 			/>
 			<AppLayout>
@@ -276,14 +143,18 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 							<div className="flex items-center">
 								<div className="my-3 w-full">
 									{selectedTags.length ? (
-										<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+										<div className="flex gap-2">
 											{selectedTags.map((tag) => {
 												return (
 													<Tag
 														key={tag._id}
-														color={'purple'}
+														color={tag.color}
 														onClick={() => {
-															const a = 1 + 2;
+															setSelectedTags(
+																selectedTags.filter(
+																	(topic) => topic._id !== tag._id
+																)
+															);
 														}}
 													>
 														{tag.name}

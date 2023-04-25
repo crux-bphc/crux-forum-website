@@ -17,54 +17,6 @@ const colors = {
 	blue: 'bg-blue-500',
 };
 
-const mockNotice = {
-	_id: 'abc123',
-	title: 'Lorem Ipsum',
-	body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec tempor arcu. Nulla facilisi. Phasellus sapien risus, auctor feugiat lorem vitae, vulputate euismod nulla. Proin laoreet odio condimentum turpis bibendum, vitae luctus sapien pulvinar. Mauris vitae suscipit odio. Etiam rhoncus luctus quam eget condimentum. Fusce quis elit sed turpis porttitor euismod.',
-	time: '2022-10-04T13:10:52.525Z',
-	postedBy: {
-		_id: '633417dd9401de010eebdee7',
-		name: 'ANIMESH AV',
-		profilePicture: 'https://d23hwxa527zkay.cloudfront.net/f20200193.jpg',
-	},
-	attachedImages: [
-		'https://picsum.photos/200/300',
-		'https://picsum.photos/200/301',
-		'https://picsum.photos/200/302',
-	],
-	topics: [
-		{
-			_id: '614c8f08fe60d017770f5ec7',
-			name: 'Linkbuzz',
-			color: 'blue' as keyof typeof colors,
-		},
-		{
-			_id: '614c8f08fe60d017770f5ec8',
-			name: 'Eabox',
-			color: 'purple',
-		},
-	],
-	isEvent: false,
-	linkedEvents: [
-		{
-			_id: '633c3156cd75e701a37dc75b',
-			name: 'First Event in History',
-			venue: 'LTC Lobby',
-			description: 'Some random event which no one attends',
-			date: '16/10/2022 4:00PM',
-		},
-		{
-			_id: '633c3156cd75e701a37dc75c',
-			name: 'Second Event in History',
-			venue: 'Mess 1',
-			description: 'Some other random event which no one attends',
-			date: '16/10/2022 4:00PM',
-			meetLink: 'https://meet.google.com',
-		},
-	],
-	likeCount: 12,
-};
-
 const FeedIndexRoute: NextPage = () => {
 	const [getFeed, { loading, data }] = useGetFeedLazyQuery();
 

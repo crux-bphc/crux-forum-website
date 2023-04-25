@@ -8,7 +8,10 @@ import {
 import Button from '@/shared/ui/Button';
 import Link from '@/shared/ui/Link';
 import Switch from '@/shared/ui/Switch';
-import TopicSwitch from '@/shared/ui/TopicSwitch';
+import TopicsModal from '@/shared/components/TopicsModal';
+import useDisclosure from '@/shared/hooks/useDisclosure';
+import { Topic } from '@/shared/types/topic';
+import Tag from '@/shared/ui/Tag';
 import { useApolloClient } from '@apollo/client';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
@@ -32,101 +35,28 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 	data,
 }) => {
 	const { data: loggedInUser } = useLoggedInUserQuery();
+
 	const [finishRegistration] = useFinishRegistrationMutation();
-	const colors = ['red', 'green', 'purple', 'teal', 'blue'] as const;
-	const [topics, setTopics] = useState([
-		{
-			topic: 'topic1',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic2',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic3',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic4',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic5',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic6',
-			enabled: true,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic7',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic8',
-			enabled: true,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic9',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic10',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic11',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic12',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic13',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic14',
-			enabled: true,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic15',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic16',
-			enabled: true,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-		{
-			topic: 'topic17',
-			enabled: false,
-			color: colors[Math.floor(Math.random() * colors.length)],
-		},
-	]);
 	const [getUrl] = useCreateFileUploadUrlLazyQuery();
+
 	const apolloClient = useApolloClient();
 
 	if (!loggedInUser?.user) {
 		return <div>Loading...</div>;
 	}
+
+	const { isOpen, onClose, onOpen } = useDisclosure();
+	const [selectedTags, setSelectedTags] = useState<Topic[]>([]);
+
+	const onListItemClick = (topic: TopicType) => {
+		if (selectedTags.find((el) => el._id === topic._id)) {
+			const updatedTags = selectedTags.filter((el) => el._id !== topic._id);
+			console.log(updatedTags);
+			setSelectedTags(updatedTags);
+		} else {
+			setSelectedTags([...selectedTags, topic]);
+		}
+	};
 
 	return (
 		<>
@@ -153,27 +83,32 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 						return (
 							<Form data-testid="notifications-form">
 								<div>
-									<h1 className="mb-2 text-4xl font-bold">
+									<h1
+										className="mb-2 cursor-pointer text-4xl font-bold text-green-400"
+										onClick={onOpen}
+									>
 										What are you interested in?
 									</h1>
 								</div>
+								<div className="flex gap-2">
+									{selectedTags.map((topic) => (
+										<Tag
+											key={topic._id}
+											color={topic.color}
+											onClick={() => {
+												setSelectedTags(
+													selectedTags.filter((tag) => topic._id !== tag._id)
+												);
+											}}
+										>
+											{topic.name}
+										</Tag>
+									))}
+								</div>
 								<div className="ml-[-1rem] flex flex-wrap space-x-4 space-y-4 pb-8">
-									<div></div>
-									{topics.map((topic, index) => {
-										return (
-											<TopicSwitch
-												checked={topic.enabled}
-												key={topic.topic}
-												onClick={() => {
-													topics[index].enabled = !topic.enabled;
-													setTopics(topics);
-												}}
-												color={topic.color}
-											>
-												{topic.topic}
-											</TopicSwitch>
-										);
-									})}
+									<TopicsModal
+										{...{ isOpen, onClose, onListItemClick, selectedTags }}
+									/>
 								</div>
 								<div>
 									<h1 className="mb-4 text-4xl font-bold">Preferences</h1>
@@ -288,6 +223,9 @@ const NotificationsForm: React.FC<NotificationsFormProps> = ({
 																	roundup: values.roundup,
 																},
 																profilePicture: `${process.env.NEXT_PUBLIC_IMG_URL}/${filename}`,
+																subscriptions: selectedTags.map(
+																	(topic) => topic._id
+																),
 															};
 
 															if (data?.user) {
