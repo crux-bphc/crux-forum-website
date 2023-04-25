@@ -1,0 +1,5 @@
+mutation SubscribeToEvent($event: String!) {
+    subscribeEvent(
+			eventId: $event
+	)
+}

@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import EventItem from '@/shared/components/EventItem';
 import RTE from '@/feed/new/components/RTE';
+import { Event } from '@/shared/types/event';
 
 interface PostGalleryProps {
 	images: string[];
@@ -122,9 +123,18 @@ interface NoticeDetails {
 interface FeedPostProps {
 	showActions?: boolean;
 	notice: NoticeDetails;
+	subscribedEvents?: Event[];
+	subscribeEvent?: (event: Event) => void;
+	unsubscribeEvent?: (event: Event) => void;
 }
 
-const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
+const FeedPost: React.FC<FeedPostProps> = ({
+	showActions = true,
+	notice,
+	subscribedEvents = [],
+	subscribeEvent = (event: Event) => {},
+	unsubscribeEvent = (event: Event) => {},
+}) => {
 	const {
 		_id,
 		postedBy,
@@ -188,7 +198,21 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 						<div>
 							<h4 className="font-semibold">Events</h4>
 							{linkedEvents.map((event) => (
-								<EventItem key={event._id} event={event} shadow={true} />
+								<EventItem
+									key={event._id}
+									event={event}
+									shadow={true}
+									subscribed={
+										subscribedEvents.find((e) => e._id === event._id) !==
+										undefined
+									}
+									onToggleSubscription={() => {
+										subscribedEvents.find((e) => e._id === event._id) !==
+										undefined
+											? unsubscribeEvent(event)
+											: subscribeEvent(event);
+									}}
+								/>
 							))}
 						</div>
 

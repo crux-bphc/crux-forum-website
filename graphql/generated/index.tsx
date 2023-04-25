@@ -479,6 +479,20 @@ export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutUserMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type SubscribeToEventMutationVariables = Exact<{
+  event: Scalars['String'];
+}>;
+
+
+export type SubscribeToEventMutation = { __typename?: 'Mutation', subscribeEvent: boolean };
+
+export type UnsubscribeFromEventMutationVariables = Exact<{
+  event: Scalars['String'];
+}>;
+
+
+export type UnsubscribeFromEventMutation = { __typename?: 'Mutation', unsubscribeEvent: boolean };
+
 export type UpdateUserMutationVariables = Exact<{
   input: EditProfileInputType;
 }>;
@@ -492,6 +506,11 @@ export type CreateFileUploadUrlQueryVariables = Exact<{
 
 
 export type CreateFileUploadUrlQuery = { __typename?: 'Query', url: Array<string> };
+
+export type GetEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetEventsQuery = { __typename?: 'Query', getAllEvents: { __typename?: 'PaginatedResponseOfEventType', data: Array<{ __typename?: 'EventType', _id: string, name: string, description?: string | null, date: string, venue: string, meetLink: string }> } };
 
 export type GetTopicsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -669,6 +688,68 @@ export function useLogoutUserMutation(baseOptions?: Apollo.MutationHookOptions<L
 export type LogoutUserMutationHookResult = ReturnType<typeof useLogoutUserMutation>;
 export type LogoutUserMutationResult = Apollo.MutationResult<LogoutUserMutation>;
 export type LogoutUserMutationOptions = Apollo.BaseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables>;
+export const SubscribeToEventDocument = gql`
+    mutation SubscribeToEvent($event: String!) {
+  subscribeEvent(eventId: $event)
+}
+    `;
+export type SubscribeToEventMutationFn = Apollo.MutationFunction<SubscribeToEventMutation, SubscribeToEventMutationVariables>;
+
+/**
+ * __useSubscribeToEventMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToEventMutation, { data, loading, error }] = useSubscribeToEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useSubscribeToEventMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToEventMutation, SubscribeToEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToEventMutation, SubscribeToEventMutationVariables>(SubscribeToEventDocument, options);
+      }
+export type SubscribeToEventMutationHookResult = ReturnType<typeof useSubscribeToEventMutation>;
+export type SubscribeToEventMutationResult = Apollo.MutationResult<SubscribeToEventMutation>;
+export type SubscribeToEventMutationOptions = Apollo.BaseMutationOptions<SubscribeToEventMutation, SubscribeToEventMutationVariables>;
+export const UnsubscribeFromEventDocument = gql`
+    mutation UnsubscribeFromEvent($event: String!) {
+  unsubscribeEvent(eventId: $event)
+}
+    `;
+export type UnsubscribeFromEventMutationFn = Apollo.MutationFunction<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>;
+
+/**
+ * __useUnsubscribeFromEventMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromEventMutation, { data, loading, error }] = useUnsubscribeFromEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromEventMutation(baseOptions?: Apollo.MutationHookOptions<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>(UnsubscribeFromEventDocument, options);
+      }
+export type UnsubscribeFromEventMutationHookResult = ReturnType<typeof useUnsubscribeFromEventMutation>;
+export type UnsubscribeFromEventMutationResult = Apollo.MutationResult<UnsubscribeFromEventMutation>;
+export type UnsubscribeFromEventMutationOptions = Apollo.BaseMutationOptions<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($input: EditProfileInputType!) {
   updateUser(input: $input)
@@ -733,6 +814,47 @@ export function useCreateFileUploadUrlLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type CreateFileUploadUrlQueryHookResult = ReturnType<typeof useCreateFileUploadUrlQuery>;
 export type CreateFileUploadUrlLazyQueryHookResult = ReturnType<typeof useCreateFileUploadUrlLazyQuery>;
 export type CreateFileUploadUrlQueryResult = Apollo.QueryResult<CreateFileUploadUrlQuery, CreateFileUploadUrlQueryVariables>;
+export const GetEventsDocument = gql`
+    query GetEvents {
+  getAllEvents(limit: 0, skip: 0) {
+    data {
+      _id
+      name
+      description
+      date
+      venue
+      meetLink
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetEventsQuery__
+ *
+ * To run a query within a React component, call `useGetEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+      }
+export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
+export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
+export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
+export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;
 export const GetTopicsDocument = gql`
     query GetTopics {
   getAllTopics(limit: 0, skip: 0) {

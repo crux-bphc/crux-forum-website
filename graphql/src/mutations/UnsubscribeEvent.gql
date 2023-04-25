@@ -1,0 +1,5 @@
+mutation UnsubscribeFromEvent($event: String!) {
+    unsubscribeEvent(
+			eventId: $event
+	)
+}

@@ -23,7 +23,7 @@ import { Descendant } from 'slate';
 import { useRouter } from 'next/router';
 
 interface NoticeDetails {
-	title: 'Random Title';
+	title: string;
 	body: string;
 	attachedImages: string[];
 	attachedFiles: string[];
