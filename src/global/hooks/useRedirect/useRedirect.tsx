@@ -11,22 +11,22 @@ const useRedirect = () => {
 
 	React.useEffect(() => {
 		if (!loading || networkStatus === NetworkStatus.ready) {
-			// if (router.pathname !== '/' && !data?.user) {
-			// 	router.replace('/');
-			// }
-			// if (
-			// 	router.pathname !== '/register' &&
-			// 	data?.user &&
-			// 	!data.user.profilePicture &&
-			// 	!data.user.bio
-			// ) {
-			// 	router.replace('/register');
-			// }
-			// if (router.pathname === '/' || router.pathname === '/register') {
-			// 	if (data?.user && data.user.profilePicture && data.user.bio) {
-			// 		router.replace('/feed');
-			// 	}
-			// }
+			if (router.pathname !== '/' && !data?.user) {
+				router.replace('/');
+			}
+			if (
+				router.pathname !== '/register' &&
+				data?.user &&
+				!data.user.profilePicture &&
+				!data.user.bio
+			) {
+				router.replace('/register');
+			}
+			if (router.pathname === '/' || router.pathname === '/register') {
+				if (data?.user && data.user.profilePicture && data.user.bio) {
+					router.replace('/feed');
+				}
+			}
 		}
 	}, [loading, networkStatus, router, data?.user]);
 

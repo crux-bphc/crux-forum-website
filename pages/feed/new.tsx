@@ -16,8 +16,11 @@ import Button from '@/shared/ui/Button';
 import Spinner from '@/shared/ui/Spinner';
 import Tag from '@/shared/ui/Tag';
 import TextArea from '@/shared/ui/TextArea';
+import RTE from '@/feed/new/components/RTE';
 import React from 'react';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { Descendant } from 'slate';
+import { useRouter } from 'next/router';
 
 const DUMMY_DATA: any = [
 	{
@@ -151,6 +154,7 @@ interface NoticeDetails {
 }
 
 const EditPostLayout: React.FC<any> = ({ children }) => {
+	const router = useRouter();
 	const { loading: userLoading, data: userData } = useLoggedInUserQuery();
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
@@ -162,6 +166,13 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		{
 			_id: '614c8f08fe60d017770f5ebe',
 			name: 'Brainbox',
+		},
+	]);
+
+	const [noticeBody, setNoticeBody] = React.useState<Descendant[]>([
+		{
+			type: 'paragraph',
+			children: [{ text: '' }],
 		},
 	]);
 
@@ -183,12 +194,12 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		isEvent: false,
 	});
 
-	const setNoticeBody = (val: string) => {
+	React.useEffect(() => {
 		setNoticeDetails({
 			...noticeDetails,
-			body: val,
+			body: JSON.stringify(noticeBody),
 		});
-	};
+	}, [noticeBody]);
 
 	const [createNotice] = useCreateNoticeMutation();
 
@@ -230,9 +241,9 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		if (data.errors) {
 			alert('Something went wrong. Please try again.');
 			return;
+		} else {
+			router.push('/feed');
 		}
-
-		console.log('Posted!');
 	};
 
 	return userLoading ? (
@@ -250,12 +261,13 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 						{/* Notice text area */}
 						<BoundingBox>
 							<h4 className="mt-1 font-semibold">Notice Content</h4>
-							<TextArea
+							{/* <TextArea
 								charLimit={500}
 								height={400}
 								setText={setNoticeBody}
 								value={noticeDetails.body}
-							/>
+							/> */}
+							<RTE initial={noticeBody} onChange={setNoticeBody}></RTE>
 						</BoundingBox>
 
 						{/* Tags Area */}

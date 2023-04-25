@@ -14,6 +14,7 @@ import {
 import clsx from 'clsx';
 import Image from 'next/image';
 import EventItem from '@/shared/components/EventItem';
+import RTE from '@/feed/new/components/RTE';
 
 interface PostGalleryProps {
 	images: string[];
@@ -106,11 +107,11 @@ interface NoticeDetails {
 	time: string;
 	attachedImages?: string[] | null | undefined;
 	topics?:
-		{
-			_id: string;
-			name: string;
-			color: string;
-		}[]
+		| {
+				_id: string;
+				name: string;
+				color: string;
+		  }[]
 		| null
 		| undefined;
 	isEvent: boolean;
@@ -152,18 +153,26 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 						<div className="text-right">
 							<div className="hidden gap-2 lg:flex">
 								{/* @ts-ignore */}
-								{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+								{topics?.map((topic) => (
+									<Tag key={topic._id} color={topic.color}>
+										{topic.name}
+									</Tag>
+								))}
 							</div>
 						</div>
 					</div>
 					<div className="mt-3 flex gap-2 lg:hidden">
 						{/* @ts-ignore */}
-						{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+						{topics?.map((topic) => (
+							<Tag key={topic._id} color={topic.color}>
+								{topic.name}
+							</Tag>
+						))}
 					</div>
 
 					{/* text */}
 					<div className="my-4">
-						<p className="text-sm font-light">{body}</p>
+						<RTE initial={JSON.parse(body)} readonly></RTE>
 					</div>
 				</div>
 

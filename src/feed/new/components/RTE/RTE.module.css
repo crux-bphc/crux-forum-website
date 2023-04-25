@@ -1,0 +1,10 @@
+.toolbar {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.toolbar > button {
+    border-radius: 0;
+    height: 2rem;
+    width: 2rem;
+}

@@ -130,10 +130,6 @@ const FeedIndexRoute: NextPage = () => {
 						) : (
 							<></>
 						)}
-						{/* @ts-ignore */}
-						<FeedPost notice={mockNotice} />
-						{/* @ts-ignore */}
-						<FeedPost notice={mockNotice} />
 					</div>
 				</div>
 			</FeedLayout>
