@@ -1,0 +1,19 @@
+query GetTopicInformation($topic: String!) {
+    getSingleTopic(id: $topic) {
+        _id
+        name
+        about
+        image
+        color
+        about
+        subscribedToTopic
+        subscriberCount
+    }
+
+    getNoticesByTopic(topicId: $topic) {
+        ...MinPost
+        linkedEvents {
+            _id
+        }
+    }
+}

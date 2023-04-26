@@ -419,6 +419,7 @@ export type TopicType = {
   image: Scalars['String'];
   name: Scalars['String'];
   subscribedToTopic: Scalars['Boolean'];
+  subscriberCount: Scalars['Int'];
 };
 
 export type UserRegisterType = {
@@ -451,7 +452,7 @@ export type UserType = {
   subscriptions?: Maybe<Array<TopicType>>;
 };
 
-export type MinPostFragment = { __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null };
+export type MinPostFragment = { __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null };
 
 export type MinUserFragment = { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null };
 
@@ -539,6 +540,13 @@ export type GetFeedQueryVariables = Exact<{
 
 export type GetFeedQuery = { __typename?: 'Query', getFeed: { __typename?: 'PaginatedResponseOfNoticeType', data: Array<{ __typename?: 'NoticeType', _id: string, title: string, body: string, time: string, attachedImages?: Array<string> | null, isEvent: boolean, likeCount: number, postedBy: { __typename?: 'UserType', _id: string, name: string, profilePicture?: string | null }, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, linkedEvents: Array<{ __typename?: 'EventType', _id: string, name: string, venue: string, date: string, meetLink: string }> }> } };
 
+export type GetTopicInformationQueryVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type GetTopicInformationQuery = { __typename?: 'Query', getSingleTopic: { __typename?: 'TopicType', _id: string, name: string, about: string, image: string, color: string, subscribedToTopic: boolean, subscriberCount: number }, getNoticesByTopic: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, linkedEvents: Array<{ __typename?: 'EventType', _id: string }>, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null } | null> };
+
 export type GoogleAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -559,12 +567,13 @@ export type LoggedInUserQuery = { __typename?: 'Query', user?: { __typename?: 'U
 export type UserProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
+export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
 
 export const MinPostFragmentDoc = gql`
     fragment MinPost on NoticeType {
   _id
   topics {
+    _id
     name
     color
   }
@@ -1032,6 +1041,54 @@ export function useGetFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetFeedQueryHookResult = ReturnType<typeof useGetFeedQuery>;
 export type GetFeedLazyQueryHookResult = ReturnType<typeof useGetFeedLazyQuery>;
 export type GetFeedQueryResult = Apollo.QueryResult<GetFeedQuery, GetFeedQueryVariables>;
+export const GetTopicInformationDocument = gql`
+    query GetTopicInformation($topic: String!) {
+  getSingleTopic(id: $topic) {
+    _id
+    name
+    about
+    image
+    color
+    about
+    subscribedToTopic
+    subscriberCount
+  }
+  getNoticesByTopic(topicId: $topic) {
+    ...MinPost
+    linkedEvents {
+      _id
+    }
+  }
+}
+    ${MinPostFragmentDoc}`;
+
+/**
+ * __useGetTopicInformationQuery__
+ *
+ * To run a query within a React component, call `useGetTopicInformationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopicInformationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopicInformationQuery({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useGetTopicInformationQuery(baseOptions: Apollo.QueryHookOptions<GetTopicInformationQuery, GetTopicInformationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTopicInformationQuery, GetTopicInformationQueryVariables>(GetTopicInformationDocument, options);
+      }
+export function useGetTopicInformationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopicInformationQuery, GetTopicInformationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTopicInformationQuery, GetTopicInformationQueryVariables>(GetTopicInformationDocument, options);
+        }
+export type GetTopicInformationQueryHookResult = ReturnType<typeof useGetTopicInformationQuery>;
+export type GetTopicInformationLazyQueryHookResult = ReturnType<typeof useGetTopicInformationLazyQuery>;
+export type GetTopicInformationQueryResult = Apollo.QueryResult<GetTopicInformationQuery, GetTopicInformationQueryVariables>;
 export const GoogleAuthUrlDocument = gql`
     query GoogleAuthURL {
   url: GoogleAuthUrl

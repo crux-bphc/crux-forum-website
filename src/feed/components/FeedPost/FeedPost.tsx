@@ -16,6 +16,7 @@ import Image from 'next/image';
 import EventItem from '@/shared/components/EventItem';
 import RTE from '@/feed/new/components/RTE';
 import { Event } from '@/shared/types/event';
+import { useRouter } from 'next/router';
 
 interface PostGalleryProps {
 	images: string[];
@@ -164,7 +165,7 @@ const FeedPost: React.FC<FeedPostProps> = ({
 							<div className="hidden gap-2 lg:flex">
 								{/* @ts-ignore */}
 								{topics?.map((topic) => (
-									<Tag key={topic._id} color={topic.color}>
+									<Tag id={topic._id} key={topic._id} color={topic.color}>
 										{topic.name}
 									</Tag>
 								))}
@@ -174,7 +175,7 @@ const FeedPost: React.FC<FeedPostProps> = ({
 					<div className="mt-3 flex gap-2 lg:hidden">
 						{/* @ts-ignore */}
 						{topics?.map((topic) => (
-							<Tag key={topic._id} color={topic.color}>
+							<Tag key={topic._id} id={topic._id} color={topic.color}>
 								{topic.name}
 							</Tag>
 						))}

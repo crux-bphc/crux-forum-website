@@ -202,6 +202,7 @@ type TopicType {
   image: String!
   name: String!
   subscribedToTopic: Boolean!
+  subscriberCount: Int!
 }
 
 input UserRegisterType {

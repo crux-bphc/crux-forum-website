@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const colors = {
@@ -11,15 +12,29 @@ const colors = {
 
 interface TagProps {
 	color?: keyof typeof colors;
+	id?: string;
 	children: React.ReactNode;
 	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Tag: React.FC<TagProps> = ({ color = 'purple', children, onClick }) => {
+const Tag: React.FC<TagProps> = ({
+	color = 'purple',
+	children,
+	id,
+	onClick,
+}) => {
+	const router = useRouter();
+
 	return (
 		<>
 			<button
-				onClick={onClick}
+				onClick={
+					onClick
+						? onClick
+						: id
+						? () => router.push(`/profile/${id}`)
+						: () => {}
+				}
 				className={clsx([
 					'inline-block w-max cursor-pointer rounded px-2 py-0.5 font-semibold',
 					colors[color],

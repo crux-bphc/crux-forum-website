@@ -1,6 +1,7 @@
 fragment MinPost on NoticeType {
 	_id
 	topics {
+		_id
 		name
 		color
 	}

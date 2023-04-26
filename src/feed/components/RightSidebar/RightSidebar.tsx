@@ -10,7 +10,7 @@ import IconButton from '@/shared/ui/IconButton';
 import Link from 'next/link';
 
 const RightSideBar: React.FC = () => {
-	const [getUserProfile, {data}] = useUserProfileLazyQuery();
+	const [getUserProfile, { data }] = useUserProfileLazyQuery();
 
 	React.useEffect(() => {
 		getUserProfile();
@@ -20,7 +20,7 @@ const RightSideBar: React.FC = () => {
 
 	const [selectedTopics, setSelectedTopics] = React.useState<Topic[]>([]);
 
-	const onListItemClick = (topic: TopicType) => {
+	const onListItemClick = (topic: Topic) => {
 		if (selectedTopics.find((el) => el._id === topic._id)) {
 			const updatedTags = selectedTopics.filter((el) => el._id !== topic._id);
 			console.log(updatedTags);
@@ -56,9 +56,9 @@ const RightSideBar: React.FC = () => {
 					<h3 className="mb-3 text-xl font-semibold">Following</h3>
 					<div className="mb-6">
 						<div className="mb-2">
-							{data?.user?.subscriptions?.map(tag => (
-								<div key={tag._id} className='mr-2 mb-2 inline-block'>
-									<Tag color={tag.color}>{tag.name}</Tag>
+							{data?.user?.subscriptions?.map((tag) => (
+								<div key={tag._id} className="mr-2 mb-2 inline-block">
+									<Tag id={tag._id} color={tag.color}>{tag.name}</Tag>
 								</div>
 							))}
 						</div>
