@@ -22,6 +22,7 @@
     "@apollo/client": "^3.6.7",
     "@headlessui/react": "^1.6.4",
     "@storybook/addon-actions": "^6.5.9",
+    "@tanstack/react-virtual": "^3.0.0-beta.54",
     "clsx": "^1.1.1",
     "cypress": "^10.3.0",
     "formik": "^2.2.9",

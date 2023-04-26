@@ -9,6 +9,8 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+
 import {
 	useUserProfileLazyQuery,
 	useGetEventsLazyQuery,
@@ -21,6 +23,8 @@ import { gql } from '@apollo/client';
 import { Event } from '@/shared/types/event';
 
 const FeedIndexRoute: NextPage = () => {
+	const [feed, setFeed] = React.useState<NoticeType[]>([]);
+
 	const [getFeed, { loading, data }] = useGetFeedLazyQuery();
 
 	const [getUserProfile, { data: userEventsData, loading: userEventsLoading }] =
@@ -33,10 +37,40 @@ const FeedIndexRoute: NextPage = () => {
 	const [unsubsribeFromEvent, { error: unsubscribeError }] =
 		useUnsubscribeFromEventMutation();
 
+	const rowVirtualizer = useWindowVirtualizer({
+		count: data?.getFeed.count ?? 0,
+		estimateSize: () => 400,
+		overscan: 2,
+	});
+
 	React.useEffect(() => {
 		getUserProfile();
 		getEvents();
 	}, []);
+
+	React.useEffect(() => {
+		getFeed({
+			variables: {
+				limit: 5,
+				skip: feed.length,
+			},
+		});
+	}, [rowVirtualizer.getVirtualItems()]);
+
+	React.useEffect(() => {
+		getFeed({
+			variables: {
+				limit: 5,
+				skip: feed.length,
+			},
+		});
+	}, []);
+
+	React.useEffect(() => {
+		if (data) {
+			setFeed([...feed, ...(data?.getFeed.data ?? [])]);
+		}
+	}, [loading]);
 
 	const subscribe = async (event: Event) => {
 		try {
@@ -103,19 +137,6 @@ const FeedIndexRoute: NextPage = () => {
 		}
 	};
 
-	React.useEffect(() => {
-		getFeed({
-			variables: {
-				limit: 5,
-				skip: 0,
-			},
-		});
-	}, []);
-
-	React.useEffect(() => {
-		console.log(data);
-	}, [loading]);
-
 	return (
 		<>
 			<FeedLayout
@@ -164,15 +185,26 @@ const FeedIndexRoute: NextPage = () => {
 					</div>
 					<div className="mt-8 flex flex-col gap-8 py-3 sm:px-8 lg:px-10">
 						{data ? (
-							data.getFeed.data.map((notice) => (
-								<FeedPost
-									key={notice._id}
-									notice={notice}
-									subscribedEvents={userEventsData?.user?.subscribedEvents}
-									subscribeEvent={subscribe}
-									unsubscribeEvent={unsubscribe}
-								/>
-							))
+							rowVirtualizer.getVirtualItems().map((virtualItem) => {
+								const isLoading = virtualItem.index > feed.length - 1;
+
+								if (!isLoading) {
+									const notice = feed[virtualItem.index];
+
+									return (
+										<FeedPost
+											key={virtualItem.index}
+											notice={notice}
+											subscribedEvents={userEventsData?.user?.subscribedEvents}
+											subscribeEvent={subscribe}
+											unsubscribeEvent={unsubscribe}
+											ref={rowVirtualizer.measureElement}
+										></FeedPost>
+									);
+								} else {
+									return <p key={virtualItem.index}>Loading...</p>;
+								}
+							})
 						) : (
 							<></>
 						)}
