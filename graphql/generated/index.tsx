@@ -486,12 +486,26 @@ export type SubscribeToEventMutationVariables = Exact<{
 
 export type SubscribeToEventMutation = { __typename?: 'Mutation', subscribeEvent: boolean };
 
+export type SubscribeToTopicMutationVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type SubscribeToTopicMutation = { __typename?: 'Mutation', subscribeTopic: boolean };
+
 export type UnsubscribeFromEventMutationVariables = Exact<{
   event: Scalars['String'];
 }>;
 
 
 export type UnsubscribeFromEventMutation = { __typename?: 'Mutation', unsubscribeEvent: boolean };
+
+export type UnsubscribeFromTopicMutationVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type UnsubscribeFromTopicMutation = { __typename?: 'Mutation', unsubscribeTopic: boolean };
 
 export type UpdateUserMutationVariables = Exact<{
   input: EditProfileInputType;
@@ -719,6 +733,37 @@ export function useSubscribeToEventMutation(baseOptions?: Apollo.MutationHookOpt
 export type SubscribeToEventMutationHookResult = ReturnType<typeof useSubscribeToEventMutation>;
 export type SubscribeToEventMutationResult = Apollo.MutationResult<SubscribeToEventMutation>;
 export type SubscribeToEventMutationOptions = Apollo.BaseMutationOptions<SubscribeToEventMutation, SubscribeToEventMutationVariables>;
+export const SubscribeToTopicDocument = gql`
+    mutation SubscribeToTopic($topic: String!) {
+  subscribeTopic(topicID: $topic)
+}
+    `;
+export type SubscribeToTopicMutationFn = Apollo.MutationFunction<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>;
+
+/**
+ * __useSubscribeToTopicMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToTopicMutation, { data, loading, error }] = useSubscribeToTopicMutation({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useSubscribeToTopicMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>(SubscribeToTopicDocument, options);
+      }
+export type SubscribeToTopicMutationHookResult = ReturnType<typeof useSubscribeToTopicMutation>;
+export type SubscribeToTopicMutationResult = Apollo.MutationResult<SubscribeToTopicMutation>;
+export type SubscribeToTopicMutationOptions = Apollo.BaseMutationOptions<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>;
 export const UnsubscribeFromEventDocument = gql`
     mutation UnsubscribeFromEvent($event: String!) {
   unsubscribeEvent(eventId: $event)
@@ -750,6 +795,37 @@ export function useUnsubscribeFromEventMutation(baseOptions?: Apollo.MutationHoo
 export type UnsubscribeFromEventMutationHookResult = ReturnType<typeof useUnsubscribeFromEventMutation>;
 export type UnsubscribeFromEventMutationResult = Apollo.MutationResult<UnsubscribeFromEventMutation>;
 export type UnsubscribeFromEventMutationOptions = Apollo.BaseMutationOptions<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>;
+export const UnsubscribeFromTopicDocument = gql`
+    mutation UnsubscribeFromTopic($topic: String!) {
+  unsubscribeTopic(topicID: $topic)
+}
+    `;
+export type UnsubscribeFromTopicMutationFn = Apollo.MutationFunction<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>;
+
+/**
+ * __useUnsubscribeFromTopicMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromTopicMutation, { data, loading, error }] = useUnsubscribeFromTopicMutation({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromTopicMutation(baseOptions?: Apollo.MutationHookOptions<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>(UnsubscribeFromTopicDocument, options);
+      }
+export type UnsubscribeFromTopicMutationHookResult = ReturnType<typeof useUnsubscribeFromTopicMutation>;
+export type UnsubscribeFromTopicMutationResult = Apollo.MutationResult<UnsubscribeFromTopicMutation>;
+export type UnsubscribeFromTopicMutationOptions = Apollo.BaseMutationOptions<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($input: EditProfileInputType!) {
   updateUser(input: $input)

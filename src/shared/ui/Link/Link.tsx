@@ -10,7 +10,7 @@ const colors = {
 	teal: 'text-teal-500',
 };
 
-interface LinkProps {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	href: string;
 	children: React.ReactNode;
 	color?: keyof typeof colors;
@@ -22,11 +22,13 @@ const Link: React.FC<LinkProps> = ({
 	children,
 	color = 'teal',
 	className,
+	...props
 }) => {
 	return (
 		<>
 			<NextLink href={href}>
 				<a
+					{...props}
 					className={clsx([
 						'inline-block w-max text-sm underline underline-offset-1',
 						colors[color],
