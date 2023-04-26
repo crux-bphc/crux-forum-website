@@ -1,0 +1,12 @@
+query GetEvents {
+	getAllEvents(limit: 0, skip: 0) {
+		data {
+			_id
+			name
+			description
+			date
+			venue
+			meetLink
+		}
+	}
+}

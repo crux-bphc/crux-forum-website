@@ -7,7 +7,13 @@ import RightSidebar from '../components/RightSidebar';
 import TabList from '@/shared/ui/Tab/TabList';
 import TabLink from '@/shared/ui/Tab/TabLink';
 
-const FeedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+import { LeftSideBarProps } from '../components/LeftSidebar/LeftSidebar';
+
+interface FeedLayoutProps extends LeftSideBarProps {
+	children: React.ReactNode;
+}
+
+const FeedLayout: React.FC<FeedLayoutProps> = ({ children, ...otherProps }) => {
 	React.useEffect(() => {
 		document.documentElement.style.setProperty('--scroll-width', 'none');
 
@@ -23,7 +29,7 @@ const FeedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 					{/* left sidebar */}
 					<div className="col-start-1 hidden h-full w-full md:col-end-5 lg:block xl:col-end-4">
 						<div className="stick-to-header">
-							<LeftSidebar />
+							<LeftSidebar {...otherProps} />
 						</div>
 					</div>
 

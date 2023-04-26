@@ -1,26 +1,31 @@
 import React from 'react';
 import IconButton from '../../ui/IconButton';
 import Avatar from '../../ui/Avatar';
-import { HiOutlineBell, HiOutlineLink, HiOutlineMap } from 'react-icons/hi';
+import { HiOutlineBell, HiOutlineLink } from 'react-icons/hi';
+import { BiBellOff } from 'react-icons/bi';
 import { BiMap } from 'react-icons/bi';
 import Link from '@/shared/ui/Link';
 
 interface EventItemProps {
 	bottomBorder?: boolean;
 	shadow?: boolean;
+	subscribed?: boolean;
 	event: {
 		name: string;
 		meetLink: string;
 		date: string;
 		venue: string;
-		description: string;
+		description?: string;
 	};
+	onToggleSubscription?: () => void;
 }
 
 const EventItem: React.FC<EventItemProps> = ({
 	bottomBorder = true,
 	shadow = false,
-	event: { name, meetLink, date, venue, description },
+	event: { name, meetLink, date, venue, description = '' },
+	onToggleSubscription = () => {},
+	subscribed = false,
 }) => {
 	return (
 		<>
@@ -36,8 +41,8 @@ const EventItem: React.FC<EventItemProps> = ({
 						<h4 className="font-semibold lg:text-sm">{name}</h4>
 						<p className="mb-3">{description}</p>
 						{/* Venue and Meet Link */}
-						<div className="grid grid-cols-2">
-							<div className="flex-start flex">
+						<div className="grid grid-cols-2 items-center">
+							<div className="flex-start flex items-center">
 								<BiMap className="mr-2 h-5 w-5 text-teal-500" />
 								<p>{venue}</p>
 							</div>
@@ -58,11 +63,14 @@ const EventItem: React.FC<EventItemProps> = ({
 						<IconButton
 							variant="text"
 							icon={
-								<>
+								subscribed ? (
 									<HiOutlineBell className="text-cyan-500 h-5 w-5" />
-								</>
+								) : (
+									<BiBellOff className="h-5 w-5 text-white opacity-60"></BiBellOff>
+								)
 							}
 							className="block p-0"
+							onClick={() => onToggleSubscription()}
 						></IconButton>
 					</div>
 				</div>

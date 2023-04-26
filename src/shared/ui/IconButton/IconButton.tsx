@@ -25,13 +25,12 @@ const colors = {
 	},
 };
 
-interface IconButtonProps {
+interface IconButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
 	icon: React.ReactNode;
 	color?: keyof typeof colors;
 	variant?: 'solid' | 'text';
 	isLink?: boolean;
 	className?: string;
-	onClick?: () => void;
 }
 
 const IconButton = React.forwardRef(

@@ -15,135 +15,15 @@ import useDisclosure from '@/shared/hooks/useDisclosure';
 import Button from '@/shared/ui/Button';
 import Spinner from '@/shared/ui/Spinner';
 import Tag from '@/shared/ui/Tag';
-import TextArea from '@/shared/ui/TextArea';
+import RTE from '@/feed/new/components/RTE';
+import { Topic } from '@/shared/types/topic';
 import React from 'react';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
-
-const DUMMY_DATA: any = [
-	{
-		_id: '614c8f08fe60d017770f5ebd',
-		name: 'Quire',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebe',
-		name: 'Brainbox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ebf',
-		name: 'Yata',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec0',
-		name: 'Izio',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec1',
-		name: 'Browsedrive',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec2',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec3',
-		name: 'Roodel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec4',
-		name: 'Feedmix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec5',
-		name: 'Midel',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec6',
-		name: 'Teklist',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec7',
-		name: 'Linkbuzz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec8',
-		name: 'Eabox',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ec9',
-		name: 'Skyba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eca',
-		name: 'Livepath',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecb',
-		name: 'Kwimbee',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecc',
-		name: 'Voonder',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecd',
-		name: 'Flipbug',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ece',
-		name: 'Vimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ecf',
-		name: 'Ainyx',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed0',
-		name: 'Omba',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed1',
-		name: 'Aimbo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed2',
-		name: 'Oozz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed3',
-		name: 'Pixoboo',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed4',
-		name: 'Livefish',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed5',
-		name: 'Twimm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed6',
-		name: 'Tazz',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed7',
-		name: 'Zoozzy',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed8',
-		name: 'Skinix',
-	},
-	{
-		_id: '614c8f08fe60d017770f5ed9',
-		name: 'Avamm',
-	},
-	{
-		_id: '614c8f08fe60d017770f5eda',
-		name: 'Blogtags',
-	},
-];
+import { Descendant } from 'slate';
+import { useRouter } from 'next/router';
 
 interface NoticeDetails {
-	title: 'Random Title';
+	title: string;
 	body: string;
 	attachedImages: string[];
 	attachedFiles: string[];
@@ -151,17 +31,16 @@ interface NoticeDetails {
 }
 
 const EditPostLayout: React.FC<any> = ({ children }) => {
+	const router = useRouter();
 	const { loading: userLoading, data: userData } = useLoggedInUserQuery();
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
-	const [selectedTags, setSelectedTags] = React.useState<any[]>([
+	const [selectedTags, setSelectedTags] = React.useState<Topic[]>([]);
+
+	const [noticeBody, setNoticeBody] = React.useState<Descendant[]>([
 		{
-			_id: '614c8f08fe60d017770f5ebd',
-			name: 'Quire',
-		},
-		{
-			_id: '614c8f08fe60d017770f5ebe',
-			name: 'Brainbox',
+			type: 'paragraph',
+			children: [{ text: '' }],
 		},
 	]);
 
@@ -173,22 +52,23 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		updateDescription,
 		updateTitle,
 		updateVenue,
+		updateLink,
 	} = useLinkedEvents();
 
 	const [noticeDetails, setNoticeDetails] = React.useState<NoticeDetails>({
 		title: 'Random Title',
-		body: '',
+		body: JSON.stringify(noticeBody),
 		attachedImages: [] as string[],
 		attachedFiles: [] as string[],
 		isEvent: false,
 	});
 
-	const setNoticeBody = (val: string) => {
+	React.useEffect(() => {
 		setNoticeDetails({
 			...noticeDetails,
-			body: val,
+			body: JSON.stringify(noticeBody),
 		});
-	};
+	}, [noticeBody]);
 
 	const [createNotice] = useCreateNoticeMutation();
 
@@ -230,9 +110,9 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 		if (data.errors) {
 			alert('Something went wrong. Please try again.');
 			return;
+		} else {
+			router.push('/feed');
 		}
-
-		console.log('Posted!');
 	};
 
 	return userLoading ? (
@@ -240,22 +120,20 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 	) : (
 		<>
 			{/* @ts-ignore */}
-			<TopicsModal
-				tags={DUMMY_DATA}
-				{...{ isOpen, onClose, onListItemClick, selectedTags }}
-			/>
+			<TopicsModal {...{ isOpen, onClose, onListItemClick, selectedTags }} />
 			<AppLayout>
 				<div className="grid grid-cols-12">
 					<div className="block w-full md:col-span-8">
 						{/* Notice text area */}
 						<BoundingBox>
 							<h4 className="mt-1 font-semibold">Notice Content</h4>
-							<TextArea
+							{/* <TextArea
 								charLimit={500}
 								height={400}
 								setText={setNoticeBody}
 								value={noticeDetails.body}
-							/>
+							/> */}
+							<RTE initial={noticeBody} onChange={setNoticeBody}></RTE>
 						</BoundingBox>
 
 						{/* Tags Area */}
@@ -264,14 +142,18 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 							<div className="flex items-center">
 								<div className="my-3 w-full">
 									{selectedTags.length ? (
-										<div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+										<div className="flex gap-2">
 											{selectedTags.map((tag) => {
 												return (
 													<Tag
 														key={tag._id}
-														color={'purple'}
+														color={tag.color}
 														onClick={() => {
-															const a = 1 + 2;
+															setSelectedTags(
+																selectedTags.filter(
+																	(topic) => topic._id !== tag._id
+																)
+															);
 														}}
 													>
 														{tag.name}
@@ -303,6 +185,7 @@ const EditPostLayout: React.FC<any> = ({ children }) => {
 										}
 										updateTitle={(value: string) => updateTitle(index, value)}
 										updateVenue={(value: string) => updateVenue(index, value)}
+										updateLink={(value: string) => updateLink(index, value)}
 									/>
 								</>
 							);

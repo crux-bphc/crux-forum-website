@@ -14,6 +14,9 @@ import {
 import clsx from 'clsx';
 import Image from 'next/image';
 import EventItem from '@/shared/components/EventItem';
+import RTE from '@/feed/new/components/RTE';
+import { Event } from '@/shared/types/event';
+import { useRouter } from 'next/router';
 
 interface PostGalleryProps {
 	images: string[];
@@ -106,11 +109,11 @@ interface NoticeDetails {
 	time: string;
 	attachedImages?: string[] | null | undefined;
 	topics?:
-		{
-			_id: string;
-			name: string;
-			color: string;
-		}[]
+		| {
+				_id: string;
+				name: string;
+				color: string;
+		  }[]
 		| null
 		| undefined;
 	isEvent: boolean;
@@ -121,9 +124,18 @@ interface NoticeDetails {
 interface FeedPostProps {
 	showActions?: boolean;
 	notice: NoticeDetails;
+	subscribedEvents?: Event[];
+	subscribeEvent?: (event: Event) => void;
+	unsubscribeEvent?: (event: Event) => void;
 }
 
-const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
+const FeedPost: React.FC<FeedPostProps> = ({
+	showActions = true,
+	notice,
+	subscribedEvents = [],
+	subscribeEvent = (event: Event) => {},
+	unsubscribeEvent = (event: Event) => {},
+}) => {
 	const {
 		_id,
 		postedBy,
@@ -152,18 +164,26 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 						<div className="text-right">
 							<div className="hidden gap-2 lg:flex">
 								{/* @ts-ignore */}
-								{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+								{topics?.map((topic) => (
+									<Tag id={topic._id} key={topic._id} color={topic.color}>
+										{topic.name}
+									</Tag>
+								))}
 							</div>
 						</div>
 					</div>
 					<div className="mt-3 flex gap-2 lg:hidden">
 						{/* @ts-ignore */}
-						{topics?.map(topic => <Tag key={topic._id} color={topic.color}>{topic.name}</Tag>)}
+						{topics?.map((topic) => (
+							<Tag key={topic._id} id={topic._id} color={topic.color}>
+								{topic.name}
+							</Tag>
+						))}
 					</div>
 
 					{/* text */}
 					<div className="my-4">
-						<p className="text-sm font-light">{body}</p>
+						<RTE initial={JSON.parse(body)} readonly></RTE>
 					</div>
 				</div>
 
@@ -179,7 +199,21 @@ const FeedPost: React.FC<FeedPostProps> = ({ showActions = true, notice }) => {
 						<div>
 							<h4 className="font-semibold">Events</h4>
 							{linkedEvents.map((event) => (
-								<EventItem key={event._id} event={event} shadow={true} />
+								<EventItem
+									key={event._id}
+									event={event}
+									shadow={true}
+									subscribed={
+										subscribedEvents.find((e) => e._id === event._id) !==
+										undefined
+									}
+									onToggleSubscription={() => {
+										subscribedEvents.find((e) => e._id === event._id) !==
+										undefined
+											? unsubscribeEvent(event)
+											: subscribeEvent(event);
+									}}
+								/>
 							))}
 						</div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useGetTopicsLazyQuery } from '@/graphql/generated';
 import { HiOutlinePlusCircle, HiOutlineXCircle } from 'react-icons/hi';
 import IconButton from '@/shared/ui/IconButton';
 import Input from '@/shared/ui/Input';
@@ -10,7 +11,6 @@ interface TopicsModalProps {
 	onClose: () => void;
 	onListItemClick: (topic: Topic) => void;
 	selectedTags: Topic[];
-	tags: Topic[];
 }
 
 const TopicsModal: React.FC<TopicsModalProps> = ({
@@ -18,8 +18,26 @@ const TopicsModal: React.FC<TopicsModalProps> = ({
 	onClose,
 	onListItemClick,
 	selectedTags,
-	tags,
 }) => {
+	const [getTopics, { loading, data }] = useGetTopicsLazyQuery();
+
+	const [tags, setTags] = React.useState<Topic[]>([]);
+
+	React.useEffect(() => {
+		if (data) {
+			setTags(data.getAllTopics.data);
+		}
+	}, []);
+
+	React.useEffect(() => {
+		getTopics();
+	}, []);
+
+	React.useEffect(() => {
+		if (!data) return;
+		setTags(data.getAllTopics.data);
+	}, [loading]);
+
 	return (
 		<>
 			<Transition appear show={isOpen} as={React.Fragment}>
@@ -61,7 +79,7 @@ const TopicsModal: React.FC<TopicsModalProps> = ({
 									as="h3"
 									className="text-xl font-medium leading-6 "
 								>
-									Add Departments
+									Select Topics
 								</Dialog.Title>
 								<div className="my-4">
 									<Input />

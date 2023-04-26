@@ -1,0 +1,5 @@
+mutation SubscribeToTopic($topic: String!) {
+    subscribeTopic(
+			topicID: $topic
+	)
+}

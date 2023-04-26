@@ -26,5 +26,7 @@ query GetFeed($limit: Float, $skip: Float) {
             }
             likeCount
         }
+        count
+        hasNext
     }
 }

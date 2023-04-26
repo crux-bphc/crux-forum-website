@@ -202,6 +202,7 @@ type TopicType {
   image: String!
   name: String!
   subscribedToTopic: Boolean!
+  subscriberCount: Int!
 }
 
 input UserRegisterType {
@@ -219,15 +220,15 @@ input UserRegisterType {
 type UserType {
   _id: ID!
   banned: Boolean
-  batch: Int!
-  bio: String!
+  batch: Int
+  bio: String
   discord: String!
   email: String!
   name: String!
   phone: String!
   posted: [NoticeType!]
   preferences: PreferencesType!
-  profilePicture: String!
+  profilePicture: String
   role: String!
   subscribedEvents: [EventType!]
   subscriptions: [TopicType!]

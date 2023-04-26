@@ -1,7 +1,9 @@
 import {
 	useUpdateUserMutation,
+	useLogoutUserMutation,
 	useUserProfileQuery,
 } from '@/graphql/generated';
+import { useApolloClient } from '@apollo/client';
 import withApollo from '@/lib/withApollo';
 import SettingsPageLayout from '@/settings/layout/SettingsPageLayout';
 import Avatar from '@/shared/ui/Avatar';
@@ -10,6 +12,7 @@ import Card from '@/shared/ui/Card';
 import Spinner from '@/shared/ui/Spinner';
 import Switch from '@/shared/ui/Switch';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 enum ActionType {
@@ -80,11 +83,16 @@ const reducer = (state: SettingsState, action: Action): SettingsState => {
 };
 
 const SettingsPage: NextPage = () => {
+	const router = useRouter();
 	const { data, loading } = useUserProfileQuery({ ssr: false });
 	const [state, dispatch] = React.useReducer(reducer, {
 		...initialState,
 	});
+
 	const [updateUser] = useUpdateUserMutation();
+	const [logoutUser] = useLogoutUserMutation();
+
+	const apolloClient = useApolloClient();
 
 	React.useEffect(() => {
 		if (data?.user?.preferences) {
@@ -117,6 +125,18 @@ const SettingsPage: NextPage = () => {
 		return <Spinner variant="full-screen" />;
 	}
 
+	async function logout() {
+		try {
+			await logoutUser();
+		} catch {
+			console.log('Could not log you out');
+		}
+
+		await apolloClient.resetStore();
+
+		router.push('/');
+	}
+
 	return (
 		<>
 			<SettingsPageLayout>
@@ -133,7 +153,7 @@ const SettingsPage: NextPage = () => {
 							<p className="text-sm text-gray-accent">{data.user.email}</p>
 						</div>
 					</div>
-					<Button>Logout</Button>
+					<Button onClick={() => logout()}>Logout</Button>
 				</Card>
 				<Card className="mb-10 py-4 px-4">
 					<div className="mb-4">

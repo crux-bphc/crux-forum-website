@@ -9,81 +9,142 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
-const colors = {
-	red: 'bg-red-500 text-gray-800',
-	green: 'bg-green-500',
-	purple: 'bg-purple-500',
-	teal: 'bg-teal-500 text-gray-800',
-	blue: 'bg-blue-500',
-};
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 
-const mockNotice = {
-	_id: 'abc123',
-	title: 'Lorem Ipsum',
-	body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec tempor arcu. Nulla facilisi. Phasellus sapien risus, auctor feugiat lorem vitae, vulputate euismod nulla. Proin laoreet odio condimentum turpis bibendum, vitae luctus sapien pulvinar. Mauris vitae suscipit odio. Etiam rhoncus luctus quam eget condimentum. Fusce quis elit sed turpis porttitor euismod.',
-	time: '2022-10-04T13:10:52.525Z',
-	postedBy: {
-		_id: '633417dd9401de010eebdee7',
-		name: 'ANIMESH AV',
-		profilePicture: 'https://d23hwxa527zkay.cloudfront.net/f20200193.jpg',
-	},
-	attachedImages: [
-		'https://picsum.photos/200/300',
-		'https://picsum.photos/200/301',
-		'https://picsum.photos/200/302',
-	],
-	topics: [
-		{
-			_id: '614c8f08fe60d017770f5ec7',
-			name: 'Linkbuzz',
-			color: 'blue' as keyof typeof colors,
-		},
-		{
-			_id: '614c8f08fe60d017770f5ec8',
-			name: 'Eabox',
-			color: 'purple',
-		},
-	],
-	isEvent: false,
-	linkedEvents: [
-		{
-			_id: '633c3156cd75e701a37dc75b',
-			name: 'First Event in History',
-			venue: 'LTC Lobby',
-			description: 'Some random event which no one attends',
-			date: '16/10/2022 4:00PM',
-		},
-		{
-			_id: '633c3156cd75e701a37dc75c',
-			name: 'Second Event in History',
-			venue: 'Mess 1',
-			description: 'Some other random event which no one attends',
-			date: '16/10/2022 4:00PM',
-			meetLink: 'https://meet.google.com',
-		},
-	],
-	likeCount: 12,
-};
+import {
+	useUserProfileLazyQuery,
+	useGetEventsLazyQuery,
+	useSubscribeToEventMutation,
+	useUnsubscribeFromEventMutation,
+} from '@/graphql/generated';
+
+import { gql } from '@apollo/client';
+
+import { Event } from '@/shared/types/event';
 
 const FeedIndexRoute: NextPage = () => {
+	const [feed, setFeed] = React.useState<NoticeType[]>([]);
+
 	const [getFeed, { loading, data }] = useGetFeedLazyQuery();
+
+	const [getUserProfile, { data: userEventsData, loading: userEventsLoading }] =
+		useUserProfileLazyQuery();
+	const [getEvents, { data: eventsData, loading: eventsLoading }] =
+		useGetEventsLazyQuery();
+
+	const [subscribeToEvent, { error: subscribeError }] =
+		useSubscribeToEventMutation();
+	const [unsubsribeFromEvent, { error: unsubscribeError }] =
+		useUnsubscribeFromEventMutation();
+
+	const rowVirtualizer = useWindowVirtualizer({
+		count: data?.getFeed.count ?? 0,
+		estimateSize: () => 400,
+		overscan: 2,
+	});
+
+	React.useEffect(() => {
+		getUserProfile();
+		getEvents();
+	}, []);
 
 	React.useEffect(() => {
 		getFeed({
 			variables: {
 				limit: 5,
-				skip: 0,
+				skip: feed.length,
+			},
+		});
+	}, [rowVirtualizer.getVirtualItems()]);
+
+	React.useEffect(() => {
+		getFeed({
+			variables: {
+				limit: 5,
+				skip: feed.length,
 			},
 		});
 	}, []);
 
 	React.useEffect(() => {
-		console.log(data);
+		if (data) {
+			setFeed([...feed, ...(data?.getFeed.data ?? [])]);
+		}
 	}, [loading]);
+
+	const subscribe = async (event: Event) => {
+		try {
+			await subscribeToEvent({
+				variables: {
+					event: event._id,
+				},
+				update: (cache, data) => {
+					if (data.data?.subscribeEvent) {
+						cache.modify({
+							id: cache.identify(userEventsData?.user),
+							fields: {
+								subscribedEvents(existingEvents = []) {
+									const newSubscribedEvent = cache.writeFragment({
+										data: event,
+										fragment: gql`
+											fragment NewSubscribedEvent on Event {
+												_id
+												name
+												date
+												venue
+												meetLink
+											}
+										`,
+									});
+
+									return [...existingEvents, newSubscribedEvent];
+								},
+							},
+						});
+					}
+				},
+			});
+		} catch {
+			console.log('could not subscribe to event', subscribeError);
+			return;
+		}
+	};
+
+	const unsubscribe = async (event: Event) => {
+		try {
+			await unsubsribeFromEvent({
+				variables: {
+					event: event._id,
+				},
+				update: (cache, data) => {
+					if (data.data?.unsubscribeEvent) {
+						cache.modify({
+							id: cache.identify(userEventsData?.user),
+							fields: {
+								subscribedEvents(existingEvents = []) {
+									return existingEvents.filter(
+										(existing) => existing.__ref !== cache.identify(event)
+									);
+								},
+							},
+						});
+					}
+				},
+			});
+		} catch {
+			console.log('could not unsubscribe from event', unsubscribeError);
+			return;
+		}
+	};
 
 	return (
 		<>
-			<FeedLayout>
+			<FeedLayout
+				subscribedEvents={userEventsData?.user?.subscribedEvents ?? []}
+				otherEvents={eventsData?.getAllEvents.data}
+				subscribe={subscribe}
+				unsubscribe={unsubscribe}
+			>
 				<div>
 					<div className="grid grid-cols-2 gap-y-4 px-3 py-3 sm:px-8 sm:py-8 lg:px-10">
 						<div className="col-span-full flex items-center justify-between">
@@ -124,16 +185,29 @@ const FeedIndexRoute: NextPage = () => {
 					</div>
 					<div className="mt-8 flex flex-col gap-8 py-3 sm:px-8 lg:px-10">
 						{data ? (
-							data.getFeed.data.map((notice) => (
-								<FeedPost key={notice._id} notice={notice} />
-							))
+							rowVirtualizer.getVirtualItems().map((virtualItem) => {
+								const isLoading = virtualItem.index > feed.length - 1;
+
+								if (!isLoading) {
+									const notice = feed[virtualItem.index];
+
+									return (
+										<FeedPost
+											key={virtualItem.index}
+											notice={notice}
+											subscribedEvents={userEventsData?.user?.subscribedEvents}
+											subscribeEvent={subscribe}
+											unsubscribeEvent={unsubscribe}
+											ref={rowVirtualizer.measureElement}
+										></FeedPost>
+									);
+								} else {
+									return <p key={virtualItem.index}>Loading...</p>;
+								}
+							})
 						) : (
 							<></>
 						)}
-						{/* @ts-ignore */}
-						<FeedPost notice={mockNotice} />
-						{/* @ts-ignore */}
-						<FeedPost notice={mockNotice} />
 					</div>
 				</div>
 			</FeedLayout>

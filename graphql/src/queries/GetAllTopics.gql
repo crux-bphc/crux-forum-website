@@ -1,0 +1,11 @@
+query GetTopics {
+	getAllTopics(limit: 0, skip: 0) {
+		data {
+			_id
+			name
+			color
+			image
+			about
+		}
+	}
+}

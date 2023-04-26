@@ -419,6 +419,7 @@ export type TopicType = {
   image: Scalars['String'];
   name: Scalars['String'];
   subscribedToTopic: Scalars['Boolean'];
+  subscriberCount: Scalars['Int'];
 };
 
 export type UserRegisterType = {
@@ -437,23 +438,23 @@ export type UserType = {
   __typename?: 'UserType';
   _id: Scalars['ID'];
   banned?: Maybe<Scalars['Boolean']>;
-  batch: Scalars['Int'];
-  bio: Scalars['String'];
+  batch?: Maybe<Scalars['Int']>;
+  bio?: Maybe<Scalars['String']>;
   discord: Scalars['String'];
   email: Scalars['String'];
   name: Scalars['String'];
   phone: Scalars['String'];
   posted?: Maybe<Array<NoticeType>>;
   preferences: PreferencesType;
-  profilePicture: Scalars['String'];
+  profilePicture?: Maybe<Scalars['String']>;
   role: Scalars['String'];
   subscribedEvents?: Maybe<Array<EventType>>;
   subscriptions?: Maybe<Array<TopicType>>;
 };
 
-export type MinPostFragment = { __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null };
+export type MinPostFragment = { __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null };
 
-export type MinUserFragment = { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string };
+export type MinUserFragment = { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null };
 
 export type UserPreferencesFragment = { __typename?: 'UserType', preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null } };
 
@@ -479,6 +480,34 @@ export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutUserMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type SubscribeToEventMutationVariables = Exact<{
+  event: Scalars['String'];
+}>;
+
+
+export type SubscribeToEventMutation = { __typename?: 'Mutation', subscribeEvent: boolean };
+
+export type SubscribeToTopicMutationVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type SubscribeToTopicMutation = { __typename?: 'Mutation', subscribeTopic: boolean };
+
+export type UnsubscribeFromEventMutationVariables = Exact<{
+  event: Scalars['String'];
+}>;
+
+
+export type UnsubscribeFromEventMutation = { __typename?: 'Mutation', unsubscribeEvent: boolean };
+
+export type UnsubscribeFromTopicMutationVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type UnsubscribeFromTopicMutation = { __typename?: 'Mutation', unsubscribeTopic: boolean };
+
 export type UpdateUserMutationVariables = Exact<{
   input: EditProfileInputType;
 }>;
@@ -493,13 +522,30 @@ export type CreateFileUploadUrlQueryVariables = Exact<{
 
 export type CreateFileUploadUrlQuery = { __typename?: 'Query', url: Array<string> };
 
+export type GetEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetEventsQuery = { __typename?: 'Query', getAllEvents: { __typename?: 'PaginatedResponseOfEventType', data: Array<{ __typename?: 'EventType', _id: string, name: string, description?: string | null, date: string, venue: string, meetLink: string }> } };
+
+export type GetTopicsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTopicsQuery = { __typename?: 'Query', getAllTopics: { __typename?: 'PaginatedResponseOfTopicType', data: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string, image: string, about: string }> } };
+
 export type GetFeedQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Float']>;
   skip?: InputMaybe<Scalars['Float']>;
 }>;
 
 
-export type GetFeedQuery = { __typename?: 'Query', getFeed: { __typename?: 'PaginatedResponseOfNoticeType', data: Array<{ __typename?: 'NoticeType', _id: string, title: string, body: string, time: string, attachedImages?: Array<string> | null, isEvent: boolean, likeCount: number, postedBy: { __typename?: 'UserType', _id: string, name: string, profilePicture: string }, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, linkedEvents: Array<{ __typename?: 'EventType', _id: string, name: string, venue: string, date: string, meetLink: string }> }> } };
+export type GetFeedQuery = { __typename?: 'Query', getFeed: { __typename?: 'PaginatedResponseOfNoticeType', count: number, hasNext: boolean, data: Array<{ __typename?: 'NoticeType', _id: string, title: string, body: string, time: string, attachedImages?: Array<string> | null, isEvent: boolean, likeCount: number, postedBy: { __typename?: 'UserType', _id: string, name: string, profilePicture?: string | null }, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, linkedEvents: Array<{ __typename?: 'EventType', _id: string, name: string, venue: string, date: string, meetLink: string }> }> } };
+
+export type GetTopicInformationQueryVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type GetTopicInformationQuery = { __typename?: 'Query', getSingleTopic: { __typename?: 'TopicType', _id: string, name: string, about: string, image: string, color: string, subscribedToTopic: boolean, subscriberCount: number }, getNoticesByTopic: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, linkedEvents: Array<{ __typename?: 'EventType', _id: string }>, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null } | null> };
 
 export type GoogleAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -511,22 +557,23 @@ export type GoogleLoginQueryVariables = Exact<{
 }>;
 
 
-export type GoogleLoginQuery = { __typename?: 'Query', user: { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string } };
+export type GoogleLoginQuery = { __typename?: 'Query', user: { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null } };
 
 export type LoggedInUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoggedInUserQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string } | null };
+export type LoggedInUserQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null } | null };
 
 export type UserProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch: number, email: string, profilePicture: string, bio: string, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
+export type UserProfileQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', discord: string, phone: string, _id: string, name: string, batch?: number | null, email: string, profilePicture?: string | null, bio?: string | null, posted?: Array<{ __typename?: 'NoticeType', _id: string, time: string, title: string, body: string, topics?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null }> | null, preferences: { __typename: 'PreferencesType', darkmode?: boolean | null, notifications?: boolean | null, roundup?: boolean | null }, subscriptions?: Array<{ __typename?: 'TopicType', _id: string, name: string, color: string }> | null, subscribedEvents?: Array<{ __typename?: 'EventType', _id: string, name: string, date: string, venue: string, meetLink: string }> | null } | null };
 
 export const MinPostFragmentDoc = gql`
     fragment MinPost on NoticeType {
   _id
   topics {
+    _id
     name
     color
   }
@@ -664,6 +711,130 @@ export function useLogoutUserMutation(baseOptions?: Apollo.MutationHookOptions<L
 export type LogoutUserMutationHookResult = ReturnType<typeof useLogoutUserMutation>;
 export type LogoutUserMutationResult = Apollo.MutationResult<LogoutUserMutation>;
 export type LogoutUserMutationOptions = Apollo.BaseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables>;
+export const SubscribeToEventDocument = gql`
+    mutation SubscribeToEvent($event: String!) {
+  subscribeEvent(eventId: $event)
+}
+    `;
+export type SubscribeToEventMutationFn = Apollo.MutationFunction<SubscribeToEventMutation, SubscribeToEventMutationVariables>;
+
+/**
+ * __useSubscribeToEventMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToEventMutation, { data, loading, error }] = useSubscribeToEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useSubscribeToEventMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToEventMutation, SubscribeToEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToEventMutation, SubscribeToEventMutationVariables>(SubscribeToEventDocument, options);
+      }
+export type SubscribeToEventMutationHookResult = ReturnType<typeof useSubscribeToEventMutation>;
+export type SubscribeToEventMutationResult = Apollo.MutationResult<SubscribeToEventMutation>;
+export type SubscribeToEventMutationOptions = Apollo.BaseMutationOptions<SubscribeToEventMutation, SubscribeToEventMutationVariables>;
+export const SubscribeToTopicDocument = gql`
+    mutation SubscribeToTopic($topic: String!) {
+  subscribeTopic(topicID: $topic)
+}
+    `;
+export type SubscribeToTopicMutationFn = Apollo.MutationFunction<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>;
+
+/**
+ * __useSubscribeToTopicMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToTopicMutation, { data, loading, error }] = useSubscribeToTopicMutation({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useSubscribeToTopicMutation(baseOptions?: Apollo.MutationHookOptions<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>(SubscribeToTopicDocument, options);
+      }
+export type SubscribeToTopicMutationHookResult = ReturnType<typeof useSubscribeToTopicMutation>;
+export type SubscribeToTopicMutationResult = Apollo.MutationResult<SubscribeToTopicMutation>;
+export type SubscribeToTopicMutationOptions = Apollo.BaseMutationOptions<SubscribeToTopicMutation, SubscribeToTopicMutationVariables>;
+export const UnsubscribeFromEventDocument = gql`
+    mutation UnsubscribeFromEvent($event: String!) {
+  unsubscribeEvent(eventId: $event)
+}
+    `;
+export type UnsubscribeFromEventMutationFn = Apollo.MutationFunction<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>;
+
+/**
+ * __useUnsubscribeFromEventMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromEventMutation, { data, loading, error }] = useUnsubscribeFromEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromEventMutation(baseOptions?: Apollo.MutationHookOptions<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>(UnsubscribeFromEventDocument, options);
+      }
+export type UnsubscribeFromEventMutationHookResult = ReturnType<typeof useUnsubscribeFromEventMutation>;
+export type UnsubscribeFromEventMutationResult = Apollo.MutationResult<UnsubscribeFromEventMutation>;
+export type UnsubscribeFromEventMutationOptions = Apollo.BaseMutationOptions<UnsubscribeFromEventMutation, UnsubscribeFromEventMutationVariables>;
+export const UnsubscribeFromTopicDocument = gql`
+    mutation UnsubscribeFromTopic($topic: String!) {
+  unsubscribeTopic(topicID: $topic)
+}
+    `;
+export type UnsubscribeFromTopicMutationFn = Apollo.MutationFunction<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>;
+
+/**
+ * __useUnsubscribeFromTopicMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromTopicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromTopicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromTopicMutation, { data, loading, error }] = useUnsubscribeFromTopicMutation({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromTopicMutation(baseOptions?: Apollo.MutationHookOptions<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>(UnsubscribeFromTopicDocument, options);
+      }
+export type UnsubscribeFromTopicMutationHookResult = ReturnType<typeof useUnsubscribeFromTopicMutation>;
+export type UnsubscribeFromTopicMutationResult = Apollo.MutationResult<UnsubscribeFromTopicMutation>;
+export type UnsubscribeFromTopicMutationOptions = Apollo.BaseMutationOptions<UnsubscribeFromTopicMutation, UnsubscribeFromTopicMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($input: EditProfileInputType!) {
   updateUser(input: $input)
@@ -728,6 +899,87 @@ export function useCreateFileUploadUrlLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type CreateFileUploadUrlQueryHookResult = ReturnType<typeof useCreateFileUploadUrlQuery>;
 export type CreateFileUploadUrlLazyQueryHookResult = ReturnType<typeof useCreateFileUploadUrlLazyQuery>;
 export type CreateFileUploadUrlQueryResult = Apollo.QueryResult<CreateFileUploadUrlQuery, CreateFileUploadUrlQueryVariables>;
+export const GetEventsDocument = gql`
+    query GetEvents {
+  getAllEvents(limit: 0, skip: 0) {
+    data {
+      _id
+      name
+      description
+      date
+      venue
+      meetLink
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetEventsQuery__
+ *
+ * To run a query within a React component, call `useGetEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+      }
+export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
+export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
+export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
+export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;
+export const GetTopicsDocument = gql`
+    query GetTopics {
+  getAllTopics(limit: 0, skip: 0) {
+    data {
+      _id
+      name
+      color
+      image
+      about
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTopicsQuery__
+ *
+ * To run a query within a React component, call `useGetTopicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopicsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTopicsQuery(baseOptions?: Apollo.QueryHookOptions<GetTopicsQuery, GetTopicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTopicsQuery, GetTopicsQueryVariables>(GetTopicsDocument, options);
+      }
+export function useGetTopicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopicsQuery, GetTopicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTopicsQuery, GetTopicsQueryVariables>(GetTopicsDocument, options);
+        }
+export type GetTopicsQueryHookResult = ReturnType<typeof useGetTopicsQuery>;
+export type GetTopicsLazyQueryHookResult = ReturnType<typeof useGetTopicsLazyQuery>;
+export type GetTopicsQueryResult = Apollo.QueryResult<GetTopicsQuery, GetTopicsQueryVariables>;
 export const GetFeedDocument = gql`
     query GetFeed($limit: Float, $skip: Float) {
   getFeed(limit: $limit, skip: $skip) {
@@ -757,6 +1009,8 @@ export const GetFeedDocument = gql`
       }
       likeCount
     }
+    count
+    hasNext
   }
 }
     `;
@@ -789,6 +1043,54 @@ export function useGetFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetFeedQueryHookResult = ReturnType<typeof useGetFeedQuery>;
 export type GetFeedLazyQueryHookResult = ReturnType<typeof useGetFeedLazyQuery>;
 export type GetFeedQueryResult = Apollo.QueryResult<GetFeedQuery, GetFeedQueryVariables>;
+export const GetTopicInformationDocument = gql`
+    query GetTopicInformation($topic: String!) {
+  getSingleTopic(id: $topic) {
+    _id
+    name
+    about
+    image
+    color
+    about
+    subscribedToTopic
+    subscriberCount
+  }
+  getNoticesByTopic(topicId: $topic) {
+    ...MinPost
+    linkedEvents {
+      _id
+    }
+  }
+}
+    ${MinPostFragmentDoc}`;
+
+/**
+ * __useGetTopicInformationQuery__
+ *
+ * To run a query within a React component, call `useGetTopicInformationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopicInformationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopicInformationQuery({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useGetTopicInformationQuery(baseOptions: Apollo.QueryHookOptions<GetTopicInformationQuery, GetTopicInformationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTopicInformationQuery, GetTopicInformationQueryVariables>(GetTopicInformationDocument, options);
+      }
+export function useGetTopicInformationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopicInformationQuery, GetTopicInformationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTopicInformationQuery, GetTopicInformationQueryVariables>(GetTopicInformationDocument, options);
+        }
+export type GetTopicInformationQueryHookResult = ReturnType<typeof useGetTopicInformationQuery>;
+export type GetTopicInformationLazyQueryHookResult = ReturnType<typeof useGetTopicInformationLazyQuery>;
+export type GetTopicInformationQueryResult = Apollo.QueryResult<GetTopicInformationQuery, GetTopicInformationQueryVariables>;
 export const GoogleAuthUrlDocument = gql`
     query GoogleAuthURL {
   url: GoogleAuthUrl
